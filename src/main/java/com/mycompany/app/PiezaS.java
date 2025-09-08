@@ -1,5 +1,5 @@
 package com.mycompany.app;
 
-interface Itablero {
-
+public class PiezaS {
+    
 }
