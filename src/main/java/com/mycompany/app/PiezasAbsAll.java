@@ -4,18 +4,17 @@ import java.util.Random; // Para seleccionar una rotacion aleatoria
 // Las piezas solo deben encargarse de su forma y rotacion.
 // No sabe sobre choques o limites del tablero
 
-public abstract class PiezasAbsAll implements InterfazRotacion, InterfazMovimiento { // Clase abstracta que implementa las dos interfaces
-    protected int [][] forma; // Matriz que representa la forma de la pieza (os y 1s)
-    protected int x, y; // Posicion actual de la pieza en el tablero (fila y columna)
-    protected String nombre; // Nombre de la pieza (T, L, J, S, Z, Cuadrado, Barra, etc)
-    private Random random = new Random(); // Para seleccionar una rotacion aleatoria
+public abstract class PiezasAbsAll implements InterfazRotacion, InterfazMovimiento { // Clase abstracta que implementa las dos interfaces (TIPO//atributo)
+    private int [][] forma; // Matriz que representa la forma de la pieza (os y 1s)
+    private int x, y; // Coordenadas de la posicion en el tablero (fila,columna)
+    private String nombre; // Nombre de la pieza (T, L, J, S, Z, Cuadrado, Barra, etc)
+    private Random random = new Random(); // Para rotacion aleatoria
 
     public PiezasAbsAll(String nombre) { // Constructor de la pieza con su nombre y posicion inicial (0,0)
         this.nombre = nombre; // Nombre de la pieza
         this.x = 0; // Fila inicial
         this.y = 0; // Columna inicial
     }
-
 
     // ===== GETTERS =====
     public int[][] getForma() { // Devuelve la forma de la pieza
@@ -90,7 +89,7 @@ public abstract class PiezasAbsAll implements InterfazRotacion, InterfazMovimien
     
     @Override
     public void moverAbajo() {
-            x++; // Incrementa (aumenta) la fila (x) para moverse hacia abajo
+        x++; // Incrementa (aumenta) la fila (x) para moverse hacia abajo
     }
 
 }
