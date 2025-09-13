@@ -112,6 +112,7 @@
       - Poder indicar desde afuera que se cree un “tick” del reloj.
       - Que en cada tick se juegue en el tablero el movimiento.
 
+[DOCUMENTACION](https://docs.google.com/document/d/1HcwQHvetELJaVBRKapoV5MmaNs7SmCDS7Mm4Bziafbc/edit?usp=sharing)
 
 <img width="1003" height="157" alt="image" src="https://github.com/user-attachments/assets/10e665ec-d29d-4238-8715-ecc8001eda68" />
 
