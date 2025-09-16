@@ -15,6 +15,10 @@ public abstract class PiezasAbsAll implements InterfazRotacion, InterfazMovimien
         this.x = 0; // Fila inicial
         this.y = 0; // Columna inicial
     }
+        // Permite inicializar la forma desde las subclases
+        public void setForma(int[][] forma) {
+            this.forma = forma;
+        }
 
     // ===== GETTERS =====
     public int[][] getForma() { // Devuelve la forma de la pieza
