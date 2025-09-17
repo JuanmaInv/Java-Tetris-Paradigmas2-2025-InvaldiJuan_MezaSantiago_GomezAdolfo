@@ -5,7 +5,7 @@ public class Board {
     private int filas; // Filas del tablero
     private int columnas; // Columna del tablero
     private int[][] matriz; // Matriz que representa el estado del tablero (0 = vacio, 1 = ocupado)
-    private PieceAll piezaActual; // La pieza que esta actualmente en el tablero
+    private Piece piezaActual; // La pieza que esta actualmente en el tablero
 
     public Board() {
         this.filas = 10; // Filas del tablero
@@ -27,7 +27,7 @@ public class Board {
     }
 
     // Coloca una nueva pieza en el tablero
-    public void colocarPieza(PieceAll pieza) {
+    public void colocarPieza(Piece pieza) {
         this.piezaActual = pieza;
         // Aqui podriamos inicializar la posicion de la pieza en la matriz
     }
@@ -49,7 +49,7 @@ public class Board {
     }
 
     // Getter para la pieza actual
-    public PieceAll getPiezaActual() {
+    public Piece getPiezaActual() {
         return piezaActual;
     }
 
