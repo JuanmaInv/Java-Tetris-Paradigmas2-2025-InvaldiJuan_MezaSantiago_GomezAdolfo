@@ -1,9 +1,9 @@
 package com.mycompany.app;
 
-public class PiezaT extends PiezasAbsAll { // Extiende la clase abstracta PiezasAbsAll
+public class PieceT extends PieceAll { // Extiende la clase abstracta PiezasAbsAll
 
     // Constructor
-    public PiezaT() {
+    public PieceT() {
         super("T");
 
         // Definir la forma inicial de la pieza T usando el método de la clase base

@@ -1,5 +1,6 @@
 package com.mycompany.app;
 
-public class PiezaTinvertida {
+
+public class PieceStick {
     
 }

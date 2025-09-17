@@ -1,13 +1,13 @@
 package com.mycompany.app;
 
 // Clase que representa el tablero de Tetris
-public class Tablero {
+public class Board {
     private int filas; // Filas del tablero
     private int columnas; // Columna del tablero
     private int[][] matriz; // Matriz que representa el estado del tablero (0 = vacio, 1 = ocupado)
-    private PiezasAbsAll piezaActual; // La pieza que esta actualmente en el tablero
+    private PieceAll piezaActual; // La pieza que esta actualmente en el tablero
 
-    public Tablero() {
+    public Board() {
         this.filas = 10; // Filas del tablero
         this.columnas = 20; // Columnas del tablero
         this.matriz = new int[filas][columnas]; // Inicializar la matriz del tablero con ceros (vacio)
@@ -27,7 +27,7 @@ public class Tablero {
     }
 
     // Coloca una nueva pieza en el tablero
-    public void colocarPieza(PiezasAbsAll pieza) {
+    public void colocarPieza(PieceAll pieza) {
         this.piezaActual = pieza;
         // Aqui podriamos inicializar la posicion de la pieza en la matriz
     }
@@ -49,7 +49,7 @@ public class Tablero {
     }
 
     // Getter para la pieza actual
-    public PiezasAbsAll getPiezaActual() {
+    public PieceAll getPiezaActual() {
         return piezaActual;
     }
 

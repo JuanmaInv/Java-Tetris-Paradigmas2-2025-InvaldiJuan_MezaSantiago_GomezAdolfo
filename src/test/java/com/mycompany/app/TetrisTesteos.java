@@ -9,21 +9,21 @@ public class TetrisTesteos {
 
     @Test
     public void testTableroVacio() {
-        Tablero tablero = new Tablero();
+        Board tablero = new Board();
         assertTrue(tablero.tableroVacio());
     }
 
-
+    
     @Test
     public void testTableroLleno(){
-        Tablero tablero = new Tablero();
+        Board tablero = new Board();
         assertFalse(!tablero.tableroVacio());
     }
 
 
     @Test
     public void testMoverPiezaAbajo(){
-        PiezasAbsAll pieza = new PiezaT(); // Creo una pieza T
+        PieceAll pieza = new PieceT(); // Creo una pieza T
 
         assertEquals(0, pieza.getX()); // Pregunto si esta en posicion inicial
 
@@ -35,7 +35,7 @@ public class TetrisTesteos {
 
     @Test
     public void testMoverPiezaDerecha(){
-        PiezasAbsAll pieza = new PiezaJ(); // Creo una pieza J
+        PieceAll pieza = new PieceLinverted(); // Creo una pieza J
 
         assertEquals(0, pieza.getY()); // Pregunto si esta en posicion inicial
 
@@ -47,7 +47,7 @@ public class TetrisTesteos {
 
     @Test
     public void testMoverPiezaIzquierda(){
-        PiezasAbsAll pieza = new PiezaT(); // Creo una pieza T
+        PieceAll pieza = new PieceT(); // Creo una pieza T
 
         assertEquals(0, pieza.getY()); // Pregunto si esta en posicion inicial
 
@@ -58,26 +58,26 @@ public class TetrisTesteos {
     }
 
     @Test
-    public void testPiezaTRotarDerecha(){
-        PiezasAbsAll pieza = new PiezaT(); // Creo una pieza T
-        pieza.getForma(); // Obtengo su forma inicial
-        pieza.rotarDerecha(); // Llamo a su metodo para rotar a la derecha
-        int[][] formaEsperada = { // Forma esperada despues de rotar a la derecha
-            {0, 1, 0},
-            {0, 1, 1},
-            {0, 1, 0}
-        };
+    public void testPiezaTRotarDerecha() {
+    PieceAll pieza = new PieceT();
+    pieza.rotarDerecha();
 
-        pieza.getForma(); // Obtengo su nueva forma despues de rotar
+    int[][] formaEsperada = {
+        {0, 1, 0},
+        {0, 1, 1},
+        {0, 1, 0}
+    };
 
-        assertEquals(formaEsperada.length, pieza.getForma().length); // Verifico que las filas sean iguales
-        assertEquals(formaEsperada[0].length, pieza.getForma()[0].length); // Verifico que las columnas sean iguales
-        for (int i = 0; i < formaEsperada.length; i++) { // Recorro filas
-            for (int j = 0; j < formaEsperada[0].length; j++) { // Recorro columnas
-                assertEquals(formaEsperada[i][j], pieza.getForma()[i][j]); // Verifico que cada elemento sea igual
-            }
-        }
+    int[][] formaActual = pieza.getForma();
+
+    assertEquals(formaEsperada.length, formaActual.length);
+    for (int i = 0; i < formaEsperada.length; i++) {
+        // comparamos cada fila como array 1D
+        org.junit.Assert.assertArrayEquals(formaEsperada[i], formaActual[i]);
     }
+}
+
+
 
     /*
     @Test
