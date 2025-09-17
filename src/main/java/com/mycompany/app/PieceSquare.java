@@ -3,12 +3,10 @@ package com.mycompany.app;
 public class PieceSquare extends Piece{ 
     public PieceSquare() {
 
-        int [][] forma = {
+        super (new int [][]{
 
             {1, 1},
             {1, 1}
-        };
-
-        setForma(forma);
+        });
     }
 }
