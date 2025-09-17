@@ -1,44 +1,42 @@
 package com.mycompany;
 
 public class Tetris {
-    
-    private boolean start;
-    private boolean end;
-    private boolean reseet;
-    
-    public Tetris() { // Constructor
-        this.start = false;
-        this.end = false;
-        this.reseet = false;
+    private boolean gameStart;
+    private boolean gameEnd;
+
+    public Tetris(){ // Constructor, inicializa el juego en estado no iniciado y no terminado
+        gameStart = false;
+        gameEnd = false;
     }
-    
-    //Inicia el juego
-    public void startGame() {
-        if (start == false && end==false) {
-            this.start = true;
-            this.end = false;
-        }
-    }
-    
-    // Finaliza el juego
-    public void endGame() {
-        if (start ==true && end == false) {
-            this.start = false;
-            this.end = true;
+
+    public void iniciarJuego(){ // Inicia el juego
+        if (gameStart == false && gameEnd == false) { // Solo puede iniciar si no ha terminado o no ha comenzado
+            this.gameStart = true;
         }
     }
 
-    public int stateGame() { // Estado del jogo
-        if (start == false && end == false) {
-            return 0; // Juego no iniciado
+    public void terminarJuego(){ // Termina el juego
+        if (gameStart == true) { // Solo puede terminar si ya había iniciado
+            this.gameStart = false;
+            this.gameEnd = true;
+        }
+    }
 
-            } else if (start == true && end == false) {
-            return 1; // Juego iniciado
+    public void reiniciarJuego(){ // Reinicia el juego a su estado inicial
+        this.gameStart = false; // Modifica la variable del objeto actual
+        this.gameEnd = false;   // No crea un nuevo objeto, sino que cambia el estado
+    }
 
-                } else if (start == false && end == true) {
-                return 2; // Juego terminado luego de inciar
-            }
-        return -1; // Estado desconocido
+    // Métodos simples para obtener estado
+    public int getEstado(){
+        if (gameStart==false && gameEnd==false) { // El juego no ha iniciado ni ha teminado (CASO BASE) o se ha reiniciado
+            return 0;
+        } else if (gameStart==true && gameEnd==false) { // El juego ha iniciado
+            return 1;
+        } else if (gameStart == false && gameEnd==true) { // El juego ha terminado
+            return 2; 
+        }
+        return 3; // Estado invalido (no deberia ocurrir)
     }
 
 }

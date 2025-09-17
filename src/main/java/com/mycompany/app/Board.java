@@ -32,6 +32,7 @@ public class Board {
         // Aqui podriamos inicializar la posicion de la pieza en la matriz
     }
 
+    /*
     // Mueve la pieza actual hacia abajo si es posible
     public boolean moverPiezaAbajo() {
         if (piezaActual != null) {
@@ -41,7 +42,8 @@ public class Board {
         }
         return false;
     }
-
+    */
+    
     // Elimina la pieza actual del tablero
     public void eliminarPiezaActual() {
         this.piezaActual = null;
