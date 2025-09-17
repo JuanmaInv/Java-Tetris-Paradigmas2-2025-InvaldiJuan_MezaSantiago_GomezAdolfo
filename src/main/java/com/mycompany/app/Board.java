@@ -1,7 +1,14 @@
 package com.mycompany.app;
-
+//board debe ser de 10x20
+//las piezas deben ingresar en la fila 0, columna aleatoria y posicion de pieza aleatoria
+//las piezas deben bajar cada x segundos
+// la pieza actual es solo la que va descendendo o moviendose a la izq o der a medida que el reloj avanza
+// cuando la pieza toca el fondo o otra pieza, se fija si hay lineas completas y las elimina
+// si se elimina una linea, las piezas de arriba bajan una linea
+// si la pieza no puede ingresar en la fila 0, el juego termina
+// la pieza puede moverse solo si no choca con los bordes o con otras piezas
+// el juego termina cuando no se pueden ingresar mas piezas (cuando la fila 0 esta ocupada) o gana cuando se completan 5 lineas
 import java.util.Random;
-import com.mycompany.Tetris;
 
 public class Board extends Tetris  {
     public int[][] board;
@@ -32,7 +39,6 @@ public class Board extends Tetris  {
     }
 
     public boolean tableroVacio() { //Metodo para verificar si el tablero esta vacio
-
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 if (board[i][j] != 0) {
@@ -44,7 +50,6 @@ public class Board extends Tetris  {
     }
 
     public void ingresarNuevaPieza(Piece piece) {   //Permite el ingreso de nueva pieza al board
-
         if (esFinDelJuego(piece)) {
             return;  // No ingresamos la pieza porque ya no hay espacio
         }
@@ -56,10 +61,8 @@ public class Board extends Tetris  {
     
     
     public void colocarPiezaEnTablero(Piece piece, int fila, int columna) {     //Este metodo es invocado en el metodo IngresarNuevaPieza
-
         for (int i = 0; i < piece.getForma().length; i++) {     //Recorre el tablero dentro de sus limites y coloca la pieza
             for (int j = 0; j < piece.getForma()[i].length; j++) {
-
                 if (piece.getForma()[i][j] != 0) {
                     if (fila + i < board.length && columna + j < board[0].length) { // Verifico que no salga del tablero
                         setBoard(fila + i, columna + j, piece.getForma()[i][j]);
@@ -73,24 +76,19 @@ public class Board extends Tetris  {
     }
 
     public int getColumnaActual() { //Devuelve el valor de la variable columnaActual, es utilizada para detectar la columna aleatoria que se genera
-
         return columnaActual;
     }
 
     public void setColumnaActual(int columnaActual){    //Establece el valor de la variable columnaActual
-
         this.columnaActual=columnaActual;
         
     }
     
     public void setFilaActual(int filaActual) { //Establece el valor de la variable filaActual, es utilizada para detectar la fila aleatoria que se genera
-
         this.filaActual = filaActual;
     }
 
     public int getFilaActual() { // Devuelve el valor de filaActual, es utilizada para detectar la fila aleatoria que se genera
-
-
         return filaActual;
     }
 
@@ -103,18 +101,17 @@ public class Board extends Tetris  {
 
     public boolean puedeColocarse(Piece piece, int fila, int columna) { //Este metodo devuelve un booleano, si la pieza puede ser colocada o no en el board en X posicion
 
-        for (int i = 0; i < piece.getForma().length; i++) { //Recorre el tablero dentro de sus limites
-            for (int j = 0; j < piece.getForma()[i].length; j++) {
-
-                if (piece.getForma()[i][j] != 0) {  // Verifica que la forma de la pieza, y toma los valores que se encuentren los 1.
+        int altoPieza = piece.getForma().length;
+        int anchoPieza = piece.getForma()[0].length;
+        for (int i = 0; i < altoPieza; i++) {
+            for (int j = 0; j < anchoPieza; j++) {
+                if (piece.getForma()[i][j] != 0) {
                     int nuevaFila = fila + i;
                     int nuevaColumna = columna + j;
-    
-                    // Verifica que no se salga del tablero
-                    if (nuevaFila >= board.length || nuevaColumna >= board[0].length || nuevaFila < 0 || nuevaColumna < 0) {
-                        return false; // No se puede colocar
+                    // Verifica que no se salga del tablero considerando el tamaño de la pieza
+                    if (nuevaFila < 0 || nuevaColumna < 0 || nuevaFila >= board.length || nuevaColumna >= board[0].length) {
+                        return false;
                     }
-    
                     // Verifica que no haya otra pieza en esa posición
                     if (board[nuevaFila][nuevaColumna] != 0) {
                         return false;
@@ -156,7 +153,7 @@ public class Board extends Tetris  {
         if (puedeColocarse(piezaActual, filaActual, columnaActual + 1)) {   //Verifica si la pieza puede moverse a la derecha
             setColumnaActual(getColumnaActual() + 1);
         }
-    
+
         colocarPiezaEnTablero(piezaActual, filaActual, columnaActual); //Coloca la pieza en la nueva posicion
     }
     
@@ -226,6 +223,18 @@ public class Board extends Tetris  {
     // Limpia la fila llena
         for (int j = 0; j < board[0].length; j++) {
             board[fila][j] = 0; //Establece toda la fila en 0
+        }
+    }
+
+    public void caidaLibre(Piece piece) {
+        // Hace que la pieza caiga hasta el fondo o hasta que choque con otra pieza
+        while (true) {
+            if (puedeColocarse(piece, filaActual + 1, columnaActual)) {
+                descenderPieza(piece);
+            } else {
+                // No puede colocarse más abajo, se detiene
+                break;
+            }
         }
     }
 

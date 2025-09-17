@@ -1,6 +1,8 @@
 package com.mycompany.app;
 
 import java.util.Random;
+// La pieza "Dog" tiene dos configuraciones: derecha e izquierda
+// La pieza puede aleatorizar su forma al ser creada
 
 public class PieceDog extends Piece {
     private int[][] formaDerecha = {

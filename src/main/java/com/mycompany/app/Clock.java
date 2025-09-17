@@ -1,23 +1,21 @@
 package com.mycompany.app;
-import com.mycompany.Tetris;
 
-public class Clock extends Tetris {
-    public int tick;
+public class Clock extends Tetris implements ITick {
+    private int ticks;
 
-    public Clock(){
-        
+    public Clock() {
     }
 
-    public int getTick() {
-       return tick;
+    public int getTicks() {
+        return ticks;
     }
 
-    public void setTick(int tick) {
-        this.tick = tick;
+    public void setTicks(int ticks) {
+        this.ticks = ticks;
     }
-    
+
     public void tick() {
-       setTick(getTick() + 1);
+       setTicks(getTicks() + 1);
     }
 
 }

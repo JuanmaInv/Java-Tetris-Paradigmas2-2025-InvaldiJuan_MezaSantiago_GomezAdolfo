@@ -1,4 +1,4 @@
-package com.mycompany;
+package com.mycompany.app;
 
 public class Tetris {
     private boolean gameStart;
