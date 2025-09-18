@@ -5,6 +5,8 @@ import java.util.Random;
 // La pieza puede aleatorizar su forma al ser creada
 
 public class PieceDog extends Piece {
+    private Random random = new Random();
+    
     private int[][] formaDerecha = {
         {0, 1, 1},
         {1, 1, 0},
@@ -26,8 +28,8 @@ public class PieceDog extends Piece {
     }
 
     public void aleatorizarForma() {
-        Random rand = new Random();
-        if (rand.nextBoolean()) {
+        boolean forma = random.nextBoolean();
+        if ( forma == true) {
             setForma(formaDerecha);
         } else {
             setForma(formaIzquierda);

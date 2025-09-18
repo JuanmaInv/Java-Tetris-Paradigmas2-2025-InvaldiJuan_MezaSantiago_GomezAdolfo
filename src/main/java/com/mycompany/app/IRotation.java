@@ -1,6 +1,6 @@
 package com.mycompany.app;
 
-public interface InterfaceRotation {
+public interface IRotation {
      void rotarDerecha();
         void rotarIzquierda();
             void seleccionarLadoRandom();

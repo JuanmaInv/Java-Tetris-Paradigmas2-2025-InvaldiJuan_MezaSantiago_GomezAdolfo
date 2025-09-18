@@ -4,7 +4,7 @@ import java.util.Random; // Para seleccionar una rotacion aleatoria
 // Las piezas solo deben encargarse de su forma y rotacion.
 // No sabe sobre choques o limites del tablero
 
-public abstract class Piece extends Board implements InterfaceRotation {
+public abstract class Piece implements IRotation {
     private int[][] forma; // Matriz que representa la forma de la pieza
     private Random random = new Random(); // Para rotación aleatoria
 
@@ -21,6 +21,30 @@ public abstract class Piece extends Board implements InterfaceRotation {
     // Setter para forma
     public void setForma(int[][] forma) {
         this.forma = forma;
+    }
+    // ===== MÉTODOS ÚTILES PARA LA FORMA =====
+    public int getAncho() {
+        return forma[0].length;
+    }
+    
+    public int getAlto() {
+        return forma.length;
+    }
+    
+    public boolean esVacia() {
+        for (int i = 0; i < forma.length; i++) {
+            for (int j = 0; j < forma[i].length; j++) {
+                if (forma[i][j] != 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    
+    public void aleatorizarForma() {
+        // Implementación usando rotación aleatoria
+        seleccionarLadoRandom();
     }
 
     // ===== INTERFAZ ROTACION =====
@@ -48,7 +72,8 @@ public abstract class Piece extends Board implements InterfaceRotation {
             rotarDerecha();
         } else if (configuracion == 1) {
             rotarIzquierda();
-        }
-        // Si es 2, no hace nada
+        } else {
+            // Si es 2, no hace nada. Su forma original se mantiene.
     }
+  }
 }

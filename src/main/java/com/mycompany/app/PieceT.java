@@ -3,16 +3,17 @@ package com.mycompany.app;
 import java.util.Random;
 
 public class PieceT extends Piece {
-    private int[][] formaArriba = {
+    private Random random = new Random();
+    private int[][] forma1 = {
         {0, 1, 0},
         {1, 1, 1},
         {0, 0, 0}
     };
 
-    private int[][] formaAbajo = {
-        {0, 0, 0},
+    private int[][] forma2 = {
         {1, 1, 1},
-        {0, 1, 0}
+        {0, 1, 0},
+        {0, 0, 0}
     };
 
     public PieceT() {
@@ -24,11 +25,11 @@ public class PieceT extends Piece {
     }
 
     public void aleatorizarForma() {
-        Random rand = new Random();
-        if (rand.nextBoolean()) {
-            setForma(formaArriba);
+        boolean forma = random.nextBoolean();
+        if ( forma == true) {
+            setForma(forma1);
         } else {
-            setForma(formaAbajo);
+            setForma(forma2);
         }
     }
 }

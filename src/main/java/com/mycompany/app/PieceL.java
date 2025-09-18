@@ -4,6 +4,8 @@ package com.mycompany.app;
 import java.util.Random;
 
 public class PieceL extends Piece {
+    private Random random = new Random();
+
     private int[][] formaDerecha = {
         {0, 1, 0},
         {0, 1, 0},
@@ -25,8 +27,8 @@ public class PieceL extends Piece {
     }
 
     public void aleatorizarForma() {
-        Random rand = new Random();
-        if (rand.nextBoolean()) {
+        boolean forma = random.nextBoolean();
+        if ( forma == true) {
             setForma(formaDerecha);
         } else {
             setForma(formaIzquierda);
