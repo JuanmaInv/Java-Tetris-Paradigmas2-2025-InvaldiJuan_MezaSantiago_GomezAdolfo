@@ -130,15 +130,15 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
     // Metodo unico para mover la pieza en cualquier direccion
     // deltaFila: +1 abajo, -1 arriba, 0 sin cambio
     // deltaColumna: +1 derecha, -1 izquierda, 0 sin cambio
-    public void moverPieza (Piece piezaActual, int deltaFila, int deltaColumna) {
-        limpiarPiezaDelTablero(piezaActual, filaActual, columnaActual);
-        int nuevaFila = filaActual + deltaFila;
-        int nuevaColumna = columnaActual + deltaColumna;
-        if (verificarColocacionValida(piezaActual, nuevaFila, nuevaColumna)) {
-            setFilaActual(nuevaFila);
+    public void moverPieza (Piece piezaActual, int deltaFila, int deltaColumna) { // Implementa el metodo de la interfaz IMovement
+        limpiarPiezaDelTablero(piezaActual, filaActual, columnaActual);// Limpia la pieza de su posicion actual
+        int nuevaFila = filaActual + deltaFila; // Calculo la nueva fila 
+        int nuevaColumna = columnaActual + deltaColumna; // Calculo la nueva columna
+        if (verificarColocacionValida(piezaActual, nuevaFila, nuevaColumna)) { // Verifico si la nueva posicion es valida
+            setFilaActual(nuevaFila); // Si es valida, actualizo la fila y columna actuales
             setColumnaActual(nuevaColumna);
         }
-        colocarPiezaEnTableroVerificada(piezaActual, filaActual, columnaActual);
+        colocarPiezaEnTableroVerificada(piezaActual, filaActual, columnaActual); // Coloco la pieza en la nueva posicion
     }
 
     // Limpia la pieza del tablero en la posición actual, para mover la pieza o rotarla sin dejar rastro...osea borro la pieza vieja y la pongo en la nueva posicion....paramoverla limpio su posicion antes de moverla

@@ -7,9 +7,9 @@ public class PieceL extends Piece {
     private Random random = new Random();
 
     private int[][] formaDerecha = {
-        {0, 1, 0},
-        {0, 1, 0},
-        {0, 1, 1}
+        {1, 0},
+        {1, 0},
+        {1, 1}
     };
 
     private int[][] formaIzquierda = {

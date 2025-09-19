@@ -31,11 +31,11 @@ public abstract class Piece implements IRotation {
         return forma.length;
     }
     
-    public boolean esVacia() {
-        for (int i = 0; i < forma.length; i++) {
-            for (int j = 0; j < forma[i].length; j++) {
-                if (forma[i][j] != 0) {
-                    return false;
+    public boolean esVacia() { // Verifica si la pieza no tiene bloques
+        for (int i = 0; i < forma.length; i++) { // Recorre filas
+            for (int j = 0; j < forma[i].length; j++) { // Recorre columnas
+                if (forma[i][j] != 0) { // Si encuentra un bloque
+                    return false; // No está vacía
                 }
             }
         }
