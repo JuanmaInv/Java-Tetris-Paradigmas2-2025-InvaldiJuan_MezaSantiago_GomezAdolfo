@@ -311,21 +311,27 @@ public class TetrisTesteos {
     @Test
     public void testPiezaCaidaLibre(){
         Board tablero = new Board(); // creo tablero 
-        Piece piece = new PieceSquare(); // creo pieza
-        tablero.setPiezaActual(piece); // le digo a el tablero cual es la pieza actual
+        Piece piece1 = new PieceSquare(); // creo pieza
+        tablero.setPiezaActual(piece1); // le digo a el tablero cual es la pieza actual
         tablero.setFilaActual(0);
         tablero.setColumnaActual(0);
-        tablero.colocarPiezaEnTableroVerificada(piece, 0, 0); // coloco la pieza en la posicion inicial
+        tablero.colocarPiezaEnTableroVerificada(piece1, 0, 0); // coloco la pieza en la posicion inicial
 
         // Llamar a caidaLibre: debe bajar hasta chocar con el fondo
-        tablero.caidaLibre(piece);
+        tablero.caidaLibre(piece1);
+        tablero.caidaLibre(piece1);
 
         // Verificar que ya no sea posible bajar una fila más
-        boolean puedeBajar = tablero.verificarColocacionValida(piece, tablero.getFilaActual() + 1, tablero.getColumnaActual());
-        assertFalse("La pieza debería haber bajado hasta tocar otra pieza o el fondo", puedeBajar);
+        boolean puedeBajar = tablero.verificarColocacionValida(piece1, tablero.getFilaActual() + 1, tablero.getColumnaActual()); //espera false
+        assertFalse("La pieza debería haber bajado hasta tocar otra pieza o el fondo", puedeBajar); // verifica que no puede bajar mas
+        
         // Verifica que la pieza esté dentro de los límites
         assertTrue(tablero.getFilaActual() >= 0);
         assertTrue(tablero.getColumnaActual() >= 0);
+        
+        //verificar posicion final
+        int filaEsperada = tablero.getBoard().length - piece1.getAlto(); // calcula la fila esperada
+        assertEquals("La pieza debe terminar apoyada en la ultima posicion posible", filaEsperada, tablero.getFilaActual());
     }
 
     @Test
@@ -342,7 +348,7 @@ public class TetrisTesteos {
 
         // Verificar que ya no sea posible bajar una fila más
         boolean puedeBajar = tablero.verificarColocacionValida(piece, tablero.getFilaActual() + 1, tablero.getColumnaActual());
-        assertFalse("La pieza debería haber bajado hasta tocar otra pieza o el fondo", puedeBajar);
+        assertFalse("La pieza debería haber bajado hasta tocar otra pieza o el fondo", tablero.verificarColocacionValida(piece, tablero.getFilaActual() + 1, tablero.getColumnaActual()));
         // Verifica que la pieza esté dentro de los límites
         assertTrue(tablero.getFilaActual() >= 0);
         assertTrue(tablero.getColumnaActual() >= 0);
@@ -351,7 +357,7 @@ public class TetrisTesteos {
     // Nuevo test: caída libre pero activada mediante ticks del reloj
     @Test
     public void testPiezaCaidaLibreConTick(){
-        // Prueba sencilla: la pieza baja cada tick y terminamos cuando ya no puede bajar más.
+        //  la pieza baja cada tick y terminamos cuando ya no puede bajar mas
         Tetris tetris = new Tetris();
         Board tablero = tetris.getBoard();
         Piece piece = new PieceSquare();
@@ -360,29 +366,30 @@ public class TetrisTesteos {
         tablero.setColumnaActual(0);
         tablero.colocarPiezaEnTableroVerificada(piece, 0, 0);
 
-        // Hacemos que la pieza baje en cada tick para simplificar el test
+        // Hacemos que la pieza baje en cada tick, desciende cada 1 unidad de tiempo
+        // Esto simula la caída libre activada por el reloj del juego
         tetris.setIntervaloDescenso(1);
         tetris.iniciarJuego();
 
-        // LIMITE: máximo de iteraciones para evitar bucle infinito en caso de bug
+        // LIMITE: maximo de iteraciones para evitar bucle infinito en caso de bug
         int LIMITE = 30; // tope de seguridad
         int antes = tablero.getFilaActual(); // fila antes de tick
-        // iteramos hasta que la pieza ya no pueda bajar más o se alcance el límite
+        // iteramos hasta que la pieza ya no pueda bajar mas o se alcance el limite
         // lo que hace este for es simular el paso del tiempo
-        // cada iteracion es un "tick"
+        // cada iteracion es un tick
         // cada tick hace que la pieza baje una fila
         for (int i = 0; i < LIMITE; i++) { // iteramos
             tetris.tick(); // avanza el reloj y hace bajar la pieza si corresponde
             int ahora = tablero.getFilaActual(); // fila después de tick
-            if (ahora == antes) { //Permite salir si la pieza no baja mas porque colisionó con otra pieza o el fondo
+            if (ahora == antes) { //Permite salir si la pieza no baja mas porque colisiono con otra pieza o el fondo
                 break;
             }
-            antes = ahora; // actualiza antes para la próxima iteración
+            antes = ahora; // actualiza antes para la proxima iteracion
         }
 
-        // Verificamos que no puede bajar más (está apoyada)
-        boolean puedeBajar = tablero.verificarColocacionValida(piece, tablero.getFilaActual() + 1, tablero.getColumnaActual());
-        assertFalse("La pieza debería haber alcanzado el fondo tras suficientes ticks", puedeBajar);
+        // Verificamos que no puede bajar mas (esta apoyada)
+        boolean puedeBajar = tablero.verificarColocacionValida(piece, tablero.getFilaActual() + 1, tablero.getColumnaActual()); //espera false
+        assertFalse("La pieza deberia haber alcanzado el fondo tras los ticks", puedeBajar); // espera false
     }
 
     @Test
@@ -396,20 +403,27 @@ public class TetrisTesteos {
         tablero.setColumnaActual(0);
         tablero.colocarPiezaEnTableroVerificada(piece, 0, 0);
 
-        tetris.setIntervaloDescenso(1);
-        tetris.iniciarJuego();
+        tetris.setIntervaloDescenso(1); // la pieza baja cada tick
+        tetris.iniciarJuego(); // inicia el juego
 
         int LIMITE = 30; // tope de seguridad para evitar bucle infinito
-        int antes = tablero.getFilaActual();
+        int antes = tablero.getFilaActual(); // fila antes de tick
+        // iteramos hasta que la pieza ya no pueda bajar mas o se alcance el limite
+        // lo que hace este for es simular el paso del tiempo
+        // cada iteracion es un tick
+        // cada tick hace que la pieza baje una fila
         for (int i = 0; i < LIMITE; i++) {
             tetris.tick();
-            int ahora = tablero.getFilaActual();
-            if (ahora == antes) break;
+            int ahora = tablero.getFilaActual(); // fila después de tick
+            if (ahora == antes){ // Permite salir si la pieza no baja más porque colisiono con otra pieza o el fondo
+                break;
+            }
             antes = ahora;
         }
 
-        boolean puedeBajar = tablero.verificarColocacionValida(piece, tablero.getFilaActual() + 1, tablero.getColumnaActual());
-        assertFalse("La pieza Dog debería haber alcanzado el fondo tras suficientes ticks", puedeBajar);
+        // Verificamos que no puede bajar mas (esta apoyada)
+        boolean puedeBajar = tablero.verificarColocacionValida(piece, tablero.getFilaActual() + 1, tablero.getColumnaActual()); //espera false
+        assertFalse("La pieza Dog debería haber alcanzado el fondo tras los ticks", puedeBajar); // espera false
     }
 
 }

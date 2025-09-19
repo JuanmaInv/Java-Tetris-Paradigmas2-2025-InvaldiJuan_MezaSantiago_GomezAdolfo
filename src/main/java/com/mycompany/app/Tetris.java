@@ -47,7 +47,8 @@ public class Tetris implements IGameState{
     // Consulta a Board si el juego debe finalizar y actualiza el estado global.
     // Si Board indica fin de juego, llama a terminarJuego().
     public void actualizarEstadoJuego() {
-        if (board != null && board.getPiezaActual() != null) {
+        if (board != null && board.getPiezaActual() != null) { // Verifica que board y piezaActual no sean nulos
+            // Consulta a Board si el juego debe finalizar
             if (board.esFinDelJuego(board.getPiezaActual())) {
                 terminarJuego();
             }

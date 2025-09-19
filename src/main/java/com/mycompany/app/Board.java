@@ -45,16 +45,17 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
             return true; // Si el tablero está vacío, cualquier colocación es válida
         }
         else {
-            for (int i = 0; i < piece.getForma().length; i++) {
-                for (int j = 0; j < piece.getForma()[i].length; j++) {
-                    if (piece.getForma()[i][j] != 0) {
+            for (int i = 0; i < piece.getForma().length; i++) { // Recorre filas de la pieza
+                for (int j = 0; j < piece.getForma()[i].length; j++) { // Recorre columnas de la pieza
+                    if (piece.getForma()[i][j] != 0) { // Si hay un bloque en la pieza
+                        //calcula la posicion de destino de la pieza en el tablero
                         int nuevaFila = fila + i;
-                        int nuevaColumna = columna + j;
+                        int nuevaColumna = columna + j; // Posición en el tablero a verificar 
                         if (nuevaFila < 0 || nuevaFila >= board.length ||
-                            nuevaColumna < 0 || nuevaColumna >= board[0].length) {
+                            nuevaColumna < 0 || nuevaColumna >= board[0].length) { // Si se sale de los límites del tablero
                             return false;
                         }
-                        if (board[nuevaFila][nuevaColumna] != 0) {
+                        if (board[nuevaFila][nuevaColumna] != 0) { // Si hay colision con otra pieza
                             return false;
                         }
                     }
@@ -71,7 +72,7 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
         for (int i = 0; i < piece.getForma().length; i++) {
             for (int j = 0; j < piece.getForma()[i].length; j++) {
                 if (piece.getForma()[i][j] != 0) {
-                    setBoard(fila + i, columna + j, piece.getForma()[i][j]);
+                    setBoard(fila + i, columna + j, piece.getForma()[i][j]); // settea cada uno de los bloques de la pieza en el tablero teniendo en cuenta su valor
                 }
             }
         }
@@ -136,6 +137,7 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
         if (this.piezaActual != piezaActual) return;
 
         limpiarPiezaDelTablero(piezaActual, filaActual, columnaActual);// Limpia la pieza de su posicion actual
+        
         int nuevaFila = filaActual + deltaFila; // Calculo la nueva fila 
         int nuevaColumna = columnaActual + deltaColumna; // Calculo la nueva columna
         if (verificarColocacionValida(piezaActual, nuevaFila, nuevaColumna)) { // Verifico si la nueva posicion es valida
@@ -203,9 +205,15 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
     // Implementación de caída libre
         @Override
         public void caidaLibre(Piece piece) {
-                // Solo permitir caída libre sobre la pieza actual
-                if (this.piezaActual == null || piece == null) return;
-                if (this.piezaActual != piece) return;
+            //mueve la pieza hacia abajo hasta que no pueda mas, sean 5 o 40 veces o ninguna
+            //osea maneja iteraciones hasta que no pueda bajar mas
+            // Solo permitir caída libre sobre la pieza actual
+                if (this.piezaActual == null || piece == null) // si no hay pieza actual o la pieza es null
+                return; // sale del metodo con return, Evita NullPointerException
+
+                if (this.piezaActual != piece) // si la pieza actual no es la misma que la pieza pasada como parametro
+                return; // sale del metodo con return, Evita NullPointerException
+
                 while (verificarColocacionValida(piece, filaActual + 1, columnaActual)) {
                     moverPieza(piece, 1, 0); // Mueve hacia abajo
                 }
