@@ -1,5 +1,6 @@
 package com.mycompany.app;
 
+// Clock debe ser independiente de Tetris (no hereda de Tetris)
 public class Clock implements ITick {
     private int ticks;
     private int intervaloDescenso; // Cada cuántos ticks la pieza debe bajar
@@ -36,8 +37,8 @@ public class Clock implements ITick {
         setTicks(getTicks() + 1);
         
         // Si hay un tablero y una pieza actual, controlar el descenso automático
-        if (board != null && board.piezaActual != null && ticks % intervaloDescenso == 0) {
-            board.moverPieza(board.piezaActual, 1, 0);
+        if (board != null && board.getPiezaActual() != null && ticks % intervaloDescenso == 0) { // permite que la pieza baje cada X ticks
+            board.moverPieza(board.getPiezaActual(), 1, 0); // Mueve la pieza actual hacia abajo
         }
     }
 }

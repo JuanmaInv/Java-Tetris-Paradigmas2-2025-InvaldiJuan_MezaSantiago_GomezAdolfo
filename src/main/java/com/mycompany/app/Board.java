@@ -131,6 +131,10 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
     // deltaFila: +1 abajo, -1 arriba, 0 sin cambio
     // deltaColumna: +1 derecha, -1 izquierda, 0 sin cambio
     public void moverPieza (Piece piezaActual, int deltaFila, int deltaColumna) { // Implementa el metodo de la interfaz IMovement
+        // Solo permitir mover la pieza que está marcada como piezaActual en el tablero
+        if (this.piezaActual == null || piezaActual == null) return;
+        if (this.piezaActual != piezaActual) return;
+
         limpiarPiezaDelTablero(piezaActual, filaActual, columnaActual);// Limpia la pieza de su posicion actual
         int nuevaFila = filaActual + deltaFila; // Calculo la nueva fila 
         int nuevaColumna = columnaActual + deltaColumna; // Calculo la nueva columna
@@ -199,9 +203,12 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
     // Implementación de caída libre
         @Override
         public void caidaLibre(Piece piece) {
-            while (verificarColocacionValida(piece, filaActual + 1, columnaActual)) {
-                moverPieza(piece, 1, 0); // Mueve hacia abajo
-            }
+                // Solo permitir caída libre sobre la pieza actual
+                if (this.piezaActual == null || piece == null) return;
+                if (this.piezaActual != piece) return;
+                while (verificarColocacionValida(piece, filaActual + 1, columnaActual)) {
+                    moverPieza(piece, 1, 0); // Mueve hacia abajo
+                }
      }
 }
 

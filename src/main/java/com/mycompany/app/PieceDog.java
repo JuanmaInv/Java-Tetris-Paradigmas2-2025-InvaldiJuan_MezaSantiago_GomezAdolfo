@@ -18,7 +18,7 @@ public class PieceDog extends Piece {
         {0, 1, 1},
         {0, 0, 0}
     };
-
+    
     public PieceDog() {
         super(new int[][] {
             {0, 1, 1},

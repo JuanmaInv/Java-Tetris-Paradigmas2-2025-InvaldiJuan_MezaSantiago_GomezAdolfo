@@ -1,6 +1,7 @@
 package com.mycompany.app;
 
-public class Tetris implements IGameState {
+
+public class Tetris implements IGameState{
     private boolean gameStart;
     private boolean gameEnd;
     private Board board;
@@ -84,6 +85,28 @@ public class Tetris implements IGameState {
     
     public Clock getClock() {
         return clock;
+    }
+
+    // Avanza el reloj una unidad (equivalente a 1 "tick").
+    // Llamar desde afuera cada segundo o cada X segundos
+    public void tick() {
+        if (clock == null) {
+            return; // Si no hay reloj, no hacer nada
+        }
+
+        // Solo avanzar el reloj si el juego está activo
+        if (isJuegoActivo()) {
+            clock.tick();
+            // Después de avanzar el reloj, comprobar si el juego terminó
+            actualizarEstadoJuego();
+        }
+    }
+
+    // Permite configurar cuántos ticks deben pasar para que la pieza baje (ejemplo: 2)
+    public void setIntervaloDescenso(int intervalo) { // Cada cuántos ticks la pieza debe bajar
+        if (clock != null) { // Si hay un reloj, actualizar su intervalo
+            clock.setIntervaloDescenso(intervalo); // Cada cuántos ticks la pieza debe bajar
+        }
     }
 
 }
