@@ -41,34 +41,31 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
     // Devuelve true si es valido, false si hay colision o se sale
     @Override
     public boolean verificarColocacionValida(Piece piece, int fila, int columna) {
-        if (tableroVacio()) {
-            return true; // Si el tablero está vacío, cualquier colocación es válida
-        }
-        else {
-            for (int i = 0; i < piece.getForma().length; i++) { // Recorre filas de la pieza
-                for (int j = 0; j < piece.getForma()[i].length; j++) { // Recorre columnas de la pieza
-                    if (piece.getForma()[i][j] != 0) { // Si hay un bloque en la pieza
-                        //calcula la posicion de destino de la pieza en el tablero
-                        int nuevaFila = fila + i;
-                        int nuevaColumna = columna + j; // Posición en el tablero a verificar 
-                        if (nuevaFila < 0 || nuevaFila >= board.length ||
-                            nuevaColumna < 0 || nuevaColumna >= board[0].length) { // Si se sale de los límites del tablero
-                            return false;
-                        }
-                        if (board[nuevaFila][nuevaColumna] != 0) { // Si hay colision con otra pieza
-                            return false;
-                        }
+        for (int i = 0; i < piece.getForma().length; i++) { // Recorre filas de la pieza
+            for (int j = 0; j < piece.getForma()[i].length; j++) { // Recorre columnas de la pieza
+                if (piece.getForma()[i][j] != 0) { // Si hay un bloque en la pieza
+                    int nuevaFila = fila + i;
+                    int nuevaColumna = columna + j;
+                    if (nuevaFila < 0 || nuevaFila >= board.length ||
+                        nuevaColumna < 0 || nuevaColumna >= board[0].length) {
+                        return false;
+                    }
+                    if (board[nuevaFila][nuevaColumna] != 0) {
+                        return false;
                     }
                 }
             }
-            return true;
         }
+        return true;
     }
 
     // INGRESO Y COLOCACION DE PIEZAS EN EL TABLERO (asumiendo verificacion previa)
     //Coloca la pieza en el tablero en la posicion dada
     // Asume que la verificacion ya fue realizada y es valida
     public void colocarPiezaEnTableroVerificada(Piece piece, int fila, int columna) {
+            // Actualiza la posición actual de la pieza
+            this.filaActual = fila;
+            this.columnaActual = columna;
         for (int i = 0; i < piece.getForma().length; i++) {
             for (int j = 0; j < piece.getForma()[i].length; j++) {
                 if (piece.getForma()[i][j] != 0) {
@@ -137,7 +134,7 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
         if (this.piezaActual != piezaActual) return;
 
         limpiarPiezaDelTablero(piezaActual, filaActual, columnaActual);// Limpia la pieza de su posicion actual
-        
+
         int nuevaFila = filaActual + deltaFila; // Calculo la nueva fila 
         int nuevaColumna = columnaActual + deltaColumna; // Calculo la nueva columna
         if (verificarColocacionValida(piezaActual, nuevaFila, nuevaColumna)) { // Verifico si la nueva posicion es valida
@@ -214,8 +211,23 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
                 if (this.piezaActual != piece) // si la pieza actual no es la misma que la pieza pasada como parametro
                 return; // sale del metodo con return, Evita NullPointerException
 
-                while (verificarColocacionValida(piece, filaActual + 1, columnaActual)) {
-                    moverPieza(piece, 1, 0); // Mueve hacia abajo
+                // Para evitar que la pieza "choque" consigo misma en el tablero
+                while (true) {
+                    //inicialmente la pieza esta colocada en el tablero en su posicion inicial
+                    // Limpiar la pieza de su posicion actual antes de verificar la siguiente fila
+                    limpiarPiezaDelTablero(piece, filaActual, columnaActual);
+
+                    // Verificar si puede bajar una fila mas y si no puede, sale del bucle colocando la pieza en su posicion actual
+                    if (verificarColocacionValida(piece, filaActual + 1, columnaActual)) {
+                        // Reutilizar moverPieza para actualizar fila/columna y recolocar
+                        // moverPieza internamente limpiará y colocará; la doble limpieza es inofensiva
+                        moverPieza(piece, 1, 0);
+                        // continuar el bucle para intentar bajar otra fila
+                    } else {
+                        // No puede bajar mas: recolocar la pieza en su posicion actual y salir
+                        colocarPiezaEnTableroVerificada(piece, filaActual, columnaActual);
+                        break;
+                    }
                 }
      }
 }

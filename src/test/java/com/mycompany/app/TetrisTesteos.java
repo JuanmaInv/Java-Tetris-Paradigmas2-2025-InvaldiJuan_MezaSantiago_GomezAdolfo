@@ -310,29 +310,33 @@ public class TetrisTesteos {
 
     @Test
     public void testPiezaCaidaLibre(){
-        Board tablero = new Board(); // creo tablero 
-        Piece piece1 = new PieceSquare(); // creo pieza
-        tablero.setPiezaActual(piece1); // le digo a el tablero cual es la pieza actual
+        Board tablero = new Board();
+        Piece piece1 = new PieceSquare();
+
+        tablero.setPiezaActual(piece1);
         tablero.setFilaActual(0);
         tablero.setColumnaActual(0);
-        tablero.colocarPiezaEnTableroVerificada(piece1, 0, 0); // coloco la pieza en la posicion inicial
-
-        // Llamar a caidaLibre: debe bajar hasta chocar con el fondo
-        tablero.caidaLibre(piece1);
         tablero.caidaLibre(piece1);
 
         // Verificar que ya no sea posible bajar una fila más
-        boolean puedeBajar = tablero.verificarColocacionValida(piece1, tablero.getFilaActual() + 1, tablero.getColumnaActual()); //espera false
-        assertFalse("La pieza debería haber bajado hasta tocar otra pieza o el fondo", puedeBajar); // verifica que no puede bajar mas
-        
+        boolean puedeBajar = tablero.verificarColocacionValida(piece1, tablero.getFilaActual() + 1, tablero.getColumnaActual());
+        assertFalse("La pieza debería haber bajado hasta tocar otra pieza o el fondo", puedeBajar);
+
         // Verifica que la pieza esté dentro de los límites
         assertTrue(tablero.getFilaActual() >= 0);
         assertTrue(tablero.getColumnaActual() >= 0);
-        
-        //verificar posicion final
-        int filaEsperada = tablero.getBoard().length - piece1.getAlto(); // calcula la fila esperada
-        assertEquals("La pieza debe terminar apoyada en la ultima posicion posible", filaEsperada, tablero.getFilaActual());
+
+        // Verificar que la pieza esté en la fila más baja posible
+    int altoTablero = tablero.getBoard().length; // por ejemplo, 10
+    int altoPieza = piece1.getAlto();    // para PieceSquare, 2
+    int filaFinalEsperada = altoTablero - altoPieza; // última fila posible
+    assertEquals(filaFinalEsperada, tablero.getFilaActual()); // Verifica que la pieza esté en la fila esperada
+
+        // Verificar que la pieza esté en la columna más baja posible (en este caso, 0)
+        int columnaFinalEsperada = 0;
+        assertEquals(columnaFinalEsperada, tablero.getColumnaActual()); // Verifica que la pieza esté en la columna esperada
     }
+
 
     @Test
     public void testPiezaDogCaidaLibre(){
