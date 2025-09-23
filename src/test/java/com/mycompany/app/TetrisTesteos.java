@@ -429,18 +429,25 @@ public class TetrisTesteos {
         boolean puedeBajar = tablero.verificarColocacionValida(piece, tablero.getFilaActual() + 1, tablero.getColumnaActual()); //espera false
         assertFalse("La pieza Dog debería haber alcanzado el fondo tras los ticks", puedeBajar); // espera false
     }
+// El test crea un Board, coloca una pieza cuadrada (PieceSquare) en una posición baja del tablero y comprueba tres cosas:
+// Que no se pueda colocar otra pieza exactamente encima (colisión).
+// Que sí se pueda colocar la misma pieza en una posición libre (sin colisión).
+// Que una colocación que saldría parcialmente fuera del tablero sea inválida.
+    @Test
+    public void testColisionEntrePiezas() { //
+        Board tablero = new Board(); //Crea un tablero vacío donde hare las validaciones
 
-        @Test
-    public void testColisionEntrePiezas() {
-        Board tablero = new Board();
-        // Colocar la primera pieza (square) en la parte baja central
+        // Creo y coloco la primera pieza (square) en una posicion especifica
         Piece primera = new PieceSquare();
-        tablero.colocarPiezaEnTableroVerificada(primera, 8, 5); // coloca un 2x2 en filas 8-9, col 5-6
+        tablero.colocarPiezaEnTableroVerificada(primera, 8, 5); // coloca un 2x2 en filas 8-9, col 5-6 [(8,5); (8,6); (9,5); (9,6)]
 
-        // Intentar colocar otra pieza que solape exactamente la anterior
+        //Creo otra pieza igual a la anterior
         Piece segunda = new PieceSquare();
-        boolean verificacionColision = tablero.verificarColocacionValida(segunda, 8, 5);
-        assertFalse("No debería poder colocarse una pieza solapada sobre otra", verificacionColision);
+
+        // Intento colocar otra pieza que colisione con la anterior
+        //Para mas precision de "Colision" intento colocar una pieza de misma forma en la misma posicion.\
+        boolean verificacionColision = tablero.verificarColocacionValida(segunda, 8, 5); //pregunta si es valido colocar la segunda pieza en la misma posicion que la primera, espera false porque hay colision
+        assertFalse("No es valido colocar otra pieza en esa posicion", verificacionColision); //espera false
 
         // Intentar colocar otra pieza en una posición valida donde no hay piezas
         boolean puedeColocarLibre = tablero.verificarColocacionValida(segunda, 6, 5);
@@ -458,14 +465,36 @@ public class TetrisTesteos {
         Piece primera = new PieceDog();
         tablero.colocarPiezaEnTableroVerificada(primera, 8, 5); // coloca un 3x3 en filas 8-10, col 5-7
 
+        //Verificar que hay una pieza en esa posicion
+        assertTrue("Debería haber una pieza en la posición (8,6)", tablero.getBoard()[8][6] != 0); //espera true porque hay pieza
+        assertTrue("Debería haber una pieza en la posición (8,7)", tablero.getBoard()[8][7] != 0); //espera true porque hay pieza
+        assertTrue("Debería haber una pieza en la posición (9,5)", tablero.getBoard()[9][5] != 0); //espera true porque hay pieza
+        assertTrue("Debería haber una pieza en la posición (9,6)", tablero.getBoard()[9][6] != 0); //espera true porque hay pieza
+
+        //verifica en una posicion que no deberia haber piezas, que no las hay
+        assertFalse("No debería haber una pieza en la posición (7,5)", tablero.getBoard()[7][5] != 0); //espera false porque no hay pieza
+
+
         // Intentar colocar otra pieza que solape exactamente la anterior
         Piece segunda = new PieceDog();
         boolean verificacionColision = tablero.verificarColocacionValida(segunda, 8, 5); //espera false
         assertFalse("No debería poder colocarse una pieza solapada sobre otra", verificacionColision); //espera false
 
         // Intentar colocar otra pieza en una posición valida donde no hay piezas
-        boolean puedeColocarLibre = tablero.verificarColocacionValida(segunda, 5, 5); //espera true
-        assertTrue("Debería poder colocarse una pieza en posición libre", puedeColocarLibre); //espera true
+        boolean puedeColocarPiece = tablero.verificarColocacionValida(segunda, 5, 5); //espera true
+        assertTrue("Debería poder colocarse una pieza en posición libre", puedeColocarPiece); //espera true
+
+        // Colocar la segunda pieza en la posición libre luego de validar  que es posible colocarla
+        tablero.colocarPiezaEnTableroVerificada(segunda, 5, 5); //coloca la pieza en una posicion libre
+
+        //Verificar que hay una pieza en esa posicion
+        assertTrue("Debería haber una pieza en la posición (5,6)", tablero.getBoard()[5][6] != 0); //espera true porque hay pieza
+        assertTrue("Debería haber una pieza en la posición (5,7)", tablero.getBoard()[5][7] != 0); //espera true porque hay pieza
+        assertTrue("Debería haber una pieza en la posición (6,5)", tablero.getBoard()[6][5] != 0); //espera true porque hay pieza
+        assertTrue("Debería haber una pieza en la posición (6,6)", tablero.getBoard()[6][6] != 0); //espera true porque hay pieza
+
+        assertFalse("No debería haber una pieza en la posición (7,5)", tablero.getBoard()[7][5] != 0); //espera false porque no hay pieza
+
 
         // Intentar colocar una pieza parcialmente fuera del tablero
         boolean fueraTablero = tablero.verificarColocacionValida(segunda, 9, 18); //esta fuera del tablero porque la pieza Dog es 3x3 y el tablero tiene 20 columnas si yo la coloco alli se sale del tablero
@@ -501,8 +530,8 @@ public class TetrisTesteos {
         tablero.colocarPiezaEnTableroVerificada(piece9, 8, 16); // fila 8, columnas 16-17
         tablero.colocarPiezaEnTableroVerificada(piece10, 8, 18); // fila 8, columnas 18-19
 
-    // Marcar la última pieza como piezaActual para que los métodos que la consulten no hagan NPE
-    tablero.setPiezaActual(piece10);
+        // Marcar la última pieza como piezaActual para que los métodos que la consulten no hagan NPE
+        tablero.setPiezaActual(piece10);
 
         // Verificar que la  fila 8 está completamente ocupada
         // recorremos todas las columnas de la fila 8 utilizando getBoard()[0].length para obtener el número de columnas del tablero
