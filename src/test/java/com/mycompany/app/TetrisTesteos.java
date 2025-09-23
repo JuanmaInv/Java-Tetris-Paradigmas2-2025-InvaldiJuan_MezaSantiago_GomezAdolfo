@@ -430,4 +430,102 @@ public class TetrisTesteos {
         assertFalse("La pieza Dog debería haber alcanzado el fondo tras los ticks", puedeBajar); // espera false
     }
 
+        @Test
+    public void testColisionEntrePiezas() {
+        Board tablero = new Board();
+        // Colocar la primera pieza (square) en la parte baja central
+        Piece primera = new PieceSquare();
+        tablero.colocarPiezaEnTableroVerificada(primera, 8, 5); // coloca un 2x2 en filas 8-9, col 5-6
+
+        // Intentar colocar otra pieza que solape exactamente la anterior
+        Piece segunda = new PieceSquare();
+        boolean verificacionColision = tablero.verificarColocacionValida(segunda, 8, 5);
+        assertFalse("No debería poder colocarse una pieza solapada sobre otra", verificacionColision);
+
+        // Intentar colocar otra pieza en una posición valida donde no hay piezas
+        boolean puedeColocarLibre = tablero.verificarColocacionValida(segunda, 6, 5);
+        assertTrue("Debería poder colocarse una pieza en posición libre", puedeColocarLibre);
+
+        // Intentar colocar una pieza parcialmente fuera del tablero
+        boolean fueraTablero = tablero.verificarColocacionValida(segunda, 9, 19); // borde derecho/inferior
+        assertFalse("No debería ser válida una colocación que sale del tablero", fueraTablero);
+    }
+
+    @Test
+    public void testColisionEntrePieceDog(){
+        Board tablero = new Board();
+        // Colocar la primera pieza (Dog) en la parte baja central
+        Piece primera = new PieceDog();
+        tablero.colocarPiezaEnTableroVerificada(primera, 8, 5); // coloca un 3x3 en filas 8-10, col 5-7
+
+        // Intentar colocar otra pieza que solape exactamente la anterior
+        Piece segunda = new PieceDog();
+        boolean verificacionColision = tablero.verificarColocacionValida(segunda, 8, 5); //espera false
+        assertFalse("No debería poder colocarse una pieza solapada sobre otra", verificacionColision); //espera false
+
+        // Intentar colocar otra pieza en una posición valida donde no hay piezas
+        boolean puedeColocarLibre = tablero.verificarColocacionValida(segunda, 5, 5); //espera true
+        assertTrue("Debería poder colocarse una pieza en posición libre", puedeColocarLibre); //espera true
+
+        // Intentar colocar una pieza parcialmente fuera del tablero
+        boolean fueraTablero = tablero.verificarColocacionValida(segunda, 9, 18); //esta fuera del tablero porque la pieza Dog es 3x3 y el tablero tiene 20 columnas si yo la coloco alli se sale del tablero
+        assertFalse("No debería ser válida una colocación que sale del tablero", fueraTablero); //espera false
+    }
+
+    @Test
+    public void testColisionyEliminacionDeLineas (){
+        Tetris tetris = new Tetris();
+        tetris.iniciarJuego();
+        Board tablero = new Board(); // creo tablero
+
+        // Crear 10 piezas cuadradas para llenar una fila completa
+        Piece piece1 = new PieceSquare();
+        Piece piece2 = new PieceSquare();
+        Piece piece3 = new PieceSquare();
+        Piece piece4 = new PieceSquare();
+        Piece piece5 = new PieceSquare();
+        Piece piece6 = new PieceSquare();
+        Piece piece7 = new PieceSquare();
+        Piece piece8 = new PieceSquare();
+        Piece piece9 = new PieceSquare();
+        Piece piece10 = new PieceSquare();
+        // Colocar 10 piezas cuadradas (2x2) para llenar la fila 9 (índice 8)
+        tablero.colocarPiezaEnTableroVerificada(piece1, 8, 0); // fila 8, columnas 0-1
+        tablero.colocarPiezaEnTableroVerificada(piece2, 8, 2); // fila 8, columnas 2-3
+        tablero.colocarPiezaEnTableroVerificada(piece3, 8, 4); // fila 8, columnas 4-5
+        tablero.colocarPiezaEnTableroVerificada(piece4, 8, 6); // fila 8, columnas 6-7
+        tablero.colocarPiezaEnTableroVerificada(piece5, 8, 8); // fila 8, columnas 8-9
+        tablero.colocarPiezaEnTableroVerificada(piece6, 8, 10); // fila 8, columnas 10-11
+        tablero.colocarPiezaEnTableroVerificada(piece7, 8, 12); // fila 8, columnas 12-13
+        tablero.colocarPiezaEnTableroVerificada(piece8, 8, 14); // fila 8, columnas 14-15
+        tablero.colocarPiezaEnTableroVerificada(piece9, 8, 16); // fila 8, columnas 16-17
+        tablero.colocarPiezaEnTableroVerificada(piece10, 8, 18); // fila 8, columnas 18-19
+
+    // Marcar la última pieza como piezaActual para que los métodos que la consulten no hagan NPE
+    tablero.setPiezaActual(piece10);
+
+        // Verificar que la  fila 8 está completamente ocupada
+        // recorremos todas las columnas de la fila 8 utilizando getBoard()[0].length para obtener el número de columnas del tablero
+        for (int j = 0; j < tablero.getColumnas(); j++) { // recorre columnas
+            assertTrue("La fila 8 debería estar ocupada" + j, tablero.getBoard()[8][j] != 0); //espera true, con getBoard()[8][j] accedemos a la fila 8 y columna j del tablero
+        }
+        // Antes de eliminar, intentar colocar otra pieza encima debe FALLAR (colisión)
+        Piece otra = new PieceSquare();
+        boolean verificacionAntes = tablero.verificarColocacionValida(otra, 8, 0);
+        assertFalse("Debería haber colisión al intentar colocar sobre una fila llena", verificacionAntes);
+
+        // Eliminar líneas llenas
+        tablero.verificarYEliminarLineas();
+        int antes = tablero.getLineasEliminadas();
+        tablero.verificarYEliminarLineas();
+        int despues = tablero.getLineasEliminadas();
+        assertEquals("Debería haberse eliminado 1 línea", antes, despues);
+
+        // Verificar que la fila 9 ahora está vacía
+        for (int j = 0; j < tablero.getColumnas(); j++) {
+            assertEquals("La fila 9 debería estar vacía después de la eliminación", 0, tablero.getBoard()[9][j]); //espera 0
+        }
+    }
+
 }
+
