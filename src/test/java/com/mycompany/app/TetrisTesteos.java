@@ -556,5 +556,36 @@ public class TetrisTesteos {
         }
     }
 
+    @Test
+    public void testcaidalibreycolisionentresquares(){ // Test que combina caída libre y colisión entre piezas(dos piezas square)
+        Tetris tetris = new Tetris();
+        tetris.iniciarJuego();
+        Board tablero = tetris.getBoard();
+        Piece piece1 = new PieceSquare();
+        Piece piece2 = new PieceSquare();
+
+        // Colocar la primera pieza en la parte baja del tablero
+        tablero.setPiezaActual(piece1);
+        tablero.setFilaActual(8);
+        tablero.setColumnaActual(0);
+        tablero.colocarPiezaEnTableroVerificada(piece1, 8, 0); 
+
+        // Colocar la segunda pieza en la parte alta del tablero
+        tablero.setPiezaActual(piece2);
+        tablero.setFilaActual(0);
+        tablero.setColumnaActual(0);
+        tablero.colocarPiezaEnTableroVerificada(piece2, 0, 0); // coloca un 2x2 en filas 0-1, col 0-1
+
+        // Hacer que la segunda pieza caiga libremente
+        tablero.caidaLibre(piece2);
+
+          tablero.verificarColocacionValida(piece1, 8, 0); //verifica que la primera pieza sigue en su lugar
+        // Verificar que la segunda pieza se detuvo justo encima de la primera
+        tablero.verificarColocacionValida(piece2, 0, 0);
+        boolean puedeBajar = tablero.verificarColocacionValida(piece2, tablero.getFilaActual() + 1, tablero.getColumnaActual()); //espera false porque la pieza no puede bajar mas
+        assertFalse("La segunda pieza debería haberse detenido al tocar la primera", puedeBajar);
+         //espera false ya que la pieza no puede bajar mas porque choca con la primera pieza
+    }
+
 }
 
