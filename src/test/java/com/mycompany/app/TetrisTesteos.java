@@ -587,5 +587,57 @@ public class TetrisTesteos {
          //espera false ya que la pieza no puede bajar mas porque choca con la primera pieza
     }
 
+    //test para que baje una pieza y colisione con otra
+    @Test
+    public void testPiezaCaidaLibreConColision(){
+        Tetris tetris = new Tetris();
+        Board tablero = tetris.getBoard(); // creo tablero con get board porque el tablero es privado en Tetris
+        Piece piece1 = new PieceSquare();
+        Piece piece2 = new PieceSquare();
+
+        // Colocar la primera pieza en la parte baja del tablero con el metodo de caida libre
+        tablero.setPiezaActual(piece1); // le digo al tablero cuál es la pieza actual
+        tablero.setFilaActual(0); // empieza en la fila 0
+        tablero.setColumnaActual(0); // empieza en la columna 0
+        tablero.colocarPiezaEnTableroVerificada(piece1, 0, 0); // coloco la pieza en la posición inicial
+    
+
+        // Hacer que la pieza caiga libremente
+        tablero.caidaLibre(piece1);
+
+        // Verificar que la pieza esté en la fila más baja posible
+        int altoTablero = tablero.getBoard().length; // por ejemplo, 10
+        int altoPieza = piece1.getAlto();    // para PieceSquare, 2
+        int filaFinalEsperada = altoTablero - altoPieza; // última fila posible
+        assertEquals(filaFinalEsperada, tablero.getFilaActual()); // Verifica que la pieza esté en la fila esperada
+
+        // Verificar que la pieza esté en la columna más baja posible (en este caso, 0)
+        int columnaFinalEsperada = 0;
+        assertEquals(columnaFinalEsperada, tablero.getColumnaActual()); // Verifica que la pieza esté en la columna esperada
+
+
+        // Colocar la segunda pieza en su posicion inicial
+        tablero.setPiezaActual(piece2);
+        tablero.setFilaActual(0);
+        tablero.setColumnaActual(0);
+        tablero.colocarPiezaEnTableroVerificada(piece2, 0, 0); // coloco la pieza en la posición inicial
+
+        // Ahora hacer que la segunda pieza caiga libremente
+        tablero.caidaLibre(piece2);
+
+        // Verificar que la segunda pieza se detuvo al tocar la primera
+        boolean puedeBajar2 = tablero.verificarColocacionValida(piece2, tablero.getFilaActual() + 1, tablero.getColumnaActual()); //espera false porque la pieza 2 toco la pieza 1
+        assertFalse("La segunda pieza debería haberse detenido al tocar la primera", puedeBajar2);
+
+        // Verificar que la segunda pieza esté justo encima de la primera, por ejemplo si la primera está en fila 8 y tiene alto 2, la segunda debería estar en fila 6
+        int filaEsperadaSegunda = filaFinalEsperada - piece2.getAlto(); // verifica que la segunda pieza esté justo encima de la primera con la altura de la pieza
+        assertEquals(filaEsperadaSegunda, tablero.getFilaActual());
+        //verifico que este colocada en la posicion esperada
+        int columnaEsperadaSegunda = columnaFinalEsperada; // misma columna que la primera
+        assertEquals(columnaEsperadaSegunda, tablero.getColumnaActual());
+
+    }
+
+
 }
 
