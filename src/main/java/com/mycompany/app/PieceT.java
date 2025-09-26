@@ -7,20 +7,17 @@ public class PieceT extends Piece {
     private int[][] forma1 = {
         {0, 1, 0},
         {1, 1, 1},
-        {0, 0, 0}
     };
 
     private int[][] forma2 = {
         {1, 1, 1},
         {0, 1, 0},
-        {0, 0, 0}
     };
 
     public PieceT() {
         super(new int[][] {
             {0, 1, 0},
             {1, 1, 1},
-            {0, 0, 0}
         });
     }
 

@@ -13,16 +13,16 @@ public class PieceL extends Piece {
     };
 
     private int[][] formaIzquierda = {
-        {0, 1, 0},
-        {0, 1, 0},
-        {1, 1, 0}
+        {0, 1},
+        {0, 1},
+        {1, 1}
     };
 
     public PieceL() {
         super(new int[][] {
-            {0, 1, 0},
-            {0, 1, 0},
-            {0, 1, 1}
+            {1, 0},
+            {1, 0},
+            {1, 1}
         });
     }
 

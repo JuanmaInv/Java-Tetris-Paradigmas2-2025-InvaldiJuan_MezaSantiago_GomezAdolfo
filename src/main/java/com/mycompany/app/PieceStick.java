@@ -4,10 +4,10 @@ public class PieceStick extends Piece { // Extiende la clase abstracta PiezasAbs
 
     public PieceStick() {
     super (new int [][]{
-        {0, 1, 0, 0},
-        {0, 1, 0, 0},
-        {0, 1, 0, 0},
-        {0, 1, 0, 0}
+        {1},
+        {1},
+        {1},
+        {1}
         });
     }
 }   

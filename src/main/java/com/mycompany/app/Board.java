@@ -175,7 +175,10 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
 
     // ===== ELIMINACIÓN DE LÍNEAS =====
     public void verificarYEliminarLineas() {
-        for (int i = 0; i < getBoard().length; i++) {
+        // Iterar de abajo hacia arriba; si se elimina una línea, no decrementar
+        // el índice para volver a comprobar la fila que acaba de descender.
+        int i = getBoard().length - 1;
+        while (i >= 0) {
             boolean lineaCompleta = true;
             for (int j = 0; j < getBoard()[0].length; j++) {
                 if (getBoard()[i][j] == 0) {
@@ -185,9 +188,11 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
             }
             if (lineaCompleta) {
                 eliminarLinea(i);
-                // Usar setter para actualizar lineasEliminadas
-                int nuevasLineas = getLineasEliminadas() + 1;
-                lineasEliminadas = nuevasLineas;
+                // Incrementar contador de líneas eliminadas
+                lineasEliminadas++;
+                // NO decrementar i: la fila nueva en la posición i debe ser re-evaluada
+            } else {
+                i--; // solo moverse hacia arriba si no se eliminó la fila
             }
         }
         

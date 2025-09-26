@@ -9,6 +9,30 @@ import static org.junit.Assert.assertTrue;
 
 
 public class TetrisTesteos {
+
+    // Helper de depuración para imprimir el tablero en consola
+    private void printBoard(Board tablero, String titulo) {
+        int filas = tablero.getFilas();
+        int cols = tablero.getColumnas();
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < cols; j++) {
+                System.out.print(tablero.getBoard()[i][j]);
+            }
+        }
+    }
+
+    // Helper para comparar matrices (considera distinto tamaño como no iguales)
+    private boolean matricesIguales(int[][] a, int[][] b) {
+        if (a == null || b == null) return a == b;
+        if (a.length != b.length) return false;
+        for (int i = 0; i < a.length; i++) {
+            if (a[i].length != b[i].length) return false;
+            for (int j = 0; j < a[i].length; j++) {
+                if (a[i][j] != b[i][j]) return false;
+            }
+        }
+        return true;
+    }
     
     //Creacion de piezas
     //testear si las piezas se crean o no ✅
@@ -56,23 +80,23 @@ public class TetrisTesteos {
         assertFalse(square.esVacia()); // El cuadrado no está vacío
         
         PieceStick stick = new PieceStick();
-        assertEquals(4, stick.getAncho()); //verifica ancho
+        assertEquals(1, stick.getAncho()); //verifica ancho
         assertEquals(4, stick.getAlto()); //verifica alto
         assertFalse(stick.esVacia()); // El stick no está vacío
 
         PieceL l = new PieceL();
-        assertEquals(3, l.getAncho()); //verifica ancho
+        assertEquals(2, l.getAncho()); //verifica ancho
         assertEquals(3, l.getAlto()); //verifica alto
         assertFalse(l.esVacia()); // La L no está vacía
 
         PieceT t = new PieceT();
         assertEquals(3, t.getAncho()); //verifica ancho
-        assertEquals(3, t.getAlto()); //verifica alto
+        assertEquals(2, t.getAlto()); //verifica alto
         assertFalse(t.esVacia()); // La T no está vacía
 
         PieceDog dog = new PieceDog();
         assertEquals(3, dog.getAncho()); //verifica ancho
-        assertEquals(3, dog.getAlto()); //verifica alto
+        assertEquals(2, dog.getAlto()); //verifica alto
         assertFalse(dog.esVacia()); // El perro no está vacío
     }
     
@@ -186,20 +210,9 @@ public class TetrisTesteos {
         
         // Verificar que la forma cambió
         int[][] formaRotada = stick.getForma();
-        boolean cambio = false;
-        
-        // Comparar si algún elemento cambió de posición
-        for (int i = 0; i < formaOriginal.length && i < formaRotada.length; i++) {
-            for (int j = 0; j < formaOriginal[i].length && j < formaRotada[i].length; j++) {
-                if (formaOriginal[i][j] != formaRotada[i][j]) {
-                    cambio = true;
-                    break;
-                }
-            }
-            if (cambio) break;
-        }
-        
-        assertTrue("La forma del stick debería cambiar al rotar", cambio);
+        // Para piezas como el stick la rotación cambia dimensiones (4x1 -> 1x4).
+        // matricesIguales devuelve false si las dimensiones o valores cambian.
+        assertFalse("La forma del stick debería cambiar al rotar", matricesIguales(formaOriginal, formaRotada));
         assertFalse("El stick no debería estar vacío después de rotar", stick.esVacia());
     }
     
@@ -209,9 +222,9 @@ public class TetrisTesteos {
         
             // Rotar y verificar que sigue siendo válido
             piece.rotarDerecha();
-            assertFalse("El cuadrado no debería estar vacío después de rotar", piece.esVacia());
-            assertEquals("El cuadrado debería mantener sus dimensiones", 2, piece.getAncho());
-            assertEquals("El cuadrado debería mantener sus dimensiones", 2, piece.getAlto());
+            assertFalse("El cuadrado no debería estar vacío después de rotar", piece.esVacia()); // El cuadrado no está vacío
+            assertEquals("El cuadrado debería mantener sus dimensiones", 2, piece.getAncho()); //verifica ancho
+            assertEquals("El cuadrado debería mantener sus dimensiones", 2, piece.getAlto()); //verifica alto
         }
     
     @Test
@@ -327,10 +340,10 @@ public class TetrisTesteos {
         assertTrue(tablero.getColumnaActual() >= 0);
 
         // Verificar que la pieza esté en la fila más baja posible
-    int altoTablero = tablero.getBoard().length; // por ejemplo, 10
-    int altoPieza = piece1.getAlto();    // para PieceSquare, 2
-    int filaFinalEsperada = altoTablero - altoPieza; // última fila posible
-    assertEquals(filaFinalEsperada, tablero.getFilaActual()); // Verifica que la pieza esté en la fila esperada
+        int altoTablero = tablero.getBoard().length; // por ejemplo, 10
+        int altoPieza = piece1.getAlto();    // para PieceSquare, 2
+        int filaFinalEsperada = altoTablero - altoPieza; // última fila posible
+        assertEquals(filaFinalEsperada, tablero.getFilaActual()); // Verifica que la pieza esté en la fila esperada
 
         // Verificar que la pieza esté en la columna más baja posible (en este caso, 0)
         int columnaFinalEsperada = 0;
@@ -433,6 +446,7 @@ public class TetrisTesteos {
 // Que no se pueda colocar otra pieza exactamente encima (colisión).
 // Que sí se pueda colocar la misma pieza en una posición libre (sin colisión).
 // Que una colocación que saldría parcialmente fuera del tablero sea inválida.
+
     @Test
     public void testColisionEntrePiezas() { //
         Board tablero = new Board(); //Crea un tablero vacío donde hare las validaciones
@@ -502,7 +516,7 @@ public class TetrisTesteos {
     }
 
     @Test
-    public void testColisionyEliminacionDeLineas (){
+    public void testColisionyEliminacionDe2Lineas (){
         Tetris tetris = new Tetris();
         tetris.iniciarJuego();
         Board tablero = new Board(); // creo tablero
@@ -518,7 +532,7 @@ public class TetrisTesteos {
         Piece piece8 = new PieceSquare();
         Piece piece9 = new PieceSquare();
         Piece piece10 = new PieceSquare();
-        // Colocar 10 piezas cuadradas (2x2) para llenar la fila 9 (índice 8)
+        // Colocar 10 piezas cuadradas (2x2) para llenar una fila
         tablero.colocarPiezaEnTableroVerificada(piece1, 8, 0); // fila 8, columnas 0-1
         tablero.colocarPiezaEnTableroVerificada(piece2, 8, 2); // fila 8, columnas 2-3
         tablero.colocarPiezaEnTableroVerificada(piece3, 8, 4); // fila 8, columnas 4-5
@@ -534,27 +548,187 @@ public class TetrisTesteos {
         tablero.setPiezaActual(piece10);
 
         // Verificar que la  fila 8 está completamente ocupada
-        // recorremos todas las columnas de la fila 8 utilizando getBoard()[0].length para obtener el número de columnas del tablero
-        for (int j = 0; j < tablero.getColumnas(); j++) { // recorre columnas
+        for (int j = 0; j < tablero.getColumnas(); j++) { // recorre columnas con getColumnas() donde devuelve 20 que es el numero de columnas del tablero
             assertTrue("La fila 8 debería estar ocupada" + j, tablero.getBoard()[8][j] != 0); //espera true, con getBoard()[8][j] accedemos a la fila 8 y columna j del tablero
-        }
+        }                                                                                     // donde j va de 0 a 19 y verificamos que no sea 0 (que haya pieza)
+
         // Antes de eliminar, intentar colocar otra pieza encima debe FALLAR (colisión)
         Piece otra = new PieceSquare();
-        boolean verificacionAntes = tablero.verificarColocacionValida(otra, 8, 0);
-        assertFalse("Debería haber colisión al intentar colocar sobre una fila llena", verificacionAntes);
+        // Marcar la otra pieza como piezaActual para que los métodos que la consulten no hagan NPE
+        tablero.setPiezaActual(otra);
+        // Intentar colocar otra pieza que colisione con algun elemento de la fila llena
+        boolean SePuedeColocar = tablero.verificarColocacionValida(otra, 8, 0); //espera false porque hay colision, osea no se puede colocar
+        assertFalse("Debería haber colisión al intentar colocar sobre una fila llena", SePuedeColocar);
 
-        // Eliminar líneas llenas
-        tablero.verificarYEliminarLineas();
-        int antes = tablero.getLineasEliminadas();
-        tablero.verificarYEliminarLineas();
-        int despues = tablero.getLineasEliminadas();
-        assertEquals("Debería haberse eliminado 1 línea", antes, despues);
+        // Eliminar líneas llenas: capturamos el contador antes y luego lo comprobamos
+        int antes = tablero.getLineasEliminadas(); // contador antes de la eliminación
+        tablero.verificarYEliminarLineas(); // esto elimina la(s) filas llenas detectadas
+        int despues = tablero.getLineasEliminadas(); // contador después de la llamada
+        // Verificar que se eliminó exactamente 2 líneas
+        assertEquals("Debería haberse eliminado 2 líneas", antes + 2, despues);
 
-        // Verificar que la fila 9 ahora está vacía
+        // Verificar que la fila 8 (la que quedó libre tras desplazar hacia abajo) ahora está vacía
+        for (int j = 0; j < tablero.getColumnas(); j++) {
+            assertEquals("La fila 8 debería estar vacía después de la eliminación", 0, tablero.getBoard()[8][j]); //espera 0
+        }
+        // Verificar que la fila 8 (la que quedó libre tras desplazar hacia abajo) ahora está vacía
         for (int j = 0; j < tablero.getColumnas(); j++) {
             assertEquals("La fila 9 debería estar vacía después de la eliminación", 0, tablero.getBoard()[9][j]); //espera 0
         }
     }
 
+    @Test
+    public void testColisionyEliminacionDe1Linea (){
+        Tetris tetris = new Tetris();
+        tetris.iniciarJuego();
+        Board tablero = new Board(); // creo tablero
+
+        // Crear 10 piezasL para llenar una fila completa
+        Piece piece1 = new PieceL();
+        Piece piece2 = new PieceL();
+        Piece piece3 = new PieceL();
+        Piece piece4 = new PieceL();
+        Piece piece5 = new PieceL();
+        Piece piece6 = new PieceL();
+        Piece piece7 = new PieceL();
+        Piece piece8 = new PieceL();
+        Piece piece9 = new PieceL();
+        Piece piece10 = new PieceL();
+        
+        // Colocar 10 piezas L (3x1) para llenar una fila
+        tablero.colocarPiezaEnTableroVerificada(piece1, 7, 0); // fila 7, columnas 0-1
+        tablero.colocarPiezaEnTableroVerificada(piece2, 7, 2); // fila 7, columnas 2-3
+        tablero.colocarPiezaEnTableroVerificada(piece3, 7, 4); // fila 7, columnas 4-5
+        tablero.colocarPiezaEnTableroVerificada(piece4, 7, 6); // fila 7, columnas 6-7
+        tablero.colocarPiezaEnTableroVerificada(piece5, 7, 8); // fila 7, columnas 8-9
+        tablero.colocarPiezaEnTableroVerificada(piece6, 7, 10); // fila 7, columnas 10-11
+        tablero.colocarPiezaEnTableroVerificada(piece7, 7, 12); // fila 7, columnas 12-13
+        tablero.colocarPiezaEnTableroVerificada(piece8, 7, 14); // fila 7, columnas 14-15
+        tablero.colocarPiezaEnTableroVerificada(piece9, 7, 16); // fila 7, columnas 16-17
+        tablero.colocarPiezaEnTableroVerificada(piece10, 7, 18); // fila 7, columnas 17-19
+
+        // Marcar la última pieza como piezaActual para que los métodos que la consulten no hagan NPE
+        tablero.setPiezaActual(piece10);
+
+        // Verificar que la  fila 9 está completamente ocupada
+        for (int j = 0; j < tablero.getColumnas(); j++) { // recorre columnas con getColumnas() donde devuelve 20 que es el numero de columnas del tablero
+            assertTrue("La fila 9 debería estar ocupada" + j, tablero.getBoard()[9][j] != 0); //espera true, con getBoard()[9][j] accedemos a la fila 9 y columna j del tablero
+        }                                                                                     // donde j va de 0 a 19 y verificamos que no sea 0 (que haya pieza)
+        // Antes de eliminar, intentar colocar otra pieza encima debe FALLAR (colisión)
+        Piece otra = new PieceL();
+        // Marcar la otra pieza como piezaActual para que los métodos que la consulten no
+        tablero.setPiezaActual(otra);
+        // Intentar colocar otra pieza que colisione con algun elemento de la fila llena
+        boolean SePuedeColocar = tablero.verificarColocacionValida(otra, 7, 0); //espera false porque hay colision, osea no se puede colocar
+        assertFalse("Debería haber colisión al intentar colocar sobre una fila llena", SePuedeColocar);
+        // Eliminar líneas llenas: capturamos el contador antes y luego lo comprobamos
+        int antes = tablero.getLineasEliminadas(); // contador antes de la eliminación
+        tablero.verificarYEliminarLineas(); // esto elimina la(s) filas llenas detectadas
+        int despues = tablero.getLineasEliminadas(); // contador después de la llamada
+        // Verificar que se eliminó exactamente 1 línea
+        assertEquals("Debería haberse eliminado 1 línea", antes + 1, despues);
+
+        // Verificar que la fila 9  no esta vacia debido a que quedaron los restos de las piezas L
+        boolean fila9Vacia = true;
+        for (int j = 0; j < tablero.getColumnas(); j++) {
+            if (tablero.getBoard()[9][j] != 0) {
+                fila9Vacia = false; // si encuentra un no 0, la fila no esta vacia
+                break;
+            }
+        }
+        assertFalse("La fila 9 no debería estar vacía después de la eliminación porque quedaron restos de las piezas L", fila9Vacia);
+    }
+
+    ///MOSTRALE AL PROFESOR ESTE TEST, ES EL MAS COMPLEJO HASTA LA FECHA Y EL QUE ME ROMPIO MAS LA CABECITA
+    /// TEST PARA QUE BAJE UNA PIEZA Y ELIMINE 2 LINEAS
+    @Test
+    public void testBajadayEliminacionDeLinea (){
+        Board tablero = new Board();
+        Piece ultima = null;
+        // Colocar 10 piezas cuadradas en columnas 0,2,4,...,18 y hacer caida libre
+        for (int i = 0; i < 10; i++) {
+            Piece piece = new PieceSquare();
+            tablero.setPiezaActual(piece);
+            tablero.setFilaActual(0);
+            tablero.setColumnaActual(i * 2);
+            tablero.colocarPiezaEnTableroVerificada(piece, 0, i * 2);
+            tablero.caidaLibre(piece);
+            ultima = piece;
+        }
+        // Marcar la última pieza como piezaActual para evitar NPE
+        tablero.setPiezaActual(ultima);
+
+        // Verificar que las filas 8 y 9 están completamente ocupadas antes de eliminar
+        for (int j = 0; j < tablero.getColumnas(); j++) {
+            assertTrue("La fila 8 debería estar ocupada antes de eliminar" + j, tablero.getBoard()[8][j] != 0);
+            assertTrue("La fila 9 debería estar ocupada antes de eliminar" + j, tablero.getBoard()[9][j] != 0);
+        }
+
+        // Consultar líneas eliminadas antes
+        int antes = tablero.getLineasEliminadas();
+        // Eliminar líneas llenas
+        tablero.verificarYEliminarLineas();
+        // Consultar líneas eliminadas después
+        int despues = tablero.getLineasEliminadas();
+        // Verificar que se eliminaron exactamente 2 líneas
+        assertEquals("Debería haberse eliminado 2 líneas", antes + 2, despues);
+
+        // Verificar que las filas 8 y 9 quedaron vacías tras la eliminación
+        for (int j = 0; j < tablero.getColumnas(); j++) {
+            assertEquals("La fila 8 debería estar vacía después de la eliminación", 0, tablero.getBoard()[8][j]);
+            assertEquals("La fila 9 debería estar vacía después de la eliminación", 0, tablero.getBoard()[9][j]);
+        }
+    }
+
+    //test para que baje una pieza y colisione con otra
+    @Test
+    public void testPiezaCaidaLibreConColision(){
+        Tetris tetris = new Tetris();
+        Board tablero = tetris.getBoard(); // creo tablero con get board porque el tablero es privado en Tetris
+        Piece piece1 = new PieceSquare();
+        Piece piece2 = new PieceSquare();
+
+        // Colocar la primera pieza en la parte baja del tablero con el metodo de caida libre
+        tablero.setPiezaActual(piece1); // le digo al tablero cuál es la pieza actual
+        tablero.setFilaActual(0); // empieza en la fila 0
+        tablero.setColumnaActual(0); // empieza en la columna 0
+        tablero.colocarPiezaEnTableroVerificada(piece1, 0, 0); // coloco la pieza en la posición inicial
+    
+
+        // Hacer que la pieza caiga libremente
+        tablero.caidaLibre(piece1);
+
+        // Verificar que la pieza esté en la fila más baja posible
+        int altoTablero = tablero.getBoard().length; // por ejemplo, 10
+        int altoPieza = piece1.getAlto();    // para PieceSquare, 2
+        int filaFinalEsperada = altoTablero - altoPieza; // última fila posible
+        assertEquals(filaFinalEsperada, tablero.getFilaActual()); // Verifica que la pieza esté en la fila esperada
+
+        // Verificar que la pieza esté en la columna más baja posible (en este caso, 0)
+        int columnaFinalEsperada = 0;
+        assertEquals(columnaFinalEsperada, tablero.getColumnaActual()); // Verifica que la pieza esté en la columna esperada
+
+
+        // Colocar la segunda pieza en su posicion inicial
+        tablero.setPiezaActual(piece2);
+        tablero.setFilaActual(0);
+        tablero.setColumnaActual(0);
+        tablero.colocarPiezaEnTableroVerificada(piece2, 0, 0); // coloco la pieza en la posición inicial
+
+        // Ahora hacer que la segunda pieza caiga libremente
+        tablero.caidaLibre(piece2);
+
+        // Verificar que la segunda pieza se detuvo al tocar la primera
+        boolean puedeBajar2 = tablero.verificarColocacionValida(piece2, tablero.getFilaActual() + 1, tablero.getColumnaActual()); //espera false porque la pieza 2 toco la pieza 1
+        assertFalse("La segunda pieza debería haberse detenido al tocar la primera", puedeBajar2);
+
+        // Verificar que la segunda pieza esté justo encima de la primera, por ejemplo si la primera está en fila 8 y tiene alto 2, la segunda debería estar en fila 6
+        int filaEsperadaSegunda = filaFinalEsperada - piece2.getAlto(); // verifica que la segunda pieza esté justo encima de la primera con la altura de la pieza
+        assertEquals(filaEsperadaSegunda, tablero.getFilaActual());
+        //verifico que este colocada en la posicion esperada
+        int columnaEsperadaSegunda = columnaFinalEsperada; // misma columna que la primera
+        assertEquals(columnaEsperadaSegunda, tablero.getColumnaActual());
+
 }
 
+}
