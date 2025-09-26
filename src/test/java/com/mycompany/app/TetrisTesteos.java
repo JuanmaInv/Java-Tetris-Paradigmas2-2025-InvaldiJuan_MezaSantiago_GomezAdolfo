@@ -639,29 +639,30 @@ public class TetrisTesteos {
         assertFalse("La fila 9 no debería estar vacía después de la eliminación porque quedaron restos de las piezas L", fila9Vacia);
     }
 
-    ///MOSTRALE AL PROFESOR ESTE TEST, ES EL MAS COMPLEJO HASTA LA FECHA Y EL QUE ME ROMPIO MAS LA CABECITA
+    ///MOSTRALE AL PROFESOR ESTE TEST
     /// TEST PARA QUE BAJE UNA PIEZA Y ELIMINE 2 LINEAS
     @Test
     public void testBajadayEliminacionDeLinea (){
         Board tablero = new Board();
-        Piece ultima = null;
-        // Colocar 10 piezas cuadradas en columnas 0,2,4,...,18 y hacer caida libre
+        Piece ultima = null; // para guardar la última pieza colocada, es null al inicio
+        // Colocar 10 piezas cuadradas en columnas 0,2,4,...,18 y hago caida libre
         for (int i = 0; i < 10; i++) {
             Piece piece = new PieceSquare();
             tablero.setPiezaActual(piece);
             tablero.setFilaActual(0);
-            tablero.setColumnaActual(i * 2);
+            tablero.setColumnaActual(i * 2);// columna 0 y pares (0,2,4,...,18)
             tablero.colocarPiezaEnTableroVerificada(piece, 0, i * 2);
             tablero.caidaLibre(piece);
             ultima = piece;
         }
-        // Marcar la última pieza como piezaActual para evitar NPE
+
+        // Marcar la última pieza como piezaActual para que los métodos que la consulten no generen errores 
         tablero.setPiezaActual(ultima);
 
         // Verificar que las filas 8 y 9 están completamente ocupadas antes de eliminar
         for (int j = 0; j < tablero.getColumnas(); j++) {
-            assertTrue("La fila 8 debería estar ocupada antes de eliminar" + j, tablero.getBoard()[8][j] != 0);
-            assertTrue("La fila 9 debería estar ocupada antes de eliminar" + j, tablero.getBoard()[9][j] != 0);
+            assertTrue("La fila 8 debería estar ocupada antes de eliminar" + j, tablero.getBoard()[8][j] != 0); //espera true, con getBoard()[8][j] accedemos a la fila 8 y columna j del tablero
+            assertTrue("La fila 9 debería estar ocupada antes de eliminar" + j, tablero.getBoard()[9][j] != 0); //espera true, con getBoard()[9][j] accedemos a la fila 9 y columna j del tablero
         }
 
         // Consultar líneas eliminadas antes
@@ -673,10 +674,10 @@ public class TetrisTesteos {
         // Verificar que se eliminaron exactamente 2 líneas
         assertEquals("Debería haberse eliminado 2 líneas", antes + 2, despues);
 
-        // Verificar que las filas 8 y 9 quedaron vacías tras la eliminación
+        // Verificar que las filas 8 y 9 quedaron vacías tras la eliminacion
         for (int j = 0; j < tablero.getColumnas(); j++) {
-            assertEquals("La fila 8 debería estar vacía después de la eliminación", 0, tablero.getBoard()[8][j]);
-            assertEquals("La fila 9 debería estar vacía después de la eliminación", 0, tablero.getBoard()[9][j]);
+            assertEquals("La fila 8 debería estar vacía después de la eliminación", 0, tablero.getBoard()[8][j]); // espera 0s en todas las columnas de la fila 8
+            assertEquals("La fila 9 debería estar vacía después de la eliminación", 0, tablero.getBoard()[9][j]); // espera 0s en todas las columnas de la fila 9
         }
     }
 

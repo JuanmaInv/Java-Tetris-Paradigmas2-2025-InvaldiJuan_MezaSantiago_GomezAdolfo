@@ -24,13 +24,13 @@ public abstract class Piece implements IRotation {
     }
     // ===== MÉTODOS ÚTILES PARA LA FORMA =====
     public int getAncho() {
-        return forma[0].length;
+        return forma[0].length; // toma la primera fila y cuenta sus columnas
     }
     
     public int getAlto() {
-        return forma.length;
+        return forma.length; // Alto es el número de filas, cuenta cuanta filas tiene
     }
-    
+
     public boolean esVacia() { // Verifica si la pieza no tiene bloques
         for (int i = 0; i < forma.length; i++) { // Recorre filas
             for (int j = 0; j < forma[i].length; j++) { // Recorre columnas
@@ -52,12 +52,12 @@ public abstract class Piece implements IRotation {
         int filas = forma.length;
         int columnas = forma[0].length;
         int[][] nuevaForma = new int[columnas][filas];
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++) {
-                nuevaForma[j][filas - 1 - i] = forma[i][j];
+        for (int i = 0; i < filas; i++) { // Recorre filas
+            for (int j = 0; j < columnas; j++) { // Recorre columnas 
+                nuevaForma[j][filas - 1 - i] = forma[i][j]; // Rotación 90 grados a la derecha, la nueva fila es la antigua columna invertida
             }
         }
-        setForma(nuevaForma);
+        setForma(nuevaForma); // Actualiza la forma de la pieza
     }
 
     public void rotarIzquierda() {
