@@ -810,6 +810,10 @@ public class TetrisTesteos {
         game.getEstado(); // consulto el estado del juego, espera 1 (en juego)
         assertEquals("El juego debería estar en estado de 'en juego'", 1, game.getEstado()); // espera estado 1 (en juego)
 
+        // Asegurar que el tablero está limpio antes del llenado determinista.
+        // iniciarJuego() puede haber spawnado una pieza; usamos el helper del Board.
+        tablero.limpiarTablero();
+
         // Llenar el tablero directamente (sin usar piezas) para simular tablero lleno
         // Esto evita que se disparen eliminaciones de líneas y la condición de "game win" accidental
         for (int f = 0; f < tablero.getFilas(); f++) {
@@ -853,6 +857,8 @@ public class TetrisTesteos {
         Piece ultima = null; // para guardar la última pieza colocada, es null al inicio
         game.getEstado(); // consulto el estado del juego, espera 1 (en juego)
         assertEquals("El juego debería estar en estado de 'en juego'", 1, game.getEstado()); // espera estado 1 (en juego)
+    // Asegurar que el tablero está limpio antes del llenado determinista.
+    tablero.limpiarTablero();
 
         // Llenar el tablero completamente con piezas cuadradas (2x2)
         // Usamos verificarColocacionValida + colocarPiezaEnTableroVerificada para colocar
@@ -873,12 +879,19 @@ public class TetrisTesteos {
         tablero.setPiezaActual(ultima);
         tablero.setFilaActual(0);
         tablero.setColumnaActual(0);
-        tablero.colocarPiezaEnTableroVerificada(ultima, 0, 0); // coloco la pieza en la posición inicial
-        // Hacer que la pieza caiga libremente
-        tablero.caidaLibre(ultima);
-        // verificar que con caida libre no se pudo colocar la pieza
-        boolean existePosicionValida = tablero.verificarColocacionValida(ultima, tablero.getFilaActual(), tablero.getColumnaActual()); //espera false porque el tablero esta lleno
-        assertFalse("No debería existir posición válida para una nueva pieza en un tablero lleno", existePosicionValida); // espera false
+        // No reintentamos colocarla (el tablero ya está lleno). En su lugar, comprobamos
+        // que no exista ninguna posición válida recorriendo todo el tablero.
+        boolean existePosicionValida = false;
+        for (int f = 0; f < tablero.getFilas(); f++) {
+            for (int c = 0; c < tablero.getColumnas(); c++) {
+                if (tablero.verificarColocacionValida(ultima, f, c)) {
+                    existePosicionValida = true;
+                    break;
+                }
+            }
+            if (existePosicionValida) break;
+        }
+        assertFalse("No debería existir posición válida para una nueva pieza en un tablero lleno", existePosicionValida);
 
         // Comprobamos con la función del Board si el juego debe terminar (no hay lugar para la pieza) //espera true
         assertTrue("El tablero debería indicar fin del juego cuando no hay posiciones válidas", tablero.esFinDelJuego(tablero));
@@ -895,6 +908,75 @@ public class TetrisTesteos {
                 assertEquals("El juego debería estar en estado de 'terminado'", 2, game.getEstado()); // espera estado 2 (terminado)
             }
         }
+    
+    // --- Tests añadidos para las nuevas funciones en Tetris ---
+    @Test
+    public void testSpawnNewPieceColocaEnFila0YColumnaValida() {
+        Tetris game = new Tetris();
+        Board board = game.getBoard();
+        // Llamar directamente al spawn
+        game.spawnNewPiece();
+        Piece p = board.getPiezaActual();
+        assertTrue("Debe existir una pieza actual después de spawn", p != null);
+        int fila = board.getFilaActual();
+        int col = board.getColumnaActual();
+        // Debe colocarse en la fila inicial 0
+        assertEquals("La fila inicial debe ser 0", 0, fila);
+        // La pieza ya fue colocada en el tablero por spawnNewPiece(), comprobar que los
+        // valores del tablero coinciden con la forma de la pieza en esa posición.
+        int[][] forma = p.getForma();
+        int[][] matriz = board.getBoard();
+        for (int i = 0; i < forma.length; i++) {
+            for (int j = 0; j < forma[i].length; j++) {
+                if (forma[i][j] != 0) {
+                    assertEquals("El tablero debe contener la pieza en la posición spawn", forma[i][j], matriz[fila + i][col + j]);
+                }
+            }
+        }
+    }
+
+    @Test
+    public void testIniciarJuegoColocaPiezaInicial() {
+        Tetris game = new Tetris();
+        // Antes de iniciar, no debe haber pieza actual
+        assertTrue(game.getBoard().getPiezaActual() == null);
+        game.iniciarJuego();
+        // Después de iniciar, debe existir pieza en fila 0
+        Piece p = game.getBoard().getPiezaActual();
+        assertTrue("Al iniciar el juego debe haber una pieza actual", p != null);
+        assertEquals(0, game.getBoard().getFilaActual());
+    }
+
+    @Test
+    public void testSpawnNewPieceCuandoNoHayLugarDejaPiezaYEsFinDelJuego() {
+        Tetris game = new Tetris();
+        Board board = game.getBoard();
+        // Rellenar todo el tablero con 1s para simular que está lleno
+        for (int i = 0; i < board.getFilas(); i++) {
+            for (int j = 0; j < board.getColumnas(); j++) {
+                board.setBoard(i, j, 1);
+            }
+        }
+        // Ejecutar spawn
+        game.spawnNewPiece();
+        // Debe haber una pieza actual asignada (aunque no pueda colocarse)
+        assertTrue("Debe asignarse piezaActual incluso si no hay espacio", board.getPiezaActual() != null);
+        // Ahora comprobar que no existe ninguna posición válida para esa pieza
+        boolean existe = false;
+        Piece ultima = board.getPiezaActual();
+        for (int f = 0; f < board.getFilas(); f++) {
+            for (int c = 0; c < board.getColumnas(); c++) {
+                if (board.verificarColocacionValida(ultima, f, c)) {
+                    existe = true;
+                    break;
+                }
+            }
+            if (existe) break;
+        }
+        assertFalse("No debe existir posición válida para la pieza cuando el tablero está lleno", existe);
+        // EsFinDelJuego debe devolver true
+        assertTrue("Board debe indicar fin del juego cuando no hay lugar", board.esFinDelJuego(board));
+    }
         
 }
-    
+

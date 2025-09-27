@@ -117,6 +117,20 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
         this.filaActual = filaActual;
     }
 
+    // Limpia todo el tablero (todas las celdas a 0) y resetea la pieza actual y posiciones.
+    // No toca el contador de líneas eliminadas para que las pruebas que dependan
+    // de ese contador no se vean afectadas a menos que se desee explícitamente.
+    public void limpiarTablero() {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                board[i][j] = 0;
+            }
+        }
+        this.piezaActual = null;
+        this.filaActual = 0;
+        this.columnaActual = 0;
+    }
+    
     //tengo get de lineas eliminadas y get/set de lineas para ganar
     //porque yo puedo consultar cuantas lineas elimine
     //y tambien puedo consultar cuantas lineas necesito para ganar y ademas puedo cambiar la meta de lineas para ganar

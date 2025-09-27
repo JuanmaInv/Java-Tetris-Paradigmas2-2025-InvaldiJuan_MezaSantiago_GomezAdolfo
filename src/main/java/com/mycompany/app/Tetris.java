@@ -1,5 +1,6 @@
 package com.mycompany.app;
 
+import java.util.Random;
 
 public class Tetris implements IGameState{
     private boolean gameStart;
@@ -16,10 +17,93 @@ public class Tetris implements IGameState{
         this.clock = new Clock(board, 2);
     }
 
+    // Generador de números aleatorios para la columna inicial
+    private Random random = new Random();
+
+    // Genera una nueva pieza aleatoria
+    private Piece generarPiezaAleatoria() {
+        int randomPiece = random.nextInt(5);
+        switch (randomPiece) {
+            case 0:
+                return new PieceSquare();
+            case 1:
+                return new PieceL();
+            case 2:
+                return new PieceT();
+            case 3:
+                return new PieceDog();
+            default:
+                return new PieceStick();
+        }
+    }
+
+    // Coloca una nueva pieza en la fila inicial (0) y en una columna aleatoria valida
+    public void spawnNewPiece() {
+        if (board == null) return;
+        Piece pieza = generarPiezaAleatoria();
+        int fila = 0;
+        int maxColumnas = board.getColumnas() - pieza.getAncho();
+        int columnaElegida = 0;
+
+        if (maxColumnas < 0) {
+            // Pieza mas ancha que el tablero — colocar en columna 0 y dejar que esFinDelJuego lo detecte
+            columnaElegida = 0;
+            board.setPiezaActual(pieza);
+            board.setFilaActual(fila);
+            board.setColumnaActual(columnaElegida);
+            return;
+        }
+
+        // Elegir columna aleatoria dentro del rango permitido
+        columnaElegida = random.nextInt(maxColumnas + 1);
+
+        // Si la posición aleatoria no es válida, buscar una columna válida linealmente
+        if (!board.verificarColocacionValida(pieza, fila, columnaElegida)) {
+            boolean colocado = false;
+            for (int c = 0; c <= maxColumnas; c++) {
+                if (board.verificarColocacionValida(pieza, fila, c)) {
+                    columnaElegida = c;
+                    colocado = true;
+                    break;
+                }
+            }
+            // Si no se encontró columna válida en fila 0, buscar cualquier posición en el tablero
+            if (!colocado) {
+                boolean encontrado = false;
+                for (int f = 0; f < board.getFilas(); f++) {
+                    for (int c = 0; c < board.getColumnas(); c++) {
+                        if (board.verificarColocacionValida(pieza, f, c)) {
+                            fila = f;
+                            columnaElegida = c;
+                            encontrado = true;
+                            break;
+                        }
+                    }
+                    if (encontrado) break;
+                }
+                if (!encontrado) {
+                    // No hay lugar para colocar la pieza: asignarla para que esFinDelJuego la detecte
+                    board.setPiezaActual(pieza);
+                    board.setFilaActual(0);
+                    board.setColumnaActual(0);
+                    return;
+                }
+            }
+        }
+
+        // Colocar la pieza en tablero
+        board.setPiezaActual(pieza);
+        board.setFilaActual(fila);
+        board.setColumnaActual(columnaElegida);
+        board.colocarPiezaEnTableroVerificada(pieza, fila, columnaElegida);
+    }
+
     public void iniciarJuego(){ // Inicia el juego
         if (gameStart == false && gameEnd == false) { // Solo puede iniciar si no ha terminado o no ha comenzado
             this.gameStart = true;
             this.gameWin = false;
+            // Colocar la primera pieza en la fila inicial 0 en una columna aleatoria válida
+            spawnNewPiece();
         }
     }
 
