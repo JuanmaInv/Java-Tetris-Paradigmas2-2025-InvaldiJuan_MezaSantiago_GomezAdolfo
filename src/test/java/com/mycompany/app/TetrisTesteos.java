@@ -730,7 +730,8 @@ public class TetrisTesteos {
         int columnaEsperadaSegunda = columnaFinalEsperada; // misma columna que la primera
         assertEquals(columnaEsperadaSegunda, tablero.getColumnaActual());
 
-}
+    }
+
     @Test
     public void testGameover(){
         Tetris game = new Tetris();
@@ -759,7 +760,15 @@ public class TetrisTesteos {
             assertTrue("Seria Game over ya que no pude añadir una pieza nueva y el tablero esta lleno", true); // espera true
             game.setEstado(2); // fuerza el estado a terminado
              assertEquals("El juego debería estar en estado de 'terminado'", 2, game.getEstado()); // espera estado 2 (terminado)
-}
-        }
-}
-
+    }else{
+        while (puedeColocar = true) {   
+            assertFalse("No es Game over, el tablero no esta lleno", false); // espera false
+            game.setEstado(1); // estado en juego
+            assertEquals("El juego debería estar en estado de 'en juego'", 1, game.getEstado()); // espera estado 1 (en juego)
+            break;
+    }
+    }
+    }
+    }
+    
+    
