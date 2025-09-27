@@ -977,6 +977,48 @@ public class TetrisTesteos {
         // EsFinDelJuego debe devolver true
         assertTrue("Board debe indicar fin del juego cuando no hay lugar", board.esFinDelJuego(board));
     }
+
+      // Test: no se puede ingresar más piezas si la primera línea está llena
+        @Test
+        public void testNoSePuedeIngresarMasPiezas() {
+            Tetris tetris = new Tetris();
+            Board tablero = tetris.getBoard();
+            // Llenar la primera línea
+            for (int col = 0; col < tablero.getColumnas(); col++) {
+                tablero.setBoard(0, col, 1);
+            }
+            Piece pieza = new PieceSquare();
+            boolean pudoColocar = tetris.nuevaPiezaAleatoria(pieza);
+            assertFalse("No se debe poder ingresar una nueva pieza si la primera línea está llena", pudoColocar);
+            assertEquals("El juego debe estar terminado", 2, tetris.getEstado());
+        }
+
+        // Test: la pieza actual se detiene cuando no puede descender
+        @Test
+        public void testPiezaActualSeDetiene() {
+            Tetris tetris = new Tetris();
+            Board tablero = tetris.getBoard();
+            Piece pieza = new PieceSquare();
+            tetris.nuevaPiezaAleatoria(pieza);
+            // Simular caída hasta el fondo
+            while (!tetris.piezaActualDetenida()) {
+                tablero.moverPieza(pieza, 1, 0);
+            }
+            assertTrue("La pieza debe estar detenida al tocar el fondo", tetris.piezaActualDetenida());
+        }
+
+        // Test: no se puede rotar si colisiona
+        @Test
+        public void testNoSePuedeRotarSiColisiona() {
+            Tetris tetris = new Tetris();
+            Board tablero = tetris.getBoard();
+            Piece pieza = new PieceSquare();
+            tetris.nuevaPiezaAleatoria(pieza);
+            // Colocar otra pieza justo al lado para bloquear la rotación
+            tablero.setBoard(1, tablero.getColumnaActual() + 1, 1);
+            boolean pudoRotar = tetris.rotarPiezaActualDerecha();
+            assertFalse("No se debe poder rotar si colisiona", pudoRotar);
+        }
         
 }
 

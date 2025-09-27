@@ -36,7 +36,71 @@ public class Tetris implements IGameState{
                 return new PieceStick();
         }
     }
+    
+       // Crea y coloca una nueva pieza en una posición aleatoria válida del primer renglón
+    // Si no se puede colocar, finaliza el juego
+    public boolean nuevaPiezaAleatoria(Piece pieza) {
+        int ancho = pieza.getAncho();
+        int maxCol = board.getColumnas() - ancho;
+        int colAleatoria;
+        int intentos = 0;
+        do {
+            colAleatoria = (int)(Math.random() * (maxCol + 1));
+            intentos++;
+            if (board.verificarColocacionValida(pieza, 0, colAleatoria)) {
+                board.setPiezaActual(pieza);
+                board.setFilaActual(0);
+                board.setColumnaActual(colAleatoria);
+                board.colocarPiezaEnTableroVerificada(pieza, 0, colAleatoria);
+                return true;
+            }
+        } while (intentos < 20);
+        terminarJuego(); // No se pudo colocar la pieza, finaliza el juego
+        return false;
+    }
 
+    // Intenta rotar la pieza actual a la derecha, solo si es posible
+    public boolean rotarPiezaActualDerecha() {
+        Piece pieza = board.getPiezaActual();
+        if (pieza == null) return false;
+        board.limpiarPiezaDelTablero(pieza, board.getFilaActual(), board.getColumnaActual());
+        pieza.rotarDerecha();
+        if (board.verificarColocacionValida(pieza, board.getFilaActual(), board.getColumnaActual())) {
+            board.colocarPiezaEnTableroVerificada(pieza, board.getFilaActual(), board.getColumnaActual());
+            return true;
+        } else {
+            // Si no puede rotar, vuelve a la forma anterior (rotar izquierda 3 veces)
+            pieza.rotarIzquierda();
+            board.colocarPiezaEnTableroVerificada(pieza, board.getFilaActual(), board.getColumnaActual());
+            return false;
+        }
+    }
+
+    // Intenta rotar la pieza actual a la izquierda, solo si es posible
+    public boolean rotarPiezaActualIzquierda() {
+        Piece pieza = board.getPiezaActual();
+        if (pieza == null) return false;
+        board.limpiarPiezaDelTablero(pieza, board.getFilaActual(), board.getColumnaActual());
+        pieza.rotarIzquierda();
+        if (board.verificarColocacionValida(pieza, board.getFilaActual(), board.getColumnaActual())) {
+            board.colocarPiezaEnTableroVerificada(pieza, board.getFilaActual(), board.getColumnaActual());
+            return true;
+        } else {
+            // Si no puede rotar, vuelve a la forma anterior (rotar derecha 3 veces)
+            pieza.rotarDerecha();
+            pieza.rotarDerecha();
+            pieza.rotarDerecha();
+            board.colocarPiezaEnTableroVerificada(pieza, board.getFilaActual(), board.getColumnaActual());
+            return false;
+        }
+    }
+
+    // Verifica si la pieza actual está apoyada y no puede descender más
+    public boolean piezaActualDetenida() {
+        Piece pieza = board.getPiezaActual();
+        if (pieza == null) return true;
+        return !board.verificarColocacionValida(pieza, board.getFilaActual() + 1, board.getColumnaActual());
+    }
     // Coloca una nueva pieza en la fila inicial (0) y en una columna aleatoria valida
     public void spawnNewPiece() {
         if (board == null) return;
