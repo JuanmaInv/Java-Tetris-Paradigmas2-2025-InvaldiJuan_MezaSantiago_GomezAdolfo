@@ -296,6 +296,33 @@ public class TetrisTesteos {
             }
         assertTrue(true); // Solo verifica que el método se ejecuta sin errores
     }
+     // Test: la pieza baja solo cada dos ticks
+        @Test
+        public void testPiezaBajaCadaDosTicks() {
+            Tetris tetris = new Tetris();
+            Board tablero = tetris.getBoard();
+            Piece pieza = new PieceSquare();
+            tablero.setPiezaActual(pieza);
+            tablero.setFilaActual(0);
+            tablero.setColumnaActual(0);
+            tablero.colocarPiezaEnTableroVerificada(pieza, 0, 0);
+            tetris.setIntervaloDescenso(2); // la pieza debe bajar cada 2 ticks
+            tetris.iniciarJuego();
+
+            int filaInicial = tablero.getFilaActual();
+            // Simular 5 ticks
+            for (int i = 1; i <= 5; i++) {
+                tetris.tick();
+                // Solo debe bajar en ticks 2 y 4
+                if (i % 2 == 0) {
+                    int filaEsperada = filaInicial + (i / 2);
+                    assertEquals("La pieza debe haber bajado en el tick " + i, filaEsperada, tablero.getFilaActual());
+                } else {
+                    int filaEsperada = filaInicial + (i / 2);
+                    assertEquals("La pieza no debe bajar en el tick " + i, filaEsperada, tablero.getFilaActual());
+                }
+            }
+        }
 
     //Creacion y estado del juego
     //testear si el juego inicia/termina o no ✅
