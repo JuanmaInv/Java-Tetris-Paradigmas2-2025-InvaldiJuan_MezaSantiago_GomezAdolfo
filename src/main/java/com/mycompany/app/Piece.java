@@ -48,7 +48,7 @@ public abstract class Piece implements IRotation {
     }
 
     // ===== INTERFAZ ROTACION =====
-    public void rotarDerecha() {
+    public void rotateRight() {
         int filas = forma.length;
         int columnas = forma[0].length;
         int[][] nuevaForma = new int[columnas][filas];
@@ -60,18 +60,18 @@ public abstract class Piece implements IRotation {
         setForma(nuevaForma); // Actualiza la forma de la pieza
     }
 
-    public void rotarIzquierda() {
-        rotarDerecha();
-        rotarDerecha();
-        rotarDerecha();
+    public void rotateLeft() {
+        rotateRight();
+        rotateRight();
+        rotateRight();
     }
 
     public void seleccionarLadoRandom() {
         int configuracion = random.nextInt(3);
         if (configuracion == 0) {
-            rotarDerecha();
+            rotateRight();
         } else if (configuracion == 1) {
-            rotarIzquierda();
+            rotateLeft();
         } else {
             // Si es 2, no hace nada. Su forma original se mantiene.
     }

@@ -162,7 +162,7 @@ public class Tetris implements IGameState{
         board.colocarPiezaEnTableroVerificada(pieza, fila, columnaElegida);
     }
 
-    public void iniciarJuego(){ // Inicia el juego
+    public void start(){ // Inicia el juego
         if (gameStart == false && gameEnd == false) { // Solo puede iniciar si no ha terminado o no ha comenzado
             this.gameStart = true;
             this.gameWin = false;
@@ -171,33 +171,30 @@ public class Tetris implements IGameState{
         }
     }
 
-    public void terminarJuego(){ // Termina el juego
-        // Marcar el juego como terminado independientemente de si estaba iniciado.
+    public void end(){ // Termina el juego
         this.gameStart = false;
         this.gameEnd = true;
         this.gameWin = false;
     }
 
-    public void reiniciarJuego(){ // Reinicia el juego a su estado inicial
-        this.gameStart = false; // Modifica la variable del objeto actual
-        this.gameEnd = false;   // No crea un nuevo objeto, sino que cambia el estado
+    public void restart(){ // Reinicia el juego a su estado inicial
+        this.gameStart = false;
+        this.gameEnd = false;
         this.gameWin = false;
     }
-    
-    // Métodos simples para obtener estado
-    public int getEstado(){
-        // Priorizar estado de victoria
+
+    public int getState(){
         if (gameWin) {
             return 3; // Game Win
         }
-        if (gameStart==false && gameEnd==false) { // El juego no ha iniciado ni ha teminado (CASO BASE) o se ha reiniciado
+        if (gameStart==false && gameEnd==false) {
             return 0;
-        } else if (gameStart==true && gameEnd==false) { // El juego ha iniciado
+        } else if (gameStart==true && gameEnd==false) {
             return 1;
-        } else if (gameStart == false && gameEnd==true) { // El juego ha terminado
+        } else if (gameStart == false && gameEnd==true) {
             return 2; 
         }
-        return 3; // Estado invalido (no deberia ocurrir)
+        return 3;
     }
 
     // Consulta a Board si el juego debe finalizar y actualiza el estado global.
@@ -219,8 +216,8 @@ public class Tetris implements IGameState{
     
     // IMPLEMENTACION IGAMESTATE
     @Override
-    public void setEstado(int estado) {
-        switch (estado) {
+    public void setState(int state) {
+        switch (state) {
             case 0:
                 gameStart = false;
                 gameEnd = false;

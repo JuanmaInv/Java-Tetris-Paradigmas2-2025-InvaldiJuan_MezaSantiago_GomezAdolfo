@@ -1,10 +1,10 @@
 package com.mycompany.app;
 
 public interface IGameState {
-    void iniciarJuego();
-    void terminarJuego();
-    void reiniciarJuego();
-    int getEstado();
-    void setEstado(int estado);
+    void start();
+    void end();
+    void restart();
+    int state();
+    void setState(int state);
     boolean isJuegoActivo();
 }
