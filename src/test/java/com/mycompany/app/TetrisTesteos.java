@@ -76,6 +76,88 @@ public class TetrisTesteos {
         assertEquals(2, dog.getAlto()); //verifica alto
         assertFalse(dog.esVacia()); // El perro no está vacío
     }
+        // Test para PieceL left y right
+        @Test
+        public void testPieceLLeftRight() {
+            PieceL piece = new PieceL();
+            // Forma derecha
+            piece.setForma(new int[][] {
+                {1, 0},
+                {1, 0},
+                {1, 1}
+            });
+            int[][] formaDerecha = piece.getForma();
+            piece.aleatorizarForma();
+            int[][] formaAleatoria = piece.getForma();
+            // Debe ser igual a forma derecha o izquierda
+            boolean esDerecha = true;
+            boolean esIzquierda = true;
+            int[][] formaIzquierda = {
+                {0, 1},
+                {0, 1},
+                {1, 1}
+            };
+            for (int i = 0; i < formaAleatoria.length; i++) {
+                for (int j = 0; j < formaAleatoria[i].length; j++) {
+                    if (formaAleatoria[i][j] != formaDerecha[i][j]) esDerecha = false;
+                    if (formaAleatoria[i][j] != formaIzquierda[i][j]) esIzquierda = false;
+                }
+            }
+            assertTrue(esDerecha || esIzquierda);
+        }
+
+        // Test para PieceDog left y right
+        @Test
+        public void testPieceDogLeftRight() {
+            PieceDog piece = new PieceDog();
+            // Forma derecha
+            piece.setForma(new int[][] {
+                {0, 1, 1},
+                {1, 1, 0}
+            });
+            int[][] formaDerecha = piece.getForma();
+            piece.aleatorizarForma();
+            int[][] formaAleatoria = piece.getForma();
+            // Debe ser igual a forma derecha o izquierda
+            boolean esDerecha = true;
+            boolean esIzquierda = true;
+            int[][] formaIzquierda = {
+                {1, 1, 0},
+                {0, 1, 1}
+            };
+            for (int i = 0; i < formaAleatoria.length; i++) {
+                for (int j = 0; j < formaAleatoria[i].length; j++) {
+                    if (formaAleatoria[i][j] != formaDerecha[i][j]) esDerecha = false;
+                    if (formaAleatoria[i][j] != formaIzquierda[i][j]) esIzquierda = false;
+                }
+            }
+            assertTrue(esDerecha || esIzquierda);
+        }
+
+        // Test para aleatorizarForma en todas las piezas
+        @Test
+        public void testAleatorizarFormaTodasLasPiezas() {
+            Piece[] piezas = {
+                new PieceL(),
+                new PieceDog(),
+                new PieceT(),
+                new PieceSquare(),
+                new PieceStick()
+            };
+            for (Piece pieza : piezas) {
+                int[][] formaOriginal = pieza.getForma();
+                pieza.aleatorizarForma();
+                int[][] formaNueva = pieza.getForma();
+                // La forma puede cambiar o mantenerse igual, pero debe seguir teniendo 4 bloques
+                int bloques = 0;
+                for (int i = 0; i < formaNueva.length; i++) {
+                    for (int j = 0; j < formaNueva[i].length; j++) {
+                        if (formaNueva[i][j] != 0) bloques++;
+                    }
+                }
+                assertEquals(4, bloques);
+            }
+        }
     
     
     // Tests simples para verificar rotaciones correctas
@@ -786,5 +868,6 @@ public class TetrisTesteos {
                 assertEquals("El juego debería estar en estado de 'terminado'", 2, game.getEstado()); // espera estado 2 (terminado)
             }
         }
+        
 }
     
