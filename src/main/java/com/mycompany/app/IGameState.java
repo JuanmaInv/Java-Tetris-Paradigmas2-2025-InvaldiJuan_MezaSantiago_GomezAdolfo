@@ -4,7 +4,7 @@ public interface IGameState {
     void start();
     void end();
     void restart();
-    int state();
+    int getState();
     void setState(int state);
     boolean isJuegoActivo();
 }

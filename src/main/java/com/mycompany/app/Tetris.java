@@ -55,7 +55,7 @@ public class Tetris implements IGameState{
                 return true;
             }
         } while (intentos < 20);
-        terminarJuego(); // No se pudo colocar la pieza, finaliza el juego
+        end(); // No se pudo colocar la pieza, finaliza el juego
         return false;
     }
 
@@ -64,13 +64,13 @@ public class Tetris implements IGameState{
         Piece pieza = board.getPiezaActual();
         if (pieza == null) return false;
         board.limpiarPiezaDelTablero(pieza, board.getFilaActual(), board.getColumnaActual());
-        pieza.rotarDerecha();
+        pieza.rotateRight();
         if (board.verificarColocacionValida(pieza, board.getFilaActual(), board.getColumnaActual())) {
             board.colocarPiezaEnTableroVerificada(pieza, board.getFilaActual(), board.getColumnaActual());
             return true;
         } else {
             // Si no puede rotar, vuelve a la forma anterior (rotar izquierda 3 veces)
-            pieza.rotarIzquierda();
+            pieza.rotateLeft();
             board.colocarPiezaEnTableroVerificada(pieza, board.getFilaActual(), board.getColumnaActual());
             return false;
         }
@@ -81,15 +81,15 @@ public class Tetris implements IGameState{
         Piece pieza = board.getPiezaActual();
         if (pieza == null) return false;
         board.limpiarPiezaDelTablero(pieza, board.getFilaActual(), board.getColumnaActual());
-        pieza.rotarIzquierda();
+        pieza.rotateLeft();
         if (board.verificarColocacionValida(pieza, board.getFilaActual(), board.getColumnaActual())) {
             board.colocarPiezaEnTableroVerificada(pieza, board.getFilaActual(), board.getColumnaActual());
             return true;
         } else {
             // Si no puede rotar, vuelve a la forma anterior (rotar derecha 3 veces)
-            pieza.rotarDerecha();
-            pieza.rotarDerecha();
-            pieza.rotarDerecha();
+            pieza.rotateRight();
+            pieza.rotateRight();
+            pieza.rotateRight();
             board.colocarPiezaEnTableroVerificada(pieza, board.getFilaActual(), board.getColumnaActual());
             return false;
         }
@@ -204,12 +204,12 @@ public class Tetris implements IGameState{
             // Primero comprobar si se alcanzó la condición de "win"
             if (board.getLineasEliminadas() >= board.getLineasParaGanar()) {
                 // Marcar game win
-                setEstado(3);
+                setState(3);
                 return;
             }
             // Si no es win, comprobar si hay fin de juego por no poder colocar la pieza
             if (board.esFinDelJuego(board)) {
-                terminarJuego();
+                end();
             }
         }
     }
@@ -277,5 +277,4 @@ public class Tetris implements IGameState{
             clock.setIntervaloDescenso(intervalo); // Cada cuántos ticks la pieza debe bajar
         }
     }
-
 }
