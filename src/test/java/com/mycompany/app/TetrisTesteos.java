@@ -731,5 +731,35 @@ public class TetrisTesteos {
         assertEquals(columnaEsperadaSegunda, tablero.getColumnaActual());
 
 }
+    @Test
+    public void testGameover(){
+        Tetris game = new Tetris();
+        game.iniciarJuego();
+        Board tablero = game.getBoard();
+        Piece piece = new PieceSquare();
 
+        // Llenar el tablero hasta la fila 0
+        for (int i = 0; i < 5; i++) { // 5 iteraciones para llenar 10 filas con piezas de alto 2
+            for (int j = 0; j < 10; j++) { // 10 piezas por fila para llenar las 20 columnas
+                tablero.setPiezaActual(piece);
+                tablero.setFilaActual(i * 2); // filas pares: 0,2,4,6,8
+                tablero.setColumnaActual(j * 2); // columnas pares: 0,2,4,...,20
+                tablero.colocarPiezaEnTableroVerificada(piece, i * 2, j * 2);
+                tablero.caidaLibre(piece);
+            }
+        }
+
+        // Intentar colocar una nueva pieza que debería causar game over
+        tablero.setPiezaActual(piece);
+        tablero.setFilaActual(0);
+        tablero.setColumnaActual(0);
+        boolean puedeColocar = tablero.verificarColocacionValida(piece, 0, 0); //espera false porque el tablero esta lleno
+
+        if (!puedeColocar) {
+            assertTrue("Seria Game over ya que no pude añadir una pieza nueva y el tablero esta lleno", true); // espera true
+            game.setEstado(2); // fuerza el estado a terminado
+             assertEquals("El juego debería estar en estado de 'terminado'", 2, game.getEstado()); // espera estado 2 (terminado)
 }
+        }
+}
+

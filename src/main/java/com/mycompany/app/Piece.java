@@ -76,4 +76,8 @@ public abstract class Piece implements IRotation {
             // Si es 2, no hace nada. Su forma original se mantiene.
     }
   }
+
+    public int getColumnaActual() {
+        return 0; // Placeholder, la columna actual debe ser gestionada por la clase Board
+    }
 }

@@ -214,6 +214,10 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
             board[0][j] = 0;
         }
     }
+    public boolean FinDelJuego(Piece piece) {
+         // Si no se puede colocar la pieza en la primera fila, el juego termina
+    return !verificarColocacionValida(piece, 0, piece.getColumnaActual());
+    }
     
     // Implementación de caída libre
         @Override
