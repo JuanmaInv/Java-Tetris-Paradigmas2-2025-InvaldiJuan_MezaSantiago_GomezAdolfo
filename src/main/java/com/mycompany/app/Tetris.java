@@ -172,11 +172,10 @@ public class Tetris implements IGameState{
     }
 
     public void terminarJuego(){ // Termina el juego
-        if (gameStart == true) { // Solo puede terminar si ya había iniciado
-            this.gameStart = false;
-            this.gameEnd = true;
-            this.gameWin = false;
-        }
+        // Marcar el juego como terminado independientemente de si estaba iniciado.
+        this.gameStart = false;
+        this.gameEnd = true;
+        this.gameWin = false;
     }
 
     public void reiniciarJuego(){ // Reinicia el juego a su estado inicial

@@ -983,7 +983,7 @@ public class TetrisTesteos {
         public void testNoSePuedeIngresarMasPiezas() {
             Tetris tetris = new Tetris();
             Board tablero = tetris.getBoard();
-            // Llenar la primera línea
+            // Llenar la primera línea con piezas
             for (int col = 0; col < tablero.getColumnas(); col++) {
                 tablero.setBoard(0, col, 1);
             }
@@ -1010,15 +1010,22 @@ public class TetrisTesteos {
         // Test: no se puede rotar si colisiona
         @Test
         public void testNoSePuedeRotarSiColisiona() {
+            // Hacer el test determinista: colocamos manualmente una PieceL en (0,0)
+            // y ponemos un bloque en (1,0) que no forma parte de la pieza
+            // en su orientación original pero sí en su orientación rotada.
             Tetris tetris = new Tetris();
             Board tablero = tetris.getBoard();
-            Piece pieza = new PieceSquare();
-            tetris.nuevaPiezaAleatoria(pieza);
-            // Colocar otra pieza justo al lado para bloquear la rotación
-            tablero.setBoard(1, tablero.getColumnaActual() + 1, 1);
-            boolean pudoRotar = tetris.rotarPiezaActualDerecha();
-            assertFalse("No se debe poder rotar si colisiona", pudoRotar);
+            Piece pieza = new PieceL();
+            // Colocar la pieza manualmente en la columna 0, fila 0
+            tablero.setPiezaActual(pieza);
+            tablero.setFilaActual(0);
+            tablero.setColumnaActual(0);
+            tablero.colocarPiezaEnTableroVerificada(pieza, 0, 0);
+            // Colocar un bloque que bloquee la rotación a la derecha.
+            // Usamos (0,1) para evitar que la limpieza de la pieza borre el bloqueo antes de verificar.
+            tablero.setBoard(0, 1, 1);
+            boolean pudoRotar = tetris.rotarPiezaActualDerecha(); // intenta rotar y espera false
+            assertFalse("No se debe poder rotar si colisiona", pudoRotar); // espera false
         }
         
 }
-
