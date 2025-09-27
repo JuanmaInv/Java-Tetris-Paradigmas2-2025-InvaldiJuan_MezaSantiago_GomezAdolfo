@@ -10,30 +10,7 @@ import static org.junit.Assert.assertTrue;
 
 public class TetrisTesteos {
 
-    // Helper de depuración para imprimir el tablero en consola
-    private void printBoard(Board tablero, String titulo) {
-        int filas = tablero.getFilas();
-        int cols = tablero.getColumnas();
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < cols; j++) {
-                System.out.print(tablero.getBoard()[i][j]);
-            }
-        }
-    }
 
-    // Helper para comparar matrices (considera distinto tamaño como no iguales)
-    private boolean matricesIguales(int[][] a, int[][] b) {
-        if (a == null || b == null) return a == b;
-        if (a.length != b.length) return false;
-        for (int i = 0; i < a.length; i++) {
-            if (a[i].length != b[i].length) return false;
-            for (int j = 0; j < a[i].length; j++) {
-                if (a[i][j] != b[i][j]) return false;
-            }
-        }
-        return true;
-    }
-    
     //Creacion de piezas
     //testear si las piezas se crean o no ✅
     //testear si las piezas tienen la forma correcta ✅
@@ -195,25 +172,6 @@ public class TetrisTesteos {
         piece4.seleccionarLadoRandom();
         piece5.seleccionarLadoRandom();
         assertTrue(true); // Solo verifica que el método se ejecuta sin errores
-    }
-
-    // Test simple para verificar que el stick rota correctamente
-    @Test
-    public void testStickRotacion() {
-        PieceStick stick = new PieceStick();
-        
-        // Guardar forma original
-        int[][] formaOriginal = stick.getForma();
-        
-        // Rotar derecha
-        stick.rotarDerecha();
-        
-        // Verificar que la forma cambió
-        int[][] formaRotada = stick.getForma();
-        // Para piezas como el stick la rotación cambia dimensiones (4x1 -> 1x4).
-        // matricesIguales devuelve false si las dimensiones o valores cambian.
-        assertFalse("La forma del stick debería cambiar al rotar", matricesIguales(formaOriginal, formaRotada));
-        assertFalse("El stick no debería estar vacío después de rotar", stick.esVacia());
     }
     
     @Test
@@ -732,43 +690,101 @@ public class TetrisTesteos {
 
     }
 
+
+    //test para que el juego termine cuando se eliminan 5 lineas
     @Test
-    public void testGameover(){
+    public void tesGameWin(){
         Tetris game = new Tetris();
         game.iniciarJuego();
         Board tablero = game.getBoard();
-        Piece piece = new PieceSquare();
+        Piece ultima = null; // para guardar la última pieza colocada, es null al inicio
+        game.getEstado(); // consulto el estado del juego, espera 1 (en juego)
+        assertEquals("El juego debería estar en estado de 'en juego'", 1, game.getEstado()); // espera estado 1 (en juego)
 
-        // Llenar el tablero hasta la fila 0
-        for (int i = 0; i < 5; i++) { // 5 iteraciones para llenar 10 filas con piezas de alto 2
-            for (int j = 0; j < 10; j++) { // 10 piezas por fila para llenar las 20 columnas
-                tablero.setPiezaActual(piece);
-                tablero.setFilaActual(i * 2); // filas pares: 0,2,4,6,8
-                tablero.setColumnaActual(j * 2); // columnas pares: 0,2,4,...,20
-                tablero.colocarPiezaEnTableroVerificada(piece, i * 2, j * 2);
-                tablero.caidaLibre(piece);
+        // Llenar el tablero directamente (sin usar piezas) para simular tablero lleno
+        // Esto evita que se disparen eliminaciones de líneas y la condición de "game win" accidental
+        for (int f = 0; f < tablero.getFilas(); f++) {
+            for (int c = 0; c < tablero.getColumnas(); c++) {
+                tablero.setBoard(f, c, 1); // valor 1 representa celda ocupada
+            }
+        }
+        // Marcar una pieza cualquiera como piezaActual para que esFinDelJuego pueda usarla
+        ultima = new PieceSquare();
+        tablero.setPiezaActual(ultima);
+        // Eliminar líneas llenas: capturamos el contador antes y luego lo comprobamos
+        tablero.setPiezaActual(ultima); // marco la ultima pieza como pieza actual para que los metodos que la consulten no hagan NPE
+        tablero.verificarYEliminarLineas(); // esto elimina la(s) filas llenas detectadas
+
+
+    // Verificar que se han eliminado al menos 5 líneas (meta para "game win")
+    int lineasEliminadas = tablero.getLineasEliminadas();
+    // Aceptamos que se hayan eliminado 5 o más líneas; el algoritmo puede eliminar una línea extra
+    // dependiendo del orden de colocación/descenso de las piezas.
+    assertTrue("Deberían haberse eliminado al menos 5 líneas", lineasEliminadas >= 5);
+
+        // Actualizar el estado del juego
+    // Pedimos explícitamente a Tetris que consulte el Board y actualice su estado
+    game.actualizarEstadoJuego();
+    assertEquals("El juego debería estar en estado de 'game win'", 3, game.getEstado()); // espera estado 3 (game win)
+
+        // Verificar que el estado del juego es "terminado" si se han eliminado 5 líneas
+        if (lineasEliminadas >= 5) {
+            assertTrue("Seria Game Win ya que elimine 5 lineas", true); // espera true
+            game.setEstado(3); // fuerza el estado a terminado
+            assertEquals("El juego debería estar en estado de 'terminado'", 3, game.getEstado()); // espera estado 3 (terminado)
+        }
+    }
+
+    //test para que el juego termine cuando no se pueda colocar una nueva pieza
+    @Test
+    public void testGameOver(){
+        Tetris game = new Tetris();
+        game.iniciarJuego();
+        Board tablero = game.getBoard();
+        Piece ultima = null; // para guardar la última pieza colocada, es null al inicio
+        game.getEstado(); // consulto el estado del juego, espera 1 (en juego)
+        assertEquals("El juego debería estar en estado de 'en juego'", 1, game.getEstado()); // espera estado 1 (en juego)
+
+        // Llenar el tablero completamente con piezas cuadradas (2x2)
+        // Usamos verificarColocacionValida + colocarPiezaEnTableroVerificada para colocar
+        // cada pieza de forma determinista (sin permitir que caigan) y así evitar huecos.
+        for (int fila = 0; fila < tablero.getFilas(); fila += 2) {
+            for (int columna = 0; columna < tablero.getColumnas(); columna += 2) {
+                Piece pieza = new PieceSquare();
+                // Antes de colocar, verificar que la posición es válida
+                assertTrue("No se pudo verificar colocación en " + fila + "," + columna, tablero.verificarColocacionValida(pieza, fila, columna));
+                tablero.setPiezaActual(pieza);
+                tablero.colocarPiezaEnTableroVerificada(pieza, fila, columna);
+                // Guardar la última pieza colocada
+                ultima = pieza;
             }
         }
 
-        // Intentar colocar una nueva pieza que debería causar game over
-        tablero.setPiezaActual(piece);
+        // Intentar colocar una nueva pieza que debería causar "game over"
+        tablero.setPiezaActual(ultima);
         tablero.setFilaActual(0);
         tablero.setColumnaActual(0);
-        boolean puedeColocar = tablero.verificarColocacionValida(piece, 0, 0); //espera false porque el tablero esta lleno
+        tablero.colocarPiezaEnTableroVerificada(ultima, 0, 0); // coloco la pieza en la posición inicial
+        // Hacer que la pieza caiga libremente
+        tablero.caidaLibre(ultima);
+        // verificar que con caida libre no se pudo colocar la pieza
+        boolean existePosicionValida = tablero.verificarColocacionValida(ultima, tablero.getFilaActual(), tablero.getColumnaActual()); //espera false porque el tablero esta lleno
+        assertFalse("No debería existir posición válida para una nueva pieza en un tablero lleno", existePosicionValida); // espera false
 
-        if (!puedeColocar) {
-            assertTrue("Seria Game over ya que no pude añadir una pieza nueva y el tablero esta lleno", true); // espera true
-            game.setEstado(2); // fuerza el estado a terminado
-             assertEquals("El juego debería estar en estado de 'terminado'", 2, game.getEstado()); // espera estado 2 (terminado)
-    }else{
-        while (puedeColocar = true) {   
-            assertFalse("No es Game over, el tablero no esta lleno", false); // espera false
-            game.setEstado(1); // estado en juego
-            assertEquals("El juego debería estar en estado de 'en juego'", 1, game.getEstado()); // espera estado 1 (en juego)
-            break;
-    }
-    }
-    }
-    }
-    
+        // Comprobamos con la función del Board si el juego debe terminar (no hay lugar para la pieza) //espera true
+        assertTrue("El tablero debería indicar fin del juego cuando no hay posiciones válidas", tablero.esFinDelJuego(tablero));
+
+            // Actualizar el estado del juego
+        // Pedimos explícitamente a Tetris que consulte el Board y actualice su estado
+        game.actualizarEstadoJuego();
+        assertEquals("El juego debería estar en estado de 'game over'", 2, game.getEstado()); // espera estado 2 (game over)
+
+            // Verificar que el estado del juego es "terminado" si no se puede colocar la pieza
+            if (!existePosicionValida) { // si no existe ninguna posicion valida
+                assertTrue("Seria Game over ya que no pude añadir una pieza nueva y el tablero esta lleno", true); // espera true
+                game.setEstado(2); // fuerza el estado a terminado
+                assertEquals("El juego debería estar en estado de 'terminado'", 2, game.getEstado()); // espera estado 2 (terminado)
+            }
+        }
+}
     

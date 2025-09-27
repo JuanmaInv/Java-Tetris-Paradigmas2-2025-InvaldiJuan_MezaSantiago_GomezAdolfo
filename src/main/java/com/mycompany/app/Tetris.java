@@ -4,12 +4,14 @@ package com.mycompany.app;
 public class Tetris implements IGameState{
     private boolean gameStart;
     private boolean gameEnd;
+    private boolean gameWin;
     private Board board;
     private Clock clock;
 
     public Tetris(){ // Constructor, inicializa el juego en estado no iniciado y no terminado
         gameStart = false;
         gameEnd = false;
+        gameWin = false;
         this.board = new Board();
         this.clock = new Clock(board, 2);
     }
@@ -17,6 +19,7 @@ public class Tetris implements IGameState{
     public void iniciarJuego(){ // Inicia el juego
         if (gameStart == false && gameEnd == false) { // Solo puede iniciar si no ha terminado o no ha comenzado
             this.gameStart = true;
+            this.gameWin = false;
         }
     }
 
@@ -24,16 +27,22 @@ public class Tetris implements IGameState{
         if (gameStart == true) { // Solo puede terminar si ya había iniciado
             this.gameStart = false;
             this.gameEnd = true;
+            this.gameWin = false;
         }
     }
 
     public void reiniciarJuego(){ // Reinicia el juego a su estado inicial
         this.gameStart = false; // Modifica la variable del objeto actual
         this.gameEnd = false;   // No crea un nuevo objeto, sino que cambia el estado
+        this.gameWin = false;
     }
     
     // Métodos simples para obtener estado
     public int getEstado(){
+        // Priorizar estado de victoria
+        if (gameWin) {
+            return 3; // Game Win
+        }
         if (gameStart==false && gameEnd==false) { // El juego no ha iniciado ni ha teminado (CASO BASE) o se ha reiniciado
             return 0;
         } else if (gameStart==true && gameEnd==false) { // El juego ha iniciado
@@ -47,9 +56,15 @@ public class Tetris implements IGameState{
     // Consulta a Board si el juego debe finalizar y actualiza el estado global.
     // Si Board indica fin de juego, llama a terminarJuego().
     public void actualizarEstadoJuego() {
-        if (board != null && board.getPiezaActual() != null) { // Verifica que board y piezaActual no sean nulos
-            // Consulta a Board si el juego debe finalizar
-            if (board.esFinDelJuego(board.getPiezaActual())) {
+        if (board != null) { // Verifica que board no sea nulo
+            // Primero comprobar si se alcanzó la condición de "win"
+            if (board.getLineasEliminadas() >= board.getLineasParaGanar()) {
+                // Marcar game win
+                setEstado(3);
+                return;
+            }
+            // Si no es win, comprobar si hay fin de juego por no poder colocar la pieza
+            if (board.esFinDelJuego(board)) {
                 terminarJuego();
             }
         }
@@ -62,14 +77,23 @@ public class Tetris implements IGameState{
             case 0:
                 gameStart = false;
                 gameEnd = false;
+                gameWin = false;
                 break;
             case 1:
                 gameStart = true;
                 gameEnd = false;
+                gameWin = false;
                 break;
             case 2:
                 gameStart = false;
                 gameEnd = true;
+                gameWin = false;
+                break;
+            case 3:
+                // Game win
+                gameStart = false;
+                gameEnd = false;
+                gameWin = true;
                 break;
         }
     }

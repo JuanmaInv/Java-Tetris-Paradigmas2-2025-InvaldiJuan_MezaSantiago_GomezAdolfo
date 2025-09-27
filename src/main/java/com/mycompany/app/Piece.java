@@ -77,7 +77,4 @@ public abstract class Piece implements IRotation {
     }
   }
 
-    public int getColumnaActual() {
-        return 0; // Placeholder, la columna actual debe ser gestionada por la clase Board
-    }
 }

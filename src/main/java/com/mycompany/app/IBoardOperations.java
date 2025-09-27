@@ -6,7 +6,7 @@ public interface IBoardOperations {
     void colocarPiezaEnTableroVerificada(Piece piece, int fila, int columna);
     void limpiarPiezaDelTablero(Piece piece, int fila, int columna);
     void verificarYEliminarLineas();
-    boolean esFinDelJuego(Piece piece);
+    boolean esFinDelJuego(Board tablero);
     boolean tableroVacio();
     int[][] getBoard();
 }

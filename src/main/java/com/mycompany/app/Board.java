@@ -167,10 +167,32 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
     // Devuelve true si el juego debe finalizar:
     // El jugador gana (lineasEliminadas >= lineasParaGanar)
     // No hay lugar para colocar la nueva pieza (no se puede colocar en la posición inicial)
-    public boolean esFinDelJuego(Piece piece) {
-    boolean lineasParaGanar = getLineasEliminadas() >= getLineasParaGanar();
-    boolean tableroLleno = !verificarColocacionValida(piece, 0, 0);
-    return lineasParaGanar || tableroLleno;
+    @Override
+    public boolean esFinDelJuego(Board board) {
+        boolean lineasParaGanar = board.getLineasEliminadas() >= board.getLineasParaGanar();
+
+        // Determinar si no existe ninguna posición válida donde colocar la pieza actual
+        boolean tableroLleno = false;
+        Piece p = board.getPiezaActual();
+        if (p == null) {
+            // Si no hay pieza actual, no consideramos que el tablero esté lleno (evitar NPE)
+            tableroLleno = false;
+        } else {
+            boolean existePosicionValida = false;
+            for (int f = 0; f < board.getFilas(); f++) {
+                for (int c = 0; c < board.getColumnas(); c++) {
+                    if (board.verificarColocacionValida(p, f, c)) {
+                        existePosicionValida = true;
+                        break;
+                    }
+                }
+                if (existePosicionValida)
+                break;
+            }
+            tableroLleno = !existePosicionValida;
+        }
+
+        return lineasParaGanar || tableroLleno;
     }
 
     // ===== ELIMINACIÓN DE LÍNEAS =====
@@ -197,9 +219,9 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
         }
         
         // Usar piezaActual para verificar fin de juego (solo si existe)
-        Piece p = getPiezaActual();
-        if (p != null && esFinDelJuego(p)) {
-            // Juego ganado
+        Piece piece = getPiezaActual();
+        if (piece != null && esFinDelJuego(this)) {
+            // Juego terminado
         }
     }
 
@@ -213,10 +235,6 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
         for (int j = 0; j < board[0].length; j++) {
             board[0][j] = 0;
         }
-    }
-    public boolean FinDelJuego(Piece piece) {
-         // Si no se puede colocar la pieza en la primera fila, el juego termina
-    return !verificarColocacionValida(piece, 0, piece.getColumnaActual());
     }
     
     // Implementación de caída libre
