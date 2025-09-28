@@ -30,6 +30,7 @@ public class PieceT extends Piece {
         });
     }
 
+    @Override
     public void aleatorizarForma() {
         boolean forma = random.nextBoolean();
         if ( forma == true) {

@@ -54,10 +54,8 @@ public abstract class Piece implements IRotation {
         return true;
     }
     
-    public void aleatorizarForma() {
-        // Implementación usando rotación aleatoria
-        seleccionarLadoRandom();
-    }
+    // Forzar que cada subclase implemente su propia estrategia de aleatorización
+    public abstract void aleatorizarForma();
 
     // ===== INTERFAZ ROTACION =====
     @Override

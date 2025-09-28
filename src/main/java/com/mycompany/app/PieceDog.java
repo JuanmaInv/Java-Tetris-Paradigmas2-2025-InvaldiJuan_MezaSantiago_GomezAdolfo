@@ -33,6 +33,7 @@ public class PieceDog extends Piece {
         });
     }
 
+    @Override
     public void aleatorizarForma() {
         boolean forma = random.nextBoolean();
         if ( forma == true) {

@@ -10,5 +10,10 @@ public class PieceStick extends Piece { // Extiende la clase abstracta PiezasAbs
         {1}
         });
     }
+
+    @Override
+    public void aleatorizarForma() {
+        // La Stick no tiene variaciones internas en este diseño
+    }
 }   
 

@@ -9,4 +9,9 @@ public class PieceSquare extends Piece{
             {1, 1}
         });
     }
+
+    @Override
+    public void aleatorizarForma() {
+        // El cuadrado no cambia de forma entre rotaciones en este diseño
+    }
 }
