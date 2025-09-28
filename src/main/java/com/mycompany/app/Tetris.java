@@ -215,7 +215,6 @@ public class Tetris implements IGameState{
     }
     
     // IMPLEMENTACION IGAMESTATE
-    @Override
     public void setState(int state) {
         switch (state) {
             case 0:
@@ -242,7 +241,6 @@ public class Tetris implements IGameState{
         }
     }
     
-    @Override
     public boolean isJuegoActivo() {
         return gameStart && !gameEnd;
     }

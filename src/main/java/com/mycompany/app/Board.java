@@ -57,7 +57,6 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
     //  Verifica si una pieza puede colocarse en la posicion dada del tablero
     // sin salirse y sin colisionar con otras piezas
     // Devuelve true si es valido, false si hay colision o se sale
-    @Override
     public boolean verificarColocacionValida(Piece piece, int fila, int columna) {
         for (int i = 0; i < piece.getForma().length; i++) { // Recorre filas de la pieza
             for (int j = 0; j < piece.getForma()[i].length; j++) { // Recorre columnas de la pieza
@@ -197,7 +196,6 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
     // Devuelve true si el juego debe finalizar:
     // El jugador gana (lineasEliminadas >= lineasParaGanar)
     // No hay lugar para colocar la nueva pieza (no se puede colocar en la posición inicial)
-    @Override
     public boolean esFinDelJuego(Board board) {
         boolean lineasParaGanar = board.getLineasEliminadas() >= board.getLineasParaGanar();
 
@@ -268,7 +266,6 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
     }
     
     // Implementación de caída libre
-        @Override
         public void caidaLibre(Piece piece) {
             //mueve la pieza hacia abajo hasta que no pueda mas, sean 5 o 40 veces o ninguna
             //osea maneja iteraciones hasta que no pueda bajar mas
