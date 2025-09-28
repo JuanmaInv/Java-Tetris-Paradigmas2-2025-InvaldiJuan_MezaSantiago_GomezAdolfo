@@ -162,6 +162,7 @@ public class Tetris implements IGameState{
         board.colocarPiezaEnTableroVerificada(pieza, fila, columnaElegida);
     }
 
+    @Override
     public void start(){ // Inicia el juego
         if (gameStart == false && gameEnd == false) { // Solo puede iniciar si no ha terminado o no ha comenzado
             this.gameStart = true;
@@ -171,18 +172,21 @@ public class Tetris implements IGameState{
         }
     }
 
+    @Override
     public void end(){ // Termina el juego
         this.gameStart = false;
         this.gameEnd = true;
         this.gameWin = false;
     }
 
+    @Override
     public void restart(){ // Reinicia el juego a su estado inicial
         this.gameStart = false;
         this.gameEnd = false;
         this.gameWin = false;
     }
 
+    @Override
     public int getState(){
         if (gameWin) {
             return 3; // Game Win
@@ -215,6 +219,7 @@ public class Tetris implements IGameState{
     }
     
     // IMPLEMENTACION IGAMESTATE
+    @Override
     public void setState(int state) {
         switch (state) {
             case 0:
@@ -241,6 +246,7 @@ public class Tetris implements IGameState{
         }
     }
     
+    @Override
     public boolean isJuegoActivo() {
         return gameStart && !gameEnd;
     }

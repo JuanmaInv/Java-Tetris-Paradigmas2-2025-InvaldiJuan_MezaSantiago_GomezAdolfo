@@ -60,6 +60,7 @@ public abstract class Piece implements IRotation {
     }
 
     // ===== INTERFAZ ROTACION =====
+    @Override
     public void rotateRight() {
         int filas = forma.length;
         int columnas = forma[0].length;
@@ -72,12 +73,14 @@ public abstract class Piece implements IRotation {
         setForma(nuevaForma); // Actualiza la forma de la pieza
     }
 
+    @Override
     public void rotateLeft() {
         rotateRight();
         rotateRight();
         rotateRight();
     }
 
+    @Override
     public void seleccionarLadoRandom() {
         int configuracion = random.nextInt(3);
         if (configuracion == 0) {

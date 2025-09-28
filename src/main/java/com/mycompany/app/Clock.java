@@ -42,6 +42,7 @@ public class Clock implements ITick {
         return board;
     }
 
+    @Override
     public void tick() {
         setTicks(getTicks() + 1);
         

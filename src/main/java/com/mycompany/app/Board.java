@@ -42,6 +42,7 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
     }
 
     // Metodo requerido por la interfaz. Verifica si el tablero esta vacio
+    @Override
     public boolean tableroVacio() {
         for (int i = 0; i < board.length; i++) { // Recorre filas
             for (int j = 0; j < board[i].length; j++) { // Recorre columnas
@@ -57,6 +58,7 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
     //  Verifica si una pieza puede colocarse en la posicion dada del tablero
     // sin salirse y sin colisionar con otras piezas
     // Devuelve true si es valido, false si hay colision o se sale
+    @Override
     public boolean verificarColocacionValida(Piece piece, int fila, int columna) {
         for (int i = 0; i < piece.getForma().length; i++) { // Recorre filas de la pieza
             for (int j = 0; j < piece.getForma()[i].length; j++) { // Recorre columnas de la pieza
@@ -79,6 +81,7 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
     // INGRESO Y COLOCACION DE PIEZAS EN EL TABLERO (asumiendo verificacion previa)
     //Coloca la pieza en el tablero en la posicion dada
     // Asume que la verificacion ya fue realizada y es valida
+    @Override
     public void colocarPiezaEnTableroVerificada(Piece piece, int fila, int columna) {
             // Actualiza la posición actual de la pieza
             this.filaActual = fila;
@@ -102,6 +105,7 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
         this.piezaActual = piezaActual;
     }
 
+    @Override
     public int[][] getBoard() {
         return board; 
     }
@@ -165,6 +169,7 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
     // Metodo unico para mover la pieza en cualquier direccion
     // deltaFila: +1 abajo, -1 arriba, 0 sin cambio
     // deltaColumna: +1 derecha, -1 izquierda, 0 sin cambio
+    @Override
     public void moverPieza (Piece piezaActual, int deltaFila, int deltaColumna) { // Implementa el metodo de la interfaz IMovement
         // Solo permitir mover la pieza que está marcada como piezaActual en el tablero
         if (this.piezaActual == null || piezaActual == null) return;
@@ -266,7 +271,8 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
     }
     
     // Implementación de caída libre
-        public void caidaLibre(Piece piece) {
+    @Override
+    public void caidaLibre(Piece piece) {
             //mueve la pieza hacia abajo hasta que no pueda mas, sean 5 o 40 veces o ninguna
             //osea maneja iteraciones hasta que no pueda bajar mas
             // Solo permitir caída libre sobre la pieza actual
