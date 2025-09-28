@@ -249,11 +249,60 @@ public class Tetris implements IGameState{
     
     // Métodos adicionales
     public Board getBoard() {
-        return board;
+        // Asegurar que nunca se devuelva null (robusto frente a compilaciones antiguas/estado inesperado)
+        if (this.board == null) {
+            this.board = new Board();
+        }
+        return this.board;
     }
     
     public Clock getClock() {
         return clock;
+    }
+
+    // Getter/Setter para el generador aleatorio interno (cumple encapsulamiento)
+    public Random getRandom() {
+        if (this.random == null) {
+            this.random = new Random();
+        }
+        return this.random;
+    }
+
+    public void setRandom(Random random) {
+        this.random = random;
+    }
+
+    // Getters/Setters básicos para cumplir encapsulamiento
+    public boolean isGameStart() {
+        return gameStart;
+    }
+
+    public void setGameStart(boolean gameStart) {
+        this.gameStart = gameStart;
+    }
+
+    public boolean isGameEnd() {
+        return gameEnd;
+    }
+
+    public void setGameEnd(boolean gameEnd) {
+        this.gameEnd = gameEnd;
+    }
+
+    public boolean isGameWin() {
+        return gameWin;
+    }
+
+    public void setGameWin(boolean gameWin) {
+        this.gameWin = gameWin;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
+    public void setClock(Clock clock) {
+        this.clock = clock;
     }
 
     // Avanza el reloj una unidad (equivalente a 1 "tick").

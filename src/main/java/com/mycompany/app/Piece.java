@@ -22,6 +22,18 @@ public abstract class Piece implements IRotation {
     public void setForma(int[][] forma) {
         this.forma = forma;
     }
+
+    // Accesores para el Random interno (encapsulamiento básico)
+    public Random getRandom() {
+        if (this.random == null) {
+            this.random = new Random();
+        }
+        return this.random;
+    }
+
+    public void setRandom(Random random) {
+        this.random = random;
+    }
     // ===== MÉTODOS ÚTILES PARA LA FORMA =====
     public int getAncho() {
         return forma[0].length; // toma la primera fila y cuenta sus columnas

@@ -33,6 +33,15 @@ public class Clock implements ITick {
         this.intervaloDescenso = intervalo;
     }
 
+    // Getters para exponer estado del reloj
+    public int getIntervaloDescenso() {
+        return intervaloDescenso;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
     public void tick() {
         setTicks(getTicks() + 1);
         

@@ -4,11 +4,11 @@ import java.util.Random;
 
 public class Board implements IBoardOperations, IMovement { // Implementa las interfaces IBoardOperations e IMovement
     // ATRIBUTOS
-    public int[][] board; // Matriz que representa el tablero
-    public int filas = 10; // 10 filas
-    public int columnas = 20; // 20 columnas
-    public Random random; // Generador de numeros aleatorios
-    public Piece piezaActual; // Pieza que se esta moviendo actualmente
+    private int[][] board; // Matriz que representa el tablero
+    private int filas = 10; // 10 filas
+    private int columnas = 20; // 20 columnas
+    private Random random; // Generador de numeros aleatorios
+    private Piece piezaActual; // Pieza que se esta moviendo actualmente
 
     private int filaActual; // Fila actual de la pieza
     private int columnaActual; // Columna actual de la pieza
@@ -29,6 +29,16 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
 
     public int getFilas() {
         return filas;
+    }
+
+
+    // Acceso al Random del tablero
+    public Random getRandom() {
+        return random;
+    }
+
+    public void setRandom(Random random) {
+        this.random = random;
     }
 
     // Metodo requerido por la interfaz. Verifica si el tablero esta vacio
@@ -137,6 +147,12 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
     
     public int getLineasEliminadas() {
         return lineasEliminadas; 
+    }
+
+    public void setLineasEliminadas(int lineasEliminadas) {
+        if (lineasEliminadas < 0)
+        return;
+        this.lineasEliminadas = lineasEliminadas;
     }
 
     public void setLineasParaGanar(int lineas) {

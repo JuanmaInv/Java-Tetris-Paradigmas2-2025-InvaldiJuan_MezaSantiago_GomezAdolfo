@@ -6,6 +6,15 @@ import java.util.Random;
 
 public class PieceDog extends Piece {
     private Random random = new Random();
+
+    public Random getRandom() {
+        if (this.random == null) this.random = new Random();
+        return this.random;
+    }
+
+    public void setRandom(Random random) {
+        this.random = random;
+    }
     
     private int[][] formaDerecha = {
         {0, 1, 1},
