@@ -12,6 +12,7 @@ public abstract class Piece implements IRotation {
     public Piece(int[][] forma) {
         this.forma = forma;
     }
+    
 
     // Getter para forma
     public int[][] getForma() {
@@ -23,16 +24,38 @@ public abstract class Piece implements IRotation {
         this.forma = forma;
     }
 
-    // Accesores para el Random interno (encapsulamiento básico)
-    public Random getRandom() {
+    // Accesores para el Random interno (encapsulamiento reforzado)
+    // No exponemos el Random directamente para evitar que código externo
+    // manipule el estado interno. Subclases pueden usar nextBoolean().
+    private Random getRandom() {
         if (this.random == null) {
             this.random = new Random();
         }
         return this.random;
     }
 
-    public void setRandom(Random random) {
+    private void setRandom(Random random) {
         this.random = random;
+    }
+
+    // Helper para que subclases puedan obtener valores aleatorios
+    protected boolean nextBoolean() {
+        return getRandom().nextBoolean();
+    }
+
+    // Helper para obtener enteros aleatorios con limite (consistencia de encapsulamiento)
+    protected int nextInt(int bound) {
+        return getRandom().nextInt(bound);
+    }
+
+    // Helper reutilizable: elegir entre dos formas según un boolean aleatorio
+    protected void elegirFormaSegunBoolean(int[][] formaA, int[][] formaB) {
+        boolean elegirA = nextBoolean();
+        if (elegirA) {
+            setForma(formaA);
+        } else {
+            setForma(formaB);
+        }
     }
     // ===== MÉTODOS ÚTILES PARA LA FORMA =====
     public int getAncho() {

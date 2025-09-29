@@ -33,11 +33,11 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
 
 
     // Acceso al Random del tablero
-    public Random getRandom() {
+    private Random getRandom() {
         return random;
     }
 
-    public void setRandom(Random random) {
+    private void setRandom(Random random) {
         this.random = random;
     }
 
@@ -164,6 +164,19 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
     public int getLineasParaGanar() {
         return lineasParaGanar;
     }
+
+    // sobrecargar el metodo moverPieza
+    // Variante, solo valida si la pieza actual puede moverse
+    // Devuelve true si es posible mover la pieza actual en (deltaFila, deltaColumna), false en caso contrario
+    public boolean moverPieza(int deltaFila, int deltaColumna) {
+        if (this.piezaActual == null) {
+            return false; // no hay pieza que mover
+        }
+        int nuevaFila = this.filaActual + deltaFila;
+        int nuevaColumna = this.columnaActual + deltaColumna;
+        return verificarColocacionValida(this.piezaActual, nuevaFila, nuevaColumna);
+    }
+
 
     // MOVIMIENTO Y MANIPULACION DE PIEZAS
     // Metodo unico para mover la pieza en cualquier direccion

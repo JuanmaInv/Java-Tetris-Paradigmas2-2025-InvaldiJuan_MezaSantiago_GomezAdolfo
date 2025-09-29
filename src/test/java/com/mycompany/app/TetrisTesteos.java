@@ -86,21 +86,21 @@ public class TetrisTesteos {
                 {1, 0},
                 {1, 1}
             });
-            int[][] formaDerecha = piece.getForma();
+            int[][] formaA = piece.getForma();
             piece.aleatorizarForma();
             int[][] formaAleatoria = piece.getForma();
             // Debe ser igual a forma derecha o izquierda
             boolean esDerecha = true;
             boolean esIzquierda = true;
-            int[][] formaIzquierda = {
+            int[][] formaB = {
                 {0, 1},
                 {0, 1},
                 {1, 1}
             };
             for (int i = 0; i < formaAleatoria.length; i++) {
                 for (int j = 0; j < formaAleatoria[i].length; j++) {
-                    if (formaAleatoria[i][j] != formaDerecha[i][j]) esDerecha = false;
-                    if (formaAleatoria[i][j] != formaIzquierda[i][j]) esIzquierda = false;
+                    if (formaAleatoria[i][j] != formaA[i][j]) esDerecha = false;
+                    if (formaAleatoria[i][j] != formaB[i][j]) esIzquierda = false;
                 }
             }
             assertTrue(esDerecha || esIzquierda);
@@ -115,20 +115,20 @@ public class TetrisTesteos {
                 {0, 1, 1},
                 {1, 1, 0}
             });
-            int[][] formaDerecha = piece.getForma();
+            int[][] formaA = piece.getForma();
             piece.aleatorizarForma();
             int[][] formaAleatoria = piece.getForma();
             // Debe ser igual a forma derecha o izquierda
             boolean esDerecha = true;
             boolean esIzquierda = true;
-            int[][] formaIzquierda = {
+            int[][] formaB = {
                 {1, 1, 0},
                 {0, 1, 1}
             };
             for (int i = 0; i < formaAleatoria.length; i++) {
                 for (int j = 0; j < formaAleatoria[i].length; j++) {
-                    if (formaAleatoria[i][j] != formaDerecha[i][j]) esDerecha = false;
-                    if (formaAleatoria[i][j] != formaIzquierda[i][j]) esIzquierda = false;
+                    if (formaAleatoria[i][j] != formaA[i][j]) esDerecha = false;
+                    if (formaAleatoria[i][j] != formaB[i][j]) esIzquierda = false;
                 }
             }
             assertTrue(esDerecha || esIzquierda);

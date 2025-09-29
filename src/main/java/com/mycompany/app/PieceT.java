@@ -1,24 +1,12 @@
 package com.mycompany.app;
 
-import java.util.Random;
-
 public class PieceT extends Piece {
-    private Random random = new Random();
-
-    public Random getRandom() {
-        if (this.random == null) this.random = new Random();
-        return this.random;
-    }
-
-    public void setRandom(Random random) {
-        this.random = random;
-    }
-    private int[][] forma1 = {
+    private int[][] formaA = {
         {0, 1, 0},
         {1, 1, 1},
     };
 
-    private int[][] forma2 = {
+    private int[][] formaB = {
         {1, 1, 1},
         {0, 1, 0},
     };
@@ -32,11 +20,6 @@ public class PieceT extends Piece {
 
     @Override
     public void aleatorizarForma() {
-        boolean forma = random.nextBoolean();
-        if ( forma == true) {
-            setForma(forma1);
-        } else {
-            setForma(forma2);
-        }
+        elegirFormaSegunBoolean(formaA, formaB);
     }
 }

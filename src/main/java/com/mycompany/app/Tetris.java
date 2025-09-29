@@ -265,14 +265,14 @@ public class Tetris implements IGameState{
     }
 
     // Getter/Setter para el generador aleatorio interno (cumple encapsulamiento)
-    public Random getRandom() {
+    private Random getRandom() {
         if (this.random == null) {
             this.random = new Random();
         }
         return this.random;
     }
 
-    public void setRandom(Random random) {
+    private void setRandom(Random random) {
         this.random = random;
     }
 
