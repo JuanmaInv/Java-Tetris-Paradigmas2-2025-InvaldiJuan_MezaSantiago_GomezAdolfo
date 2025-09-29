@@ -1034,4 +1034,11 @@ public class TetrisTesteos {
             Board board = new Board();
             assertTrue(board instanceof IBoardOperations); // Verifica que Board implementa IBoardOperations con instanceof
         }
+
+         // Otro Test para demostrar implementación de interfaz en este caso ITick
+        @Test
+        public void testClockImplementsITick() {
+            Clock clock = new Clock();
+            assertTrue(clock instanceof ITick);
+        }
 }
