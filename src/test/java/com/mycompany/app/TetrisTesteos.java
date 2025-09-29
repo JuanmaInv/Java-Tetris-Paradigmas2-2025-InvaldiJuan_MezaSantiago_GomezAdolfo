@@ -1028,4 +1028,10 @@ public class TetrisTesteos {
             assertFalse("No se debe poder rotar si colisiona", pudoRotar); // espera false
         }
         
+         // Test para demostrar implementación de interfaz
+        @Test
+        public void testBoardImplementsIBoardOperations() {
+            Board board = new Board();
+            assertTrue(board instanceof IBoardOperations); // Verifica que Board implementa IBoardOperations con instanceof
+        }
 }
