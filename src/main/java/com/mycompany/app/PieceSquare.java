@@ -1,6 +1,6 @@
 package com.mycompany.app;
 
-public class PieceSquare extends Piece{ 
+public class PieceSquare extends PieceBase{ 
     public PieceSquare() {
 
         super (new int [][]{

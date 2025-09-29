@@ -1,6 +1,6 @@
 package com.mycompany.app;
 
-public class PieceT extends Piece {
+public class PieceT extends PieceBase {
     private int[][] formaA = {
         {0, 1, 0},
         {1, 1, 1},

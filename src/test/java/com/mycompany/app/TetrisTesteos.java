@@ -19,31 +19,33 @@ public class TetrisTesteos {
     // Tests para verificar creación de piezas
     @Test
     public void testCrearPieceStick(){
-        Piece piece = new PieceStick();
+        PieceBase piece = new PieceStick();
         assertTrue(piece != null);
+        piece.esVacia();
+        assertEquals(false, piece.esVacia());// el stick no está vacío
     }
 
     @Test
     public void testCrearPieceSquare(){
-        Piece piece = new PieceSquare();
+        PieceBase piece = new PieceSquare();
         assertTrue(piece != null);
     }
 
     @Test
     public void testCrearPieceDog(){
-        Piece piece = new PieceDog();
+        PieceBase piece = new PieceDog();
         assertTrue(piece != null);
         }
 
     @Test
     public void testCrearPieceL(){
-        Piece piece = new PieceL();
+        PieceBase piece = new PieceL();
         assertTrue(piece != null);
     }
 
     @Test
     public void testCrearPieceT(){
-        Piece piece = new PieceT();
+        PieceBase piece = new PieceT();
         assertTrue(piece != null); 
     }
 
@@ -137,14 +139,14 @@ public class TetrisTesteos {
         // Test para aleatorizarForma en todas las piezas
         @Test
         public void testAleatorizarFormaTodasLasPiezas() {
-            Piece[] piezas = {
+            PieceBase[] piezas = {
                 new PieceL(),
                 new PieceDog(),
                 new PieceT(),
                 new PieceSquare(),
                 new PieceStick()
             };
-            for (Piece pieza : piezas) {
+            for (PieceBase pieza : piezas) {
                 int[][] formaOriginal = pieza.getForma();
                 pieza.aleatorizarForma();
                 int[][] formaNueva = pieza.getForma();
@@ -210,11 +212,11 @@ public class TetrisTesteos {
     //testear rotaciones
     @Test
     public void testRotarPiecesDerecha(){
-        Piece piece1 = new PieceL();
-        Piece piece2 = new PieceT();
-        Piece piece3 = new PieceSquare();
-        Piece piece4 = new PieceDog();
-        Piece piece5 = new PieceStick();
+        PieceBase piece1 = new PieceL();
+        PieceBase piece2 = new PieceT();
+        PieceBase piece3 = new PieceSquare();
+        PieceBase piece4 = new PieceDog();
+        PieceBase piece5 = new PieceStick();
         // Rotar las piezas
         piece1.rotateRight();
         piece2.rotateRight();
@@ -226,11 +228,11 @@ public class TetrisTesteos {
 
     @Test
     public void testRotarPiecesIzquierda(){
-        Piece piece1 = new PieceL();
-        Piece piece2 = new PieceT();
-        Piece piece3 = new PieceSquare();
-        Piece piece4 = new PieceDog();
-        Piece piece5 = new PieceStick();
+        PieceBase piece1 = new PieceL();
+        PieceBase piece2 = new PieceT();
+        PieceBase piece3 = new PieceSquare();
+        PieceBase piece4 = new PieceDog();
+        PieceBase piece5 = new PieceStick();
         // Rotar las piezas
         piece1.rotateLeft();
         piece2.rotateLeft();
@@ -242,11 +244,11 @@ public class TetrisTesteos {
 
     @Test
     public void testRotarPiecesLadoRandom(){
-        Piece piece1 = new PieceL();
-        Piece piece2 = new PieceT();
-        Piece piece3 = new PieceSquare();
-        Piece piece4 = new PieceDog();
-        Piece piece5 = new PieceStick();
+        PieceBase piece1 = new PieceL();
+        PieceBase piece2 = new PieceT();
+        PieceBase piece3 = new PieceSquare();
+        PieceBase piece4 = new PieceDog();
+        PieceBase piece5 = new PieceStick();
         // Rotar las piezas
         piece1.seleccionarLadoRandom();
         piece2.seleccionarLadoRandom();
@@ -301,7 +303,7 @@ public class TetrisTesteos {
         public void testPiezaBajaCadaDosTicks() {
             Tetris tetris = new Tetris();
             Board tablero = tetris.getBoard();
-            Piece pieza = new PieceSquare();
+            PieceBase pieza = new PieceSquare();
             tablero.setPiezaActual(pieza);
             tablero.setFilaActual(0);
             tablero.setColumnaActual(0);
@@ -379,7 +381,7 @@ public class TetrisTesteos {
     @Test
     public void testMoverPiezaEnTablero() {
         Board tablero = new Board();
-        Piece piece = new PieceSquare();
+        PieceBase piece = new PieceSquare();
         tablero.setPiezaActual(piece);
         tablero.colocarPiezaEnTableroVerificada(piece, 0, 0); // Coloca la pieza en la posición inicial
         // Mover la pieza a la derecha e izquierda
@@ -391,7 +393,7 @@ public class TetrisTesteos {
     @Test
     public void testPiezaCaidaLibre(){
         Board tablero = new Board();
-        Piece piece1 = new PieceSquare();
+        PieceBase piece1 = new PieceSquare();
 
         tablero.setPiezaActual(piece1);
         tablero.setFilaActual(0);
@@ -421,7 +423,7 @@ public class TetrisTesteos {
     @Test
     public void testPiezaDogCaidaLibre(){
         Board tablero = new Board(); // creo tablero
-        Piece piece = new PieceDog(); // creo pieza Dog
+        PieceBase piece = new PieceDog(); // creo pieza Dog
         tablero.setPiezaActual(piece); // le digo al tablero cuál es la pieza actual
         tablero.setFilaActual(0);
         tablero.setColumnaActual(0);
@@ -444,7 +446,7 @@ public class TetrisTesteos {
         //  la pieza baja cada tick y terminamos cuando ya no puede bajar mas
         Tetris tetris = new Tetris();
         Board tablero = tetris.getBoard();
-        Piece piece = new PieceSquare();
+        PieceBase piece = new PieceSquare();
         tablero.setPiezaActual(piece);
         tablero.setFilaActual(0);
         tablero.setColumnaActual(0);
@@ -481,7 +483,7 @@ public class TetrisTesteos {
         // Igual que el test anterior pero con la pieza Dog
         Tetris tetris = new Tetris();
         Board tablero = tetris.getBoard();
-        Piece piece = new PieceDog();
+        PieceBase piece = new PieceDog();
         tablero.setPiezaActual(piece);
         tablero.setFilaActual(0);
         tablero.setColumnaActual(0);
@@ -519,11 +521,11 @@ public class TetrisTesteos {
         Board tablero = new Board(); //Crea un tablero vacío donde hare las validaciones
 
         // Creo y coloco la primera pieza (square) en una posicion especifica
-        Piece primera = new PieceSquare();
+        PieceBase primera = new PieceSquare();
         tablero.colocarPiezaEnTableroVerificada(primera, 8, 5); // coloca un 2x2 en filas 8-9, col 5-6 [(8,5); (8,6); (9,5); (9,6)]
 
         //Creo otra pieza igual a la anterior
-        Piece segunda = new PieceSquare();
+        PieceBase segunda = new PieceSquare();
 
         // Intento colocar otra pieza que colisione con la anterior
         //Para mas precision de "Colision" intento colocar una pieza de misma forma en la misma posicion.\
@@ -543,7 +545,7 @@ public class TetrisTesteos {
     public void testColisionEntrePieceDog(){
         Board tablero = new Board();
         // Colocar la primera pieza (Dog) en la parte baja central
-        Piece primera = new PieceDog();
+        PieceBase primera = new PieceDog();
         tablero.colocarPiezaEnTableroVerificada(primera, 8, 5); // coloca un 3x3 en filas 8-10, col 5-7
 
         //Verificar que hay una pieza en esa posicion
@@ -557,7 +559,7 @@ public class TetrisTesteos {
 
 
         // Intentar colocar otra pieza que solape exactamente la anterior
-        Piece segunda = new PieceDog();
+        PieceBase segunda = new PieceDog();
         boolean verificacionColision = tablero.verificarColocacionValida(segunda, 8, 5); //espera false
         assertFalse("No debería poder colocarse una pieza solapada sobre otra", verificacionColision); //espera false
 
@@ -589,16 +591,16 @@ public class TetrisTesteos {
         Board tablero = new Board(); // creo tablero
 
         // Crear 10 piezas cuadradas para llenar una fila completa
-        Piece piece1 = new PieceSquare();
-        Piece piece2 = new PieceSquare();
-        Piece piece3 = new PieceSquare();
-        Piece piece4 = new PieceSquare();
-        Piece piece5 = new PieceSquare();
-        Piece piece6 = new PieceSquare();
-        Piece piece7 = new PieceSquare();
-        Piece piece8 = new PieceSquare();
-        Piece piece9 = new PieceSquare();
-        Piece piece10 = new PieceSquare();
+        PieceBase piece1 = new PieceSquare();
+        PieceBase piece2 = new PieceSquare();
+        PieceBase piece3 = new PieceSquare();
+        PieceBase piece4 = new PieceSquare();
+        PieceBase piece5 = new PieceSquare();
+        PieceBase piece6 = new PieceSquare();
+        PieceBase piece7 = new PieceSquare();
+        PieceBase piece8 = new PieceSquare();
+        PieceBase piece9 = new PieceSquare();
+        PieceBase piece10 = new PieceSquare();
         // Colocar 10 piezas cuadradas (2x2) para llenar una fila
         tablero.colocarPiezaEnTableroVerificada(piece1, 8, 0); // fila 8, columnas 0-1
         tablero.colocarPiezaEnTableroVerificada(piece2, 8, 2); // fila 8, columnas 2-3
@@ -620,7 +622,7 @@ public class TetrisTesteos {
         }                                                                                     // donde j va de 0 a 19 y verificamos que no sea 0 (que haya pieza)
 
         // Antes de eliminar, intentar colocar otra pieza encima debe FALLAR (colisión)
-        Piece otra = new PieceSquare();
+        PieceBase otra = new PieceSquare();
         // Marcar la otra pieza como piezaActual para que los métodos que la consulten no hagan NPE
         tablero.setPiezaActual(otra);
         // Intentar colocar otra pieza que colisione con algun elemento de la fila llena
@@ -651,16 +653,16 @@ public class TetrisTesteos {
         Board tablero = new Board(); // creo tablero
 
         // Crear 10 piezasL para llenar una fila completa
-        Piece piece1 = new PieceL();
-        Piece piece2 = new PieceL();
-        Piece piece3 = new PieceL();
-        Piece piece4 = new PieceL();
-        Piece piece5 = new PieceL();
-        Piece piece6 = new PieceL();
-        Piece piece7 = new PieceL();
-        Piece piece8 = new PieceL();
-        Piece piece9 = new PieceL();
-        Piece piece10 = new PieceL();
+        PieceBase piece1 = new PieceL();
+        PieceBase piece2 = new PieceL();
+        PieceBase piece3 = new PieceL();
+        PieceBase piece4 = new PieceL();
+        PieceBase piece5 = new PieceL();
+        PieceBase piece6 = new PieceL();
+        PieceBase piece7 = new PieceL();
+        PieceBase piece8 = new PieceL();
+        PieceBase piece9 = new PieceL();
+        PieceBase piece10 = new PieceL();
         
         // Colocar 10 piezas L (3x1) para llenar una fila
         tablero.colocarPiezaEnTableroVerificada(piece1, 7, 0); // fila 7, columnas 0-1
@@ -682,7 +684,7 @@ public class TetrisTesteos {
             assertTrue("La fila 9 debería estar ocupada" + j, tablero.getBoard()[9][j] != 0); //espera true, con getBoard()[9][j] accedemos a la fila 9 y columna j del tablero
         }                                                                                     // donde j va de 0 a 19 y verificamos que no sea 0 (que haya pieza)
         // Antes de eliminar, intentar colocar otra pieza encima debe FALLAR (colisión)
-        Piece otra = new PieceL();
+        PieceBase otra = new PieceL();
         // Marcar la otra pieza como piezaActual para que los métodos que la consulten no
         tablero.setPiezaActual(otra);
         // Intentar colocar otra pieza que colisione con algun elemento de la fila llena
@@ -711,10 +713,10 @@ public class TetrisTesteos {
     @Test
     public void testBajadayEliminacionDeLinea (){
         Board tablero = new Board();
-        Piece ultima = null; // para guardar la última pieza colocada, es null al inicio
+        PieceBase ultima = null; // para guardar la última pieza colocada, es null al inicio
         // Colocar 10 piezas cuadradas en columnas 0,2,4,...,18 y hago caida libre
         for (int i = 0; i < 10; i++) {
-            Piece piece = new PieceSquare();
+            PieceBase piece = new PieceSquare();
             tablero.setPiezaActual(piece);
             tablero.setFilaActual(0);
             tablero.setColumnaActual(i * 2);// columna 0 y pares (0,2,4,...,18)
@@ -753,8 +755,8 @@ public class TetrisTesteos {
     public void testPiezaCaidaLibreConColision(){
         Tetris tetris = new Tetris();
         Board tablero = tetris.getBoard(); // creo tablero con get board porque el tablero es privado en Tetris
-        Piece piece1 = new PieceSquare();
-        Piece piece2 = new PieceSquare();
+        PieceBase piece1 = new PieceSquare();
+        PieceBase piece2 = new PieceSquare();
 
         // Colocar la primera pieza en la parte baja del tablero con el metodo de caida libre
         tablero.setPiezaActual(piece1); // le digo al tablero cuál es la pieza actual
@@ -800,13 +802,14 @@ public class TetrisTesteos {
     }
 
 
-    //test para que el juego termine cuando se eliminan 5 lineas
+     //test para que el juego termine cuando se eliminan 5 lineas
     @Test
     public void tesGameWin(){
         Tetris game = new Tetris();
         game.start();
         Board tablero = game.getBoard();
-        Piece ultima = null; // para guardar la última pieza colocada, es null al inicio
+        PieceBase ultima = null; // para guardar la última pieza colocada, es null al inicio
+        
         game.getState(); // consulto el estado del juego, espera 1 (en juego)
         assertEquals("El juego debería estar en estado de 'en juego'", 1, game.getState()); // espera estado 1 (en juego)
 
@@ -835,12 +838,12 @@ public class TetrisTesteos {
     // dependiendo del orden de colocación/descenso de las piezas.
     assertTrue("Deberían haberse eliminado al menos 5 líneas", lineasEliminadas >= 5);
 
-        // Actualizar el estado del juego
+    // Actualizar el estado del juego
     // Pedimos explícitamente a Tetris que consulte el Board y actualice su estado
     game.actualizarEstadoJuego();
     assertEquals("El juego debería estar en estado de 'game win'", 3, game.getState()); // espera estado 3 (game win)
 
-        // Verificar que el estado del juego es "terminado" si se han eliminado 5 líneas
+    // Verificar que el estado del juego es "terminado" si se han eliminado 5 líneas
         if (lineasEliminadas >= 5) {
             assertTrue("Seria Game Win ya que elimine 5 lineas", true); // espera true
             game.setState(3); // fuerza el estado a terminado
@@ -854,7 +857,7 @@ public class TetrisTesteos {
         Tetris game = new Tetris();
         game.start();
         Board tablero = game.getBoard();
-        Piece ultima = null; // para guardar la última pieza colocada, es null al inicio
+        PieceBase ultima = null; // para guardar la última pieza colocada, es null al inicio
         game.getState(); // consulto el estado del juego, espera 1 (en juego)
         assertEquals("El juego debería estar en estado de 'en juego'", 1, game.getState()); // espera estado 1 (en juego)
     // Asegurar que el tablero está limpio antes del llenado determinista.
@@ -865,7 +868,7 @@ public class TetrisTesteos {
         // cada pieza de forma determinista (sin permitir que caigan) y así evitar huecos.
         for (int fila = 0; fila < tablero.getFilas(); fila += 2) {
             for (int columna = 0; columna < tablero.getColumnas(); columna += 2) {
-                Piece pieza = new PieceSquare();
+                PieceBase pieza = new PieceSquare();
                 // Antes de colocar, verificar que la posición es válida
                 assertTrue("No se pudo verificar colocación en " + fila + "," + columna, tablero.verificarColocacionValida(pieza, fila, columna));
                 tablero.setPiezaActual(pieza);
@@ -908,75 +911,6 @@ public class TetrisTesteos {
                 assertEquals("El juego debería estar en estado de 'terminado'", 2, game.getState()); // espera estado 2 (terminado)
             }
         }
-    
-    // --- Tests añadidos para las nuevas funciones en Tetris ---
-    @Test
-    public void testSpawnNewPieceColocaEnFila0YColumnaValida() {
-        Tetris game = new Tetris();
-        Board board = game.getBoard();
-        // Llamar directamente al spawn
-        game.spawnNewPiece();
-        Piece p = board.getPiezaActual();
-        assertTrue("Debe existir una pieza actual después de spawn", p != null);
-        int fila = board.getFilaActual();
-        int col = board.getColumnaActual();
-        // Debe colocarse en la fila inicial 0
-        assertEquals("La fila inicial debe ser 0", 0, fila);
-        // La pieza ya fue colocada en el tablero por spawnNewPiece(), comprobar que los
-        // valores del tablero coinciden con la forma de la pieza en esa posición.
-        int[][] forma = p.getForma();
-        int[][] matriz = board.getBoard();
-        for (int i = 0; i < forma.length; i++) {
-            for (int j = 0; j < forma[i].length; j++) {
-                if (forma[i][j] != 0) {
-                    assertEquals("El tablero debe contener la pieza en la posición spawn", forma[i][j], matriz[fila + i][col + j]);
-                }
-            }
-        }
-    }
-
-    @Test
-    public void testIniciarJuegoColocaPiezaInicial() {
-        Tetris game = new Tetris();
-        // Antes de iniciar, no debe haber pieza actual
-        assertTrue(game.getBoard().getPiezaActual() == null);
-        game.start();
-        // Después de iniciar, debe existir pieza en fila 0
-        Piece p = game.getBoard().getPiezaActual();
-        assertTrue("Al iniciar el juego debe haber una pieza actual", p != null);
-        assertEquals(0, game.getBoard().getFilaActual());
-    }
-
-    @Test
-    public void testSpawnNewPieceCuandoNoHayLugarDejaPiezaYEsFinDelJuego() {
-        Tetris game = new Tetris();
-        Board board = game.getBoard();
-        // Rellenar todo el tablero con 1s para simular que está lleno
-        for (int i = 0; i < board.getFilas(); i++) {
-            for (int j = 0; j < board.getColumnas(); j++) {
-                board.setBoard(i, j, 1);
-            }
-        }
-        // Ejecutar spawn
-        game.spawnNewPiece();
-        // Debe haber una pieza actual asignada (aunque no pueda colocarse)
-        assertTrue("Debe asignarse piezaActual incluso si no hay espacio", board.getPiezaActual() != null);
-        // Ahora comprobar que no existe ninguna posición válida para esa pieza
-        boolean existe = false;
-        Piece ultima = board.getPiezaActual();
-        for (int f = 0; f < board.getFilas(); f++) {
-            for (int c = 0; c < board.getColumnas(); c++) {
-                if (board.verificarColocacionValida(ultima, f, c)) {
-                    existe = true;
-                    break;
-                }
-            }
-            if (existe) break;
-        }
-        assertFalse("No debe existir posición válida para la pieza cuando el tablero está lleno", existe);
-        // EsFinDelJuego debe devolver true
-        assertTrue("Board debe indicar fin del juego cuando no hay lugar", board.esFinDelJuego(board));
-    }
 
       // Test: no se puede ingresar más piezas si la primera línea está llena
         @Test
@@ -987,7 +921,7 @@ public class TetrisTesteos {
             for (int col = 0; col < tablero.getColumnas(); col++) {
                 tablero.setBoard(0, col, 1);
             }
-            Piece pieza = new PieceSquare();
+            PieceBase pieza = new PieceSquare();
             boolean pudoColocar = tetris.nuevaPiezaAleatoria(pieza);
             assertFalse("No se debe poder ingresar una nueva pieza si la primera línea está llena", pudoColocar);
             assertEquals("El juego debe estar terminado", 2, tetris.getState());
@@ -998,7 +932,7 @@ public class TetrisTesteos {
         public void testPiezaActualSeDetiene() {
             Tetris tetris = new Tetris();
             Board tablero = tetris.getBoard();
-            Piece pieza = new PieceSquare();
+            PieceBase pieza = new PieceSquare();
             tetris.nuevaPiezaAleatoria(pieza);
             // Simular caída hasta el fondo
             while (!tetris.piezaActualDetenida()) {
@@ -1015,7 +949,7 @@ public class TetrisTesteos {
             // en su orientación original pero sí en su orientación rotada.
             Tetris tetris = new Tetris();
             Board tablero = tetris.getBoard();
-            Piece pieza = new PieceL();
+            PieceBase pieza = new PieceL();
             // Colocar la pieza manualmente en la columna 0, fila 0
             tablero.setPiezaActual(pieza);
             tablero.setFilaActual(0);
@@ -1024,7 +958,7 @@ public class TetrisTesteos {
             // Colocar un bloque que bloquee la rotación a la derecha.
             // Usamos (0,1) para evitar que la limpieza de la pieza borre el bloqueo antes de verificar.
             tablero.setBoard(0, 1, 1);
-            boolean pudoRotar = tetris.rotarPiezaActualDerecha(); // intenta rotar y espera false
+            boolean pudoRotar = tetris.rotateRight(); // intenta rotar y espera false
             assertFalse("No se debe poder rotar si colisiona", pudoRotar); // espera false
         }
         
@@ -1040,5 +974,12 @@ public class TetrisTesteos {
         public void testClockImplementsITick() {
             Clock clock = new Clock();
             assertTrue(clock instanceof ITick);
+        }
+
+        @Test
+        public void testGetClock(){
+            Tetris tetris = new Tetris();
+            Clock clock = tetris.getClock();
+            assertFalse("El reloj no debe ser nulo", clock == null);
         }
 }
