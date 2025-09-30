@@ -14,7 +14,7 @@ Este repositorio, **Java-Tetris-Paradigmas2-2025-InvaldiJuan_MezaSantiago_GomezA
 | Miembro          | Rol Principal                  | Contribuciones Clave |
 |------------------|--------------------------------|----------------------|
 | Juan Invaldi    | Líder de Diseño de Clases y test| Implementación de piezas y herencia |
-| Santiago Meza   | Implemetación de Conceptos      | Desarrollo de tests unitarios y TDD |
+| Santiago Meza   | Implemetación de Conceptos      | Desarrollo contenido de la materia  |
 | Adolfo Gómez    | Integrador de Lógica del Juego  | Manejo del tablero y mecánicas de juego |
 
 **Nota**: Evaluación grupal (código) e individual (coloquio). GitHub se usó para colaboración con branches y pull requests.
