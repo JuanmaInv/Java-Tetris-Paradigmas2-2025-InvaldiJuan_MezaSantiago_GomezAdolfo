@@ -17,12 +17,9 @@ public abstract class PieceBase implements IRotator {
         this.name = name; // Nombre por defecto es null, se asigna al pedirlo
     }
 
-    // Nombre por defecto: nombre de la clase concreta
+    // Nombre de la pieza
     public String getName() {
-        if (this.name == null) {
-            this.name = this.getClass().getSimpleName();
-        }
-        return this.name;
+        return name;
     }
     
 //Getters y Setters
@@ -40,10 +37,7 @@ public abstract class PieceBase implements IRotator {
     // manipule el estado interno. Subclases pueden usar nextBoolean().
 
   //Getter para random
-    private Random getRandom() { // si no existe, crea uno nuevo
-        if (this.random == null) {
-            this.random = new Random();
-        }
+    private Random getRandom() {
         return this.random; // Retorna el Random ya creado
     }
 
@@ -90,6 +84,10 @@ public abstract class PieceBase implements IRotator {
         } // si no encontró bloques, está vacía
         return true;
     }
+
+    
+
+
     
   // Forzar que cada subclase implemente su propia estrategia de aleatorización
     public abstract void aleatorizarForma();
