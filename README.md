@@ -2,26 +2,26 @@
 
 ## Descripción General del Proyecto
 
-Este repositorio, **Java-Tetris-Paradigmas2-2025-InvaldiJuan_MezaSantiago_GomezAdolfo**, contiene un proyecto académico grupal desarrollado por Juan Invaldi, Santiago Meza y Adolfo Gómez para el curso de Paradigmas de Programación en la Universidad Católica de Perú (UCP) durante el año 2025. El objetivo es implementar una versión base del videojuego *Tetris* utilizando **Java** con un enfoque en **Programación Orientada a Objetos (POO)**, aplicando conceptos como herencia, polimorfismo, encapsulación y abstracción.
+Este repositorio, **Java-Tetris-Paradigmas2-2025-InvaldiJuan_MezaSantiago_GomezAdolfo**, contiene un proyecto académico grupal desarrollado por Juan Invaldi, Santiago Meza y Adolfo Gómez para el curso de Paradigmas de Programación en la Universidad De La Cuenca Del Plata (UCP) durante el año 2025. El objetivo es implementar una versión base del videojuego *Tetris* utilizando **Java** con un enfoque en **Programación Orientada a Objetos (POO)**, aplicando conceptos como herencia, polimorfismo, encapsulación y abstracción.
 
-- **Propósito**: Demostrar artefactos POO mediante un escenario lúdico, enfatizando **Test-Driven Development (TDD)** con cobertura de pruebas unitarias superior al 90%.
-- **Alcance**: Código base sin interfaz gráfica, centrado en la lógica del juego (piezas, tablero, descenso, eliminación de líneas).
+- **Propósito**: Demostrar artefactos POO mediante un escenario, enfatizando sobre la tematica **Test-Driven Development (TDD)** con cobertura de pruebas unitarias superior al 90%.
+- **Alcance**: Código de programacion java sin interfaz gráfica, centrado en la lógica del juego (piezas, tablero, descenso, eliminación de líneas).
 - Licencia: Open Source.
 - **Enlace al Repositorio**: [https://github.com/JuanmaInv/Java-Tetris-Paradigmas2-2025-InvaldiJuan_MezaSantiago_GomezAdolfo](https://github.com/JuanmaInv/Java-Tetris-Paradigmas2-2025-InvaldiJuan_MezaSantiago_GomezAdolfo)
 
 ## Miembros del Equipo
 
-| Miembro          | Rol Principal                  | Contribuciones Clave |
-|------------------|--------------------------------|----------------------|
-| Juan Invaldi    | Líder de Diseño de Clases y test| Implementación de piezas y herencia |
-| Santiago Meza   | Implemetación de Conceptos      | Desarrollo contenido de la materia  |
-| Adolfo Gómez    | Integrador de Lógica del Juego  | Manejo del tablero y mecánicas de juego |
+| Miembro          | Rol Principal    |
+|------------------|------------------|
+| Juan Invaldi    | Líder del Proyecto|
+| Santiago Meza   | Tester y Documentacion |
+| Adolfo Gómez    | Logica y funcionalidades |
 
 **Nota**: Evaluación grupal (código) e individual (coloquio). GitHub se usó para colaboración con branches y pull requests.
 
 ## Requisitos y Objetivos
 
-El proyecto cumple los requerimientos del escenario *Tetris* propuesto por UCP Video Games Inc., enfocándose en la lógica backend.
+El proyecto cumple los requerimientos del escenario *Tetris* propuesto por UCP Video Games Inc., enfocándose en la lógica solicitada.
 
 ### Objetivos Principales
 - Crear clases Java con tests JUnit (cobertura >90%).
@@ -60,12 +60,11 @@ Java-Tetris-Paradigmas2-2025-InvaldiJuan_MezaSantiago_GomezAdolfo/
 │   └── test/
 │       └── java/
 │           ├── TetrisTest.java
-│           ├── PieceTest.java
-│           └── BoardTest.java
+│           ├── OtrosTest.java
+│           └── ExtraTest.java
 ├── pom.xml (o build.gradle)
 ├── README.md
-└── coverage-report/
-```
+└── ...
 
 - **Imágenes**: Incluye diagramas conceptuales (UML o flujo) en el repositorio.
 
@@ -105,14 +104,14 @@ Java-Tetris-Paradigmas2-2025-InvaldiJuan_MezaSantiago_GomezAdolfo/
 
 Cobertura >90% con JUnit 5.
 
-| Categoría              | Archivo         | Tests | Cobertura |
-|------------------------|-----------------|-------|-----------|
-| Creación de Piezas    | PieceTest.java | 6     | 100%      |
-| Rotación              | PieceTest.java | 40+   | 95%       |
-| Tablero               | BoardTest.java | 10    | 90%       |
-| Reloj/Movimiento      | TetrisTest.java| 5     | 100%      |
-| Líneas Completas      | BoardTest.java | 3     | 95%       |
-| Juego Completo        | TetrisTest.java| 4     | 92%       |
+| Categoría              | Archivo       | Cobertura de Test |
+|------------------------|---------------|-------------------|
+| Creación de Piezas    | PieceTest.java |      100%         |
+| Rotación              | PieceTest.java |      95%          |
+| Tablero               | BoardTest.java |      90%          |
+| Reloj/Movimiento      | TetrisTest.java|     100%          |
+| Líneas Completas      | BoardTest.java |     95%           |
+| Juego Completo        | TetrisTest.java|     92%           |
 
 ## Configuración y Ejecución
 
