@@ -21,7 +21,7 @@ public class Tetris implements IGameState{
     private Random random = new Random();
 
     // Genera una nueva pieza aleatoria
-    private PieceBase generarPiezaAleatoria() { // 5 tipos de piezas
+    PieceBase generarPiezaAleatoria() { // 5 tipos de piezas
         int randomPiece = random.nextInt(5); // 0 a 4
         switch (randomPiece) {
             case 0:
@@ -102,7 +102,8 @@ public class Tetris implements IGameState{
     // Verifica si la pieza actual está apoyada y no puede descender más
     public boolean piezaActualDetenida() {
         PieceBase pieza = board.getPiezaActual();
-        if (pieza == null) return true;
+        if (pieza == null)
+        return true;
         return !board.verificarColocacionValida(pieza, board.getFilaActual() + 1, board.getColumnaActual());
     }
 
@@ -142,6 +143,11 @@ public class Tetris implements IGameState{
         }
         // Por defecto, devolver estado inicial si no coincide ninguna condición
         return 0;
+    }
+
+    // Alias simple para UML: state() devuelve lo mismo que getState()
+    public int state() {
+        return getState();
     }
 
     // Consulta a Board si el juego debe finalizar y actualiza el estado global.
@@ -196,7 +202,7 @@ public class Tetris implements IGameState{
     
     // Métodos adicionales
     public Board getBoard() {
-        // Asegurar que nunca se devuelva null (robusto frente a compilaciones antiguas/estado inesperado)
+        // Asegurar que nunca se devuelva null 
         if (this.board == null) {
             this.board = new Board();
         }

@@ -43,8 +43,8 @@ public class Clock implements ITick {
     }
 
     @Override
-    public void tick() {
-        setTicks(getTicks() + 1);
+    public void tick() { // Avanza el reloj una unidad (1 tick)
+        setTicks(getTicks() + 1); // Incrementa el contador de ticks
         
         // Si hay un tablero y una pieza actual, controlar el descenso automático
         if (board != null && board.getPiezaActual() != null && ticks % intervaloDescenso == 0) { // permite que la pieza baje cada X ticks

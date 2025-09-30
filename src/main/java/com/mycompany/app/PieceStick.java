@@ -3,12 +3,12 @@ package com.mycompany.app;
 public class PieceStick extends PieceBase { // Extiende la clase abstracta PiezasAbsAll
 
     public PieceStick() {
-    super (new int [][]{
+    super (new int [][] {
         {1},
         {1},
         {1},
         {1}
-        });
+        }, "Piece Stick");
     }
 
     @Override

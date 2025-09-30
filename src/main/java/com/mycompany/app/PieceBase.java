@@ -8,10 +8,21 @@ import java.util.Random; // Para seleccionar una rotacion aleatoria
 public abstract class PieceBase implements IRotator {
     private int[][] forma; // Matriz que representa la forma de la pieza
     private Random random = new Random(); // Para rotación aleatoria y selección de forma
+    // Nombre de la pieza (por defecto el nombre de la clase)
+    private String name;
 
 // Constructor
-    public PieceBase(int[][] forma) {// Recibe la forma inicial de la pieza
+    public PieceBase (int[][] forma, String name) {// Recibe la forma inicial de la pieza
         this.forma = forma;// Asigna la forma inicial
+        this.name = name; // Nombre por defecto es null, se asigna al pedirlo
+    }
+
+    // Nombre por defecto: nombre de la clase concreta
+    public String getName() {
+        if (this.name == null) {
+            this.name = this.getClass().getSimpleName();
+        }
+        return this.name;
     }
     
 //Getters y Setters

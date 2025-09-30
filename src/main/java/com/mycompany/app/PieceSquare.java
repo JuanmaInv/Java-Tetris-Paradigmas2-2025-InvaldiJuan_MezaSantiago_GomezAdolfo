@@ -7,7 +7,7 @@ public class PieceSquare extends PieceBase{
 
             {1, 1},
             {1, 1}
-        });
+        }, "Piece Square");
     }
 
     @Override

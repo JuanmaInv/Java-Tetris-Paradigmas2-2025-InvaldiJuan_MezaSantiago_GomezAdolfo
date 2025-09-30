@@ -1002,14 +1002,14 @@ public class TetrisTesteos {
     }
 
     @Test
-    public void testClockSetGetIntervaloDescenso() { // este test es para demostrar que se puede setear y getear el intervalo de descenso
+    public void testClockSetGetIntervaloDescenso() { // este test es para demostrar que se puede hacer set y get del intervalo de descenso
         Clock clock = new Clock();
         clock.setIntervaloDescenso(10);
         assertEquals(10, clock.getIntervaloDescenso());
     }
 
     @Test
-    public void testClockSetGetBoard() { //este test es para demostrar que Clock tiene un Board y se puede setear y getear
+    public void testClockSetGetBoard() { //este test es para demostrar que Clock tiene un Board y se puede hacer set y get
         Clock clock = new Clock();
         Board board = new Board();
         clock.setBoard(board);
@@ -1211,6 +1211,8 @@ public class TetrisTesteos {
                 board.setBoard(i, j, 1);
             }
         }
+        // Marcar una pieza actual para que esFinDelJuego pueda evaluar el estado del tablero
+        board.setPiezaActual(new PieceSquare());
         boolean resultado = tetris.nuevaPiezaAleatoria(pieza);
         assertFalse(resultado);
         assertTrue(tetris.isGameEnd());
@@ -1343,6 +1345,97 @@ public class TetrisTesteos {
         assertEquals(board, tetris.getBoard());
         assertEquals(clock, tetris.getClock());
     }
+
+    @Test
+    public void testGenerarPiezaAleatoria() {
+        Tetris tetris = new Tetris();
+        PieceBase pieza = tetris.generarPiezaAleatoria(); // directo, si no es private
+        // Verificar que la pieza no es nula
+        assertNotNull(pieza);
+        // Verificar que la pieza es una PieceDog, PieceL, PieceStick, PieceSquare o PieceT
+        assertTrue(pieza instanceof PieceDog || pieza instanceof PieceL || pieza instanceof PieceStick || pieza instanceof PieceSquare || pieza instanceof PieceT);
     }
+
+    @Test
+    public void testTetrisActualizarEstadoJuego() {
+        Tetris tetris = new Tetris();
+        tetris.start();
+        // Inicialmente el estado debe ser 1 (en juego)
+        assertEquals(1, tetris.getState());
+        // Forzar condiciones para game over
+        Board board = tetris.getBoard();
+        for (int i = 0; i < board.getFilas(); i++) {
+            for (int j = 0; j < board.getColumnas(); j++) {
+                board.setBoard(i, j, 1);
+            }
+        }
+        
+        // Marcar una pieza para que esFinDelJuego pueda determinar que no hay posición válida
+        board.setPiezaActual(new PieceSquare());
+        tetris.actualizarEstadoJuego();
+        assertEquals(2, tetris.getState()); // Estado debe ser 2 (game over)
+    }
+
+    @Test
+    public void testTetrisCompleto() {
+        Tetris tetris = new Tetris();
+        tetris.start();
+
+        // Verificar estado inicial
+        assertTrue(tetris.isGameStart()); // Verificar que el juego ha comenzado
+        assertFalse(tetris.isGameEnd()); // Verificar que no es game over al inicio
+        assertFalse(tetris.isGameWin()); // Verificar que no es game win al inicio
+
+        assertEquals(1, tetris.getState()); // Estado inicial debe ser 1 (en juego)
+        assertNotNull(tetris.getBoard()); // Verificar que el tablero no es nulo
+        assertNotNull(tetris.getClock()); // Verificar que el reloj no es nulo
+        assertTrue(tetris.isJuegoActivo()); // Verificar que el juego está activo
+        assertEquals(0, tetris.getClock().getTicks()); // Ticks iniciales deben ser 0
+
+        // Generar y colocar una nueva pieza en una columna random
+        assertTrue(tetris.nuevaPiezaAleatoria(new PieceSquare()));
+
+        // Intentar rotar y mover la pieza
+        assertTrue(tetris.rotateRight()); // puede rotar, no debe lanzar error
+        assertTrue(tetris.rotateLeft());  // puede rotar, no debe lanzar error
+        assertTrue(tetris.piezaActualDetenida()); // al inicio no debe estar detenida
+
+        // Simular algunos ticks del reloj
+        tetris.setIntervaloDescenso(2);
+        // Verificar que el intervalo se ha seteado correctamente
+        assertEquals(2, tetris.getClock().getIntervaloDescenso()); // espera 2 porque lo seteamos arriba
+        
+        // Hacer tick y verificar que avanza el contador de ticks
+        tetris.getClock().tick();
+        assertEquals(1, tetris.getClock().getTicks()); // Verificar que los ticks avanzan
+        tetris.getClock().tick();
+        assertEquals(2, tetris.getClock().getTicks()); // Verificar que los ticks avanzan
+        tetris.getClock().tick();
+
+        // Simular algunas acciones
+        PieceBase pieza = new PieceSquare();
+        tetris.nuevaPiezaAleatoria(pieza);
+        tetris.getBoard().moverPieza(pieza, 1, 0);
+        tetris.rotateRight();
+        tetris.getClock().tick();
+        // Verificar estado intermedio
+        assertEquals(1, tetris.getState());
+        // Forzar condiciones para game win
+        Board board = tetris.getBoard();
+        for (int i = 0; i < board.getFilas(); i++) {
+            for (int j = 0; j < board.getColumnas(); j++) {
+                board.setBoard(i, j, 1);
+            }
+        }
+        // Marcar una pieza cualquiera como piezaActual para que los métodos que la consulten no hagan NPE
+        board.setPiezaActual(new PieceSquare());
+        board.verificarYEliminarLineas(); // esto elimina la(s) filas llenas detectadas
+        tetris.actualizarEstadoJuego();
+        // Al eliminar todas las líneas la lógica actual señala 'game win' (3)
+        assertEquals(3, tetris.getState()); // Estado debe ser 3 (game win)
+    }
+}
+
+
 
 

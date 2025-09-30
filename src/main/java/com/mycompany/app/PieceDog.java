@@ -19,7 +19,7 @@ public class PieceDog extends PieceBase {
         super(new int[][] {
             {0, 1, 1},
             {1, 1, 0}
-        });
+        }, "Piece Dog");
     }
 
     @Override

@@ -15,7 +15,7 @@ public class PieceT extends PieceBase {
         super(new int[][] {
             {0, 1, 0},
             {1, 1, 1},
-        });
+        }, "Piece T");
     }
 
     @Override

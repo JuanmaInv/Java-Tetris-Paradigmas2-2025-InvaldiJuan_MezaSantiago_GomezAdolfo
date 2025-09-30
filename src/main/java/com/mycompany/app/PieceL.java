@@ -19,7 +19,7 @@ public class PieceL extends PieceBase {
             {1, 0},
             {1, 0},
             {1, 1}
-        });
+        }, "Piece L");
     }
 
     @Override
