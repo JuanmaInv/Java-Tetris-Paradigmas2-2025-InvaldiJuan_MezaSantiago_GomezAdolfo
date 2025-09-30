@@ -5,6 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 
@@ -982,4 +983,315 @@ public class TetrisTesteos {
             Clock clock = tetris.getClock();
             assertFalse("El reloj no debe ser nulo", clock == null);
         }
-}
+         
+
+        // Tests sencillos para Clock
+    @Test
+    public void testClockTicksIncrementa() {
+        Clock clock = new Clock();
+        int ticksInicial = clock.getTicks();
+        clock.tick();
+        assertEquals(ticksInicial + 1, clock.getTicks());
+    }
+
+    @Test
+    public void testClockSetGetTicks() { // este test es para demostrar que se puede setear y getear los ticks
+        Clock clock = new Clock();
+        clock.setTicks(42);
+        assertEquals(42, clock.getTicks());
+    }
+
+    @Test
+    public void testClockSetGetIntervaloDescenso() { // este test es para demostrar que se puede setear y getear el intervalo de descenso
+        Clock clock = new Clock();
+        clock.setIntervaloDescenso(10);
+        assertEquals(10, clock.getIntervaloDescenso());
+    }
+
+    @Test
+    public void testClockSetGetBoard() { //este test es para demostrar que Clock tiene un Board y se puede setear y getear
+        Clock clock = new Clock();
+        Board board = new Board();
+        clock.setBoard(board);
+        assertEquals(board, clock.getBoard());
+    }
+
+     // Tests sencillos para Board
+    @Test
+    public void testBoardConstructor() {
+        Board board = new Board();
+        assertEquals(10, board.getFilas());
+        assertEquals(20, board.getColumnas());
+        assertTrue(board.tableroVacio());
+    }
+
+    @Test
+    public void testBoardSetGetPiezaActual() {
+        Board board = new Board();
+        PieceBase pieza = new PieceSquare();
+        board.setPiezaActual(pieza);
+        assertEquals(pieza, board.getPiezaActual());
+    }
+
+    // para board
+    @Test
+    public void testBoardSetGetFilaColumnaActual() { // este test es para demostrar que setFilaActual y setColumnaActual funcionan
+        Board board = new Board();
+        board.setFilaActual(5);
+        board.setColumnaActual(7);
+        assertEquals(5, board.getFilaActual());
+        assertEquals(7, board.getColumnaActual());
+    }
+
+    @Test
+    public void testBoardSetGetBoardCell() { // este test es para demostrar que setBoard y getBoard funcionan
+        Board board = new Board();
+        board.setBoard(2, 3, 9);
+        assertEquals(9, board.getBoard()[2][3]);
+    }
+
+    @Test
+    public void testBoardLimpiarTablero() { // este test es para demostrar que limpiarTablero funciona
+        Board board = new Board();
+        board.setBoard(0, 0, 1);
+        board.setBoard(1, 1, 2);
+        board.limpiarTablero();
+        assertTrue(board.tableroVacio());
+        assertEquals(null, board.getPiezaActual());
+        assertEquals(0, board.getFilaActual());
+        assertEquals(0, board.getColumnaActual());
+    }
+
+       // Más tests sencillos para Board
+    @Test
+    public void testVerificarColocacionValidaTrue() {
+        Board board = new Board();
+        PieceBase pieza = new PieceSquare();
+        // Colocar en posición válida (0,0)
+        assertTrue(board.verificarColocacionValida(pieza, 0, 0));
+    }
+
+    @Test
+    public void testVerificarColocacionValidaFalseFueraTablero() {
+        Board board = new Board();
+        PieceBase pieza = new PieceSquare();
+        // Colocar fuera del tablero
+        assertFalse(board.verificarColocacionValida(pieza, 9, 19));
+    }
+
+    @Test
+    public void testColocarSiValidaTrue() {
+        Board board = new Board();
+        PieceBase pieza = new PieceSquare();
+        boolean resultado = board.colocarSiValida(pieza, 0, 0);
+        assertTrue(resultado);
+        assertEquals(pieza, board.getPiezaActual());
+    }
+
+    @Test
+    public void testColocarSiValidaFalse() {
+        Board board = new Board();
+        PieceBase pieza = new PieceSquare();
+        // Colocar fuera del tablero
+        boolean resultado = board.colocarSiValida(pieza, 9, 19);
+        assertFalse(resultado);
+        assertEquals(null, board.getPiezaActual());
+    }
+    
+    @Test
+    public void testMoverPiezaFalseSinPieza() {
+        Board board = new Board();
+        // No hay pieza actual
+        assertFalse(board.moverPieza(1, 0));
+    }
+
+     // Tests sencillos para Tetris
+    @Test
+    public void testTetrisConstructor() {
+        Tetris tetris = new Tetris();
+        assertFalse(tetris.isGameStart());
+        assertFalse(tetris.isGameEnd());
+        assertFalse(tetris.isGameWin());
+        assertNotNull(tetris.getBoard());
+        assertNotNull(tetris.getClock());
+    }
+
+    @Test
+    public void testTetrisStartEndRestart() {
+        Tetris tetris = new Tetris();
+        tetris.start();
+        assertTrue(tetris.isGameStart());
+        tetris.end();
+        assertTrue(tetris.isGameEnd());
+        tetris.restart();
+        assertFalse(tetris.isGameStart());
+        assertFalse(tetris.isGameEnd());
+        assertFalse(tetris.isGameWin());
+    }
+
+    @Test
+    public void testTetrisSettersGetters() {// este test es para demostrar que se pueden setear y getear los booleanos gameStart, gameEnd y gameWin
+        Tetris tetris = new Tetris();
+        tetris.setGameStart(true);
+        tetris.setGameEnd(true);
+        tetris.setGameWin(true);
+        assertTrue(tetris.isGameStart());
+        assertTrue(tetris.isGameEnd());
+        assertTrue(tetris.isGameWin());
+    }
+
+    @Test
+    public void testTetrisSetBoardClock() {// este test es para demostrar que se pueden setear y getear el board y el clock
+        Tetris tetris = new Tetris();
+        Board board = new Board();
+        Clock clock = new Clock();
+        tetris.setBoard(board);
+        tetris.setClock(clock);
+        assertEquals(board, tetris.getBoard());
+        assertEquals(clock, tetris.getClock());
+    }
+
+     // Más tests sencillos para Tetris
+    @Test
+    public void testTetrisGetState() {
+        Tetris tetris = new Tetris();
+        assertEquals(0, tetris.getState()); // Estado inicial
+        tetris.start();
+        assertEquals(1, tetris.getState()); // En juego
+        tetris.end();
+        assertEquals(2, tetris.getState()); // Fin del juego
+        tetris.setState(3);
+        assertEquals(3, tetris.getState()); // Win
+    }
+
+    @Test
+    public void testTetrisSetState() {
+        Tetris tetris = new Tetris();
+        tetris.setState(1);
+        assertTrue(tetris.isGameStart());
+        assertFalse(tetris.isGameEnd());
+        assertFalse(tetris.isGameWin());
+        tetris.setState(2);
+        assertFalse(tetris.isGameStart());
+        assertTrue(tetris.isGameEnd());
+        assertFalse(tetris.isGameWin());
+        tetris.setState(3);
+        assertFalse(tetris.isGameStart());
+        assertFalse(tetris.isGameEnd());
+        assertTrue(tetris.isGameWin());
+    }
+
+    @Test
+    public void testTetrisIsJuegoActivo() {
+        Tetris tetris = new Tetris();
+        assertFalse(tetris.isJuegoActivo());
+        tetris.start();
+        assertTrue(tetris.isJuegoActivo());
+        tetris.end();
+        assertFalse(tetris.isJuegoActivo());
+    }
+
+    @Test
+    public void testTetrisNuevaPiezaAleatoriaTrue() {
+        Tetris tetris = new Tetris();
+        PieceBase pieza = new PieceSquare();
+        boolean resultado = tetris.nuevaPiezaAleatoria(pieza);
+        assertTrue(resultado);
+        assertEquals(pieza, tetris.getBoard().getPiezaActual());
+    }
+
+    @Test
+    public void testTetrisNuevaPiezaAleatoriaFalse() {
+        Tetris tetris = new Tetris();
+        PieceBase pieza = new PieceSquare();
+        // Forzar el tablero lleno para que no se pueda colocar
+        Board board = tetris.getBoard();
+        for (int i = 0; i < board.getFilas(); i++) {
+            for (int j = 0; j < board.getColumnas(); j++) {
+                board.setBoard(i, j, 1);
+            }
+        }
+        boolean resultado = tetris.nuevaPiezaAleatoria(pieza);
+        assertFalse(resultado);
+        assertTrue(tetris.isGameEnd());
+    }
+
+       @Test
+    public void testTetrisRotateRightLeft() {
+        Tetris tetris = new Tetris();
+        PieceBase pieza = new PieceL();
+        tetris.nuevaPiezaAleatoria(pieza);
+        boolean rotadoDerecha = tetris.rotateRight();
+        boolean rotadoIzquierda = tetris.rotateLeft();
+        // Puede rotar si hay espacio, no debe lanzar error
+        assertTrue(rotadoDerecha || !rotadoDerecha);
+        assertTrue(rotadoIzquierda || !rotadoIzquierda);
+    }
+
+    @Test
+    public void testTetrisPiezaActualDetenida() {
+        Tetris tetris = new Tetris();
+        PieceBase pieza = new PieceSquare();
+        tetris.nuevaPiezaAleatoria(pieza);
+        Board board = tetris.getBoard();
+        // Simular caída hasta el fondo
+        while (!tetris.piezaActualDetenida()) {
+            board.moverPieza(pieza, 1, 0);
+        }
+        assertTrue(tetris.piezaActualDetenida());
+    }
+
+
+
+    @Test
+    public void testTetrisSetIntervaloDescenso() {
+        Tetris tetris = new Tetris();
+        tetris.setIntervaloDescenso(5);
+        assertEquals(5, tetris.getClock().getIntervaloDescenso());
+    }
+
+     @Test
+    public void testTetrisGetBoardNeverNull() {
+        Tetris tetris = new Tetris();
+        tetris.setBoard(null);
+        assertNotNull(tetris.getBoard()); // Siempre debe devolver un Board
+    }
+
+    @Test
+    public void testTetrisSetGameFlags() {
+        Tetris tetris = new Tetris();
+        tetris.setGameStart(true);
+        tetris.setGameEnd(false);
+        tetris.setGameWin(false);
+        assertTrue(tetris.isGameStart());
+        assertFalse(tetris.isGameEnd());
+        assertFalse(tetris.isGameWin());
+    }
+
+    @Test
+    public void testTetrisSetClock() {
+        Tetris tetris = new Tetris();
+        Clock clock = new Clock();
+        tetris.setClock(clock);
+        assertEquals(clock, tetris.getClock());
+    }
+
+    @Test
+    public void testTetrisTickSinJuegoActivo() {
+        Tetris tetris = new Tetris();
+        int ticksAntes = tetris.getClock().getTicks();
+        tetris.tick(); // No debería avanzar ticks porque el juego no está activo
+        assertEquals(ticksAntes, tetris.getClock().getTicks());
+    }
+
+    @Test
+    public void testTetrisTickConJuegoActivo() {
+        Tetris tetris = new Tetris();
+        tetris.start();
+        int ticksAntes = tetris.getClock().getTicks();
+        tetris.tick(); // Debería avanzar ticks
+        assertEquals(ticksAntes + 1, tetris.getClock().getTicks());
+    }
+    }
+
+

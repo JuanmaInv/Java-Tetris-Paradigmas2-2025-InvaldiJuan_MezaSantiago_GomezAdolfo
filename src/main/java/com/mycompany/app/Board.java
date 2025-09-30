@@ -178,7 +178,7 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
         return lineasParaGanar;
     }
 
-    private void setLineasParaGanar(int lineas) { //se ocupa private para que solo yo pueda cambiar la meta de lineas para ganar
+    void setLineasParaGanar(int lineas) { //se ocupa private para que solo yo pueda cambiar la meta de lineas para ganar
         this.lineasParaGanar = lineas;
     }
 
