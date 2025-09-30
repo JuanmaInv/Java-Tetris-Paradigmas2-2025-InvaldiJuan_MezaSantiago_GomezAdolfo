@@ -72,6 +72,32 @@ public class PieceNames {
     }
 
 
+        @Test
+    public void testLimpiarPiezaDelTablero() {
+        Board board = new Board();
+        PieceBase square = new PieceSquare();
+
+        // Colocar square en (0,0)
+        board.setPiezaActual(square);
+        board.setFilaActual(0);
+        board.setColumnaActual(0);
+        board.colocarPiezaEnTableroVerificada(square, 0, 0);
+
+        // Verificamos que las posiciones ocupadas son no-cero
+        assertEquals(1, board.getBoard()[0][0]);
+        assertEquals(1, board.getBoard()[0][1]);
+        assertEquals(1, board.getBoard()[1][0]);
+        assertEquals(1, board.getBoard()[1][1]);
+
+        // Limpiar la pieza
+        board.limpiarPiezaDelTablero(square, 0, 0);
+
+        // Ahora esas celdas deben ser 0
+        assertEquals(0, board.getBoard()[0][0]);
+        assertEquals(0, board.getBoard()[0][1]);
+        assertEquals(0, board.getBoard()[1][0]);
+        assertEquals(0, board.getBoard()[1][1]);
+    }
 
 
 }
