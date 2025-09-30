@@ -1292,6 +1292,57 @@ public class TetrisTesteos {
         tetris.tick(); // Debería avanzar ticks
         assertEquals(ticksAntes + 1, tetris.getClock().getTicks());
     }
+
+      @Test
+    public void testTetrisSetRandom() {
+        Tetris tetris = new Tetris();
+        java.util.Random nuevoRandom = new java.util.Random(123);
+        // Usar reflexión para acceder al método privado setRandom
+        try {
+            java.lang.reflect.Method metodo = Tetris.class.getDeclaredMethod("setRandom", java.util.Random.class);
+            metodo.setAccessible(true);
+            metodo.invoke(tetris, nuevoRandom);
+        } catch (Exception e) {
+            assertTrue("No se pudo acceder a setRandom", false);
+        }
+    }
+
+    @Test
+    public void testTetrisGetRandom() {
+        Tetris tetris = new Tetris();
+        // Usar reflexión para acceder al método privado getRandom
+        try {
+            java.lang.reflect.Method metodo = Tetris.class.getDeclaredMethod("getRandom");
+            metodo.setAccessible(true);
+            Object random = metodo.invoke(tetris);
+            assertTrue(random instanceof java.util.Random);
+        } catch (Exception e) {
+            assertTrue("No se pudo acceder a getRandom", false);
+        }
+    }
+
+    @Test
+    public void testTetrisRestartReseteaFlags() {
+        Tetris tetris = new Tetris();
+        tetris.setGameStart(true);
+        tetris.setGameEnd(true);
+        tetris.setGameWin(true);
+        tetris.restart();
+        assertFalse(tetris.isGameStart());
+        assertFalse(tetris.isGameEnd());
+        assertFalse(tetris.isGameWin());
+    }
+
+    @Test
+    public void testTetrisSettersBoardClock() {
+        Tetris tetris = new Tetris();
+        Board board = new Board();
+        Clock clock = new Clock();
+        tetris.setBoard(board);
+        tetris.setClock(clock);
+        assertEquals(board, tetris.getBoard());
+        assertEquals(clock, tetris.getClock());
+    }
     }
 
 
