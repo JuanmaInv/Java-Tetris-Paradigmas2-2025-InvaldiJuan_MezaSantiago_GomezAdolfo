@@ -49,4 +49,29 @@ public class PieceNames {
         assertEquals(2, pieza5.getAlto());
         assertEquals(3, pieza5.getAncho());
     }
+
+    @Test
+    public void testMoverPiezaBooleanCollision() {
+        Board board = new Board();
+        PieceBase square = new PieceSquare();
+
+        // Colocar square en (0,0)
+        board.setPiezaActual(square);
+        board.setFilaActual(0);
+        board.setColumnaActual(0);
+        board.colocarPiezaEnTableroVerificada(square, 0, 0);
+
+        // Poner un bloqueo donde la pieza intentaría ocupar tras bajar 1 fila
+        // La pieza square ocupa (0,0),(0,1),(1,0),(1,1)
+        // Al bajar 1 fila ocuparía (1,0),(1,1),(2,0),(2,1) -> bloqueamos (2,0)
+        board.setBoard(2, 0, 9);
+
+        // moverPieza(deltaFila=1, deltaColumna=0) debería detectar la colisión y devolver false
+        boolean puedeMover = board.moverPieza(1, 0);
+        assertFalse("Mover debería devolver false por colisión", puedeMover);
+    }
+
+
+
+
 }
