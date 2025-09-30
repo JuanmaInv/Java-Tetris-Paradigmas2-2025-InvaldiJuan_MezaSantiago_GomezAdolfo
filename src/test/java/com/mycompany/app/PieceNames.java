@@ -7,6 +7,7 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertFalse;
 //import static org.junit.Assert.assertNotNull;
 //import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertTrue;
 
 public class PieceNames {
     
@@ -125,6 +126,33 @@ public class PieceNames {
         assertEquals(0, board.getFilaActual());
     }
 
+    @Test
+    public void testCaidaLibre_PiezaNoActualNoHaceNada() {
+        Board board = new Board();
+        PieceBase square = new PieceSquare();
+        PieceBase otraPieza = new PieceT();
 
+        // Asegurar tablero vacío
+        board.limpiarTablero();
+        assertTrue(board.tableroVacio());
+
+        // Llamar caidaLibre con una pieza que es la piezaActual (piezaActual==null)
+        board.setPiezaActual(square);
+        board.setFilaActual(0);
+        board.setColumnaActual(0);
+        board.colocarPiezaEnTableroVerificada(square, 0, 0);
+        board.caidaLibre(square);
+        board.caidaLibre(otraPieza);  
+        //comprobar que la pieza square esta en la ultima fila posible
+        int filaEsperada = board.getFilas() - square.getAlto();
+        assertEquals(filaEsperada, board.getFilaActual());
+        assertEquals(0, board.getColumnaActual());
+
+        // Verificar que la pieza no actual no se puede mover tras caida libre
+        assertFalse(board.getPiezaActual() == otraPieza); // la pieza actual sigue siendo square
+        boolean pudoMover = board.moverPieza(1, 0); // intenta mover otraPieza que no es la actual
+        assertFalse("No debería poder mover una pieza que no es la actual", pudoMover); // espera false
+        
+    }
 
 }
