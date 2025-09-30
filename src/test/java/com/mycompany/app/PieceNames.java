@@ -100,4 +100,31 @@ public class PieceNames {
     }
 
 
+        @Test
+    public void testMoverPieza_PiezaDistintaNoMueve() {
+        Board board = new Board();
+        PieceSquare piezaActual = new PieceSquare();
+        PieceSquare piezaNoActual = new PieceSquare();
+
+        // Colocar piezaActual en (0,0)
+        board.setPiezaActual(piezaActual);
+        board.setFilaActual(0);
+        board.setColumnaActual(0);
+        board.colocarPiezaEnTableroVerificada(piezaActual, 0, 0);
+
+        // Intentar mover usando otra pieza distinta: no debe moverse
+        board.moverPieza(piezaNoActual, 1, 0);
+
+        // Las posiciones originales deben seguir ocupadas
+        assertEquals(1, board.getBoard()[0][0]);
+        assertEquals(1, board.getBoard()[0][1]);
+        assertEquals(1, board.getBoard()[1][0]);
+        assertEquals(1, board.getBoard()[1][1]);
+
+        // La fila actual del tablero no debe haberse modificado
+        assertEquals(0, board.getFilaActual());
+    }
+
+
+
 }
