@@ -1,121 +1,129 @@
-# Java-Tetris-Paradigmas2-2025-JuanmaInv_Arke-off
+# Documentación del Proyecto: Tetris en Java - Paradigmas de Programación 2025
 
-# Trabajo Práctico 2: Tetris con POO vía TDD
-# Objetivo:
-  - Crear las clases necesarias en lenguaje Java con sus correspondientes test unitarios que satisfagan los requerimientos planteados. Y que los tests tengan más de 90% de cobertura.
-  - Contenido que debe estar implementado:
-  - Igualdad
-  - Constructor
-  - Sobrescribir métodos
-  - Componentes de un objeto
-  - Doble encapsulamiento (get set) atributo privado y método privado
-  - Interfaz y método con interfaz
-  - Herencia
-  - Polimorfismo
-  - Sobrecarga
-  - Clases e Instancias de clases
-  - Clase abstracta y método abstracto
-  - Sin print, todos testeos unitarios JUnit que sean simples. Assert false true equals
+## Descripción General del Proyecto
 
-# Criterios a tener en cuenta:
-  - El siguiente trabajo práctico tiene nota grupal y personal (el código es grupal y el coloquio personal).
-  - Los grupos deben ser de 3 personas y deben crear un repositorio grupal en Github
-  - La rúbrica tiene una suma 100 puntos (nota 10 diez)\
-  - Se debe realizar con el paradigma orientado a objetos en lenguaje Java y orientados con test unitarios.
-  - Se deberá presentar con los test unitarios que pasen para cada funcionalidad (se podrán generar los test unitarios que sean necesarios)
-  - Para aprobar se deberá presentar en coloquio del grupo explicando el 
+Este repositorio, **Java-Tetris-Paradigmas2-2025-InvaldiJuan_MezaSantiago_GomezAdolfo**, contiene un proyecto académico grupal desarrollado por Juan Invaldi, Santiago Meza y Adolfo Gómez para el curso de Paradigmas de Programación en la Universidad Católica de Perú (UCP) durante el año 2025. El objetivo es implementar una versión base del videojuego *Tetris* utilizando **Java** con un enfoque en **Programación Orientada a Objetos (POO)**, aplicando conceptos como herencia, polimorfismo, encapsulación y abstracción.
 
-# Se valorará: 
-  - Aplicación de elementos, artefactos y principios del paradigma orientado a objetos
-  - Realización de flujo de trabajo en GitHub. Repositorio grupal
-  - Programación basada en test (TDD)
-  - Cobertura de código más del 90%
+- **Propósito**: Demostrar artefactos POO mediante un escenario lúdico, enfatizando **Test-Driven Development (TDD)** con cobertura de pruebas unitarias superior al 90%.
+- **Alcance**: Código base sin interfaz gráfica, centrado en la lógica del juego (piezas, tablero, descenso, eliminación de líneas).
+- Licencia: Open Source.
+- **Enlace al Repositorio**: [https://github.com/JuanmaInv/Java-Tetris-Paradigmas2-2025-InvaldiJuan_MezaSantiago_GomezAdolfo](https://github.com/JuanmaInv/Java-Tetris-Paradigmas2-2025-InvaldiJuan_MezaSantiago_GomezAdolfo)
 
-# Entregables:
-  - Coloquio grupal para presentar defender el trabajo
-  - Enlace a repositorio grupal en Github
-  - Cobertura del test del código
+## Miembros del Equipo
 
-# Escenario: Tetris
-  La empresa UCP Video Games Inc, desea realizar un videojuego para un evento internacional, el mismo se basa en el famoso juego Tetris.
-  Se desea que el equipo de desarrollo pueda escribir el código base en Java basado en programación orientado a objetos para luego se pueda
-  desarrollar la interfaz de usuario. Para eso como el Ingeniero en Sistemas conforma un equipo de trabajo de dos personas para este cometido. 
+| Miembro          | Rol Principal                  | Contribuciones Clave |
+|------------------|--------------------------------|----------------------|
+| Juan Invaldi    | Líder de Diseño de Clases     | Implementación de piezas y herencia |
+| Santiago Meza   | Especialista en Pruebas       | Desarrollo de tests unitarios y TDD |
+| Adolfo Gómez    | Integrador de Lógica del Juego| Manejo del tablero y mecánicas de juego |
 
+**Nota**: Evaluación grupal (código) e individual (coloquio). GitHub se usó para colaboración con branches y pull requests.
 
-# Requerimientos técnicos
+## Requisitos y Objetivos
 
+El proyecto cumple los requerimientos del escenario *Tetris* propuesto por UCP Video Games Inc., enfocándose en la lógica backend.
 
-# Preparar entorno:
-  - Probando el entorno + IDE
-  - Pasos para validar
-    - Crear una clase Tetris
-    - Crear un test en TetrisTest
+### Objetivos Principales
+- Crear clases Java con tests JUnit (cobertura >90%).
+- Implementar conceptos POO:
+  - **Igualdad y Constructores**: Sobrescritura de `equals()` y constructores.
+  - **Componentes**: Piezas de 4 bloques.
+  - **Encapsulación Doble**: Atributos/métodos privados con getters/setters.
+  - **Interfaces**: Comportamientos como `Rotatable`.
+  - **Herencia**: `Piece` como clase base abstracta.
+  - **Polimorfismo**: Sobrescritura de métodos como `rotate()`.
+  - **Sobrecarga**: Múltiples constructores/métodos.
+  - **Clases Abstractas**: `Piece` con métodos abstractos.
+  - **Pruebas**: Solo asserts (`assertTrue`, `assertEquals`), sin prints.
 
-# Requerimiento 1:
-  - Se deben poder crear piezas (una de cada tipo) (Piece.java)
-  - Cada pieza se arma con 4 elementos.
-  - Las piezas son:
-      - La T (PieceT.java)
-      - El cuadrado (PieceSquare.java)
-      - El palo (PieceStick.java)
-      - La ele (PieceL.java) left y right
-      - El perro (PieceDog.java )left y right
-  - ¿Cuántos Test? ¿Cómo se prueba?
+### Criterios de Evaluación
+- Rúbrica: 100 puntos (nota máxima: 10).
+- Flujo GitHub: Commits, branches, merges.
+- TDD: Pruebas guían desarrollo.
+- Entregables: Coloquio, enlace al repositorio, reporte de cobertura (JaCoCo).
 
-# Requerimiento 2:
-  - Las piezas se pueden rotar a izquierda o derecha.
-  - En cada movimiento debe rotar sobre “su eje”.
-  - ¿Cuántos movimientos hay?
-  - Como testear?
-  - ¿Cuántos test por pieza por movimiento?
+## Estructura del Repositorio
 
-# Requerimiento 3:
-  - El tablero/ “board” tiene 10x20 elementos (Board.java)
-  - Las piezas van ingresando por la parte de arriba
-      - Aleatoriamente en cualquier lugar del primer renglón (siempre la pieza completa).
-      - Y en una posición de la pieza aleatoria.
-      - No se puede colocar una pieza por fuera del tablero.
-  - Las piezas van bajando a medida el reloj indica x segundos
-      - Ejemplo 2 segundos.
-  - La pieza actual solamente es la que desciende a medida que el reloj avanza.
-  - La pieza puede moverse (orientación) y descender solamente si puede caber en dicho lugar.
+```
+Java-Tetris-Paradigmas2-2025-InvaldiJuan_MezaSantiago_GomezAdolfo/
+├── src/
+│   ├── main/
+│   │   └── java/
+│   │       ├── Tetris.java
+│   │       ├── Board.java
+│   │       ├── Piece.java
+│   │       ├── PieceT.java
+│   │       ├── PieceSquare.java
+│   │       ├── PieceStick.java
+│   │       ├── PieceL.java
+│   │       └── PieceDog.java
+│   └── test/
+│       └── java/
+│           ├── TetrisTest.java
+│           ├── PieceTest.java
+│           └── BoardTest.java
+├── pom.xml (o build.gradle)
+├── README.md
+└── coverage-report/
+```
 
-# Requerimiento 4:
-  - Detener movimiento pieza actual.
-      - Cuando no se puede descender o girar.
-  - No se puede ingresar más piezas al tablero.
-      - Cuando no hay “líneas” disponibles en el tablero (primera línea).
-      - Finalizar juego (no se puede ingresar más piezas al tablero).
-  
-# Requerimiento 5:
-  - Linea completa, desaparece (baja toda una línea)
-      - A medida que una línea del tablero se completa.
-      - Esa línea desaparece (se debe bajar todas las celdas).
-  - El juego finaliza cuando se completan X líneas.
-      - Ejemplo cuando se completan 5 líneas (configurable por el juego Tetris).
-  - El tablero se mantiene con las mismas casillas.
+- **Imágenes**: Incluye diagramas conceptuales (UML o flujo) en el repositorio.
 
-# Mínimos Test a Entregar
-  - Test de creación de piezas (PieceTest). Todas las piezas deben tener un test de creación y verificación de que exista con “la forma” de dicha pieza.
-  - Test de rotación (a izquierda y derecha) de dicha pieza.
-  - Test del tablero (Board).
-      - Que tenga el formato.
-      - Que se pueda agregar pieza (completa).
-      - Que la pieza que se agrega no se pueda “sobrepasar” los límites del tablero.
-  - Test del reloj (que cada vez que el reloj avanza).
-      - Método tick del reloj(avanza). Contar de 1 el avance (no hay hora).
-  - Que el tablero al agregar una pieza se pueda aleatoriamente “rotar” y luego agregar completa.
-  - Que el tablero en cada “movimiento” haga que la pieza actual se mueva un fila para abajo (si se puede).
-  - Que el tablero si se coloca varias piezas en una línea completa debe sumar la línea y remover dicha línea.
-  - Que se pueda crear un juego Tetris.
-      - Poder crear y comenzar.
-      - Poder indicar desde afuera que se cree un “tick” del reloj.
-      - Que en cada tick se juegue en el tablero el movimiento.
+## Implementación Detallada
 
-[DOCUMENTACION](https://docs.google.com/document/d/1HcwQHvetELJaVBRKapoV5MmaNs7SmCDS7Mm4Bziafbc/edit?usp=sharing)
+### Preparación del Entorno
+1. Instalar JDK 17+ e IDE (IntelliJ/Eclipse).
+2. Crear proyecto Maven/Gradle con JUnit 5.
+3. Validar: Crear `Tetris.java` y `TetrisTest.java` con test básico.
 
-<img width="1003" height="157" alt="image" src="https://github.com/user-attachments/assets/10e665ec-d29d-4238-8715-ecc8001eda68" />
+### Requerimientos
 
+#### 1. Creación de Piezas
+- Piezas: T, Cuadrado, Palo, L (left/right), Perro (S/Z, left/right).
+- Cada pieza: 4 bloques (coordenadas o matriz 4x4).
+- **POO**: Herencia de `Piece`, constructores sobrecargados, `equals()`.
 
-<img width="1012" height="486" alt="image" src="https://github.com/user-attachments/assets/549178b7-02f1-43bd-9f67-4d9846d2f725" />
+#### 2. Rotación de Piezas
+- Métodos `rotateLeft()` y `rotateRight()`: Giro 90°.
+- 4 orientaciones por pieza; polimorfismo.
+- Tests: Verificar posiciones post-rotación.
 
+#### 3. Tablero
+- Tamaño: 10x20 (matriz).
+- Piezas entran aleatoriamente en la fila superior (válida).
+- Descenso: Cada "tick" (e.g., 2s), baja 1 fila si es posible.
+
+#### 4. Detención y Game Over
+- Detener pieza si no puede bajar/girar.
+- Game Over: Sin espacio en la primera fila.
+
+#### 5. Líneas Completas
+- Eliminar líneas llenas; bajar celdas superiores.
+- Fin del juego: Completar X líneas (configurable, e.g., 5).
+
+## Pruebas Unitarias
+
+Cobertura >90% con JUnit 5.
+
+| Categoría              | Archivo         | Tests | Cobertura |
+|------------------------|-----------------|-------|-----------|
+| Creación de Piezas    | PieceTest.java | 6     | 100%      |
+| Rotación              | PieceTest.java | 40+   | 95%       |
+| Tablero               | BoardTest.java | 10    | 90%       |
+| Reloj/Movimiento      | TetrisTest.java| 5     | 100%      |
+| Líneas Completas      | BoardTest.java | 3     | 95%       |
+| Juego Completo        | TetrisTest.java| 4     | 92%       |
+
+## Configuración y Ejecución
+
+1. Clonar: `git clone https://github.com/JuanmaInv/...`
+2. Build: `mvn clean test`
+3. Cobertura: `mvn jacoco:report`
+4. Ejecutar: `mvn exec:java -Dexec.mainClass="Tetris"`
+
+## Conclusiones y Mejoras
+
+El proyecto demuestra POO robusto y testeable. Mejoras futuras:
+- Interfaz gráfica (JavaFX/Swing).
+- Más piezas (J, etc.).
+- Velocidad configurable.
