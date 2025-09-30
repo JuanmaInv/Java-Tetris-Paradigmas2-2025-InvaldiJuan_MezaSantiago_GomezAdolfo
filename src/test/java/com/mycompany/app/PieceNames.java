@@ -30,5 +30,23 @@ public class PieceNames {
 }
 
 
-
+@Test
+    public void testDeAltoYAnchoPiece (){
+        PieceBase pieza1 = new PieceDog();
+        PieceBase pieza2 = new PieceL();
+        PieceBase pieza3 = new PieceStick();
+        PieceBase pieza4 = new PieceSquare();
+        PieceBase pieza5 = new PieceT();
+        //verifico alto y ancho de cada pieza
+        assertEquals(2, pieza1.getAlto());
+        assertEquals(3, pieza1.getAncho());
+        assertEquals(3, pieza2.getAlto());
+        assertEquals(2, pieza2.getAncho());
+        assertEquals(4, pieza3.getAlto());
+        assertEquals(1, pieza3.getAncho());
+        assertEquals(2, pieza4.getAlto());
+        assertEquals(2, pieza4.getAncho());
+        assertEquals(2, pieza5.getAlto());
+        assertEquals(3, pieza5.getAncho());
+    }
 }
