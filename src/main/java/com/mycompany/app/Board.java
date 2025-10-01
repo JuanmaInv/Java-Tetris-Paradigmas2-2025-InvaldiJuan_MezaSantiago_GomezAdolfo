@@ -174,7 +174,8 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
         return lineasEliminadas; 
     }
 
-    // Alias solicitado por el diagrama: número de líneas removidas
+    // Alias solicitado por el diagrama: número de líneas removidas 
+    // Da las líneas eliminadas actualmente
     public int lineCount() {
         return getLineasEliminadas();
     }

@@ -14,13 +14,14 @@ public class Tetris implements IGameState{
         gameEnd = false; // No ha terminado
         gameWin = false; // No ha ganado
         this.board = new Board(); // Siempre crea un nuevo tablero al iniciar Tetris
-        this.clock = new Clock(board, 2); // Reloj con intervalo de descenso de 2 ticks
+        this.clock = new Clock(board, 2); // Reloj con intervalo de descenso de 2 ticks que afecta al tablero porque baja la pieza cada X ticks
     }
 
     // Generador de números aleatorios para la columna inicial
     private Random random = new Random();
 
     // Genera una nueva pieza aleatoria
+    // llama a los constructores de las piezas
     PieceBase generarPiezaAleatoria() { // 5 tipos de piezas
         int randomPiece = random.nextInt(5); // 0 a 4
         switch (randomPiece) {
