@@ -71,9 +71,11 @@ Java-Tetris-Paradigmas2-2025-InvaldiJuan_MezaSantiago_GomezAdolfo/
 ## Implementación Detallada
 
 ### Preparación del Entorno
-1. Instalar JDK 17+ e IDE (IntelliJ/Eclipse).
-2. Crear proyecto Maven/Gradle con JUnit 5.
+1. Instalar **JDK 21 LTS** (Java 21) e IDE (IntelliJ/Eclipse/VS Code).
+2. Crear proyecto Maven/Gradle con JUnit 4.
 3. Validar: Crear `Tetris.java` y `TetrisTest.java` con test básico.
+
+> **Nota**: El proyecto fue actualizado a Java 21 LTS en marzo de 2026. Se requiere JDK 21 o superior para compilar y ejecutar.
 
 ### Requerimientos
 
