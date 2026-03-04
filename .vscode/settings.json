@@ -1,3 +1,18 @@
 {
-    "java.debug.settings.onBuildFailureProceed": true
+    "java.debug.settings.onBuildFailureProceed": true,
+    "cSpell.language": "en,es",
+    "cSpell.words": [
+        "Colocacion",
+        "encontro",
+        "metodo",
+        "ningun",
+        "numeros",
+        "posicion",
+        "resetea",
+        "retorn",
+        "Segun",
+        "settea",
+        "vacio"
+    ],
+    "cSpell.enabled": false
 }

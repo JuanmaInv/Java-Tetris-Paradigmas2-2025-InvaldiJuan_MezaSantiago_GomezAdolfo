@@ -118,10 +118,10 @@ public abstract class PieceBase implements IRotator {
 
     @Override
     public void seleccionarLadoRandom() { // Decide aleatoriamente entre 3 opciones: rotar derecha, izquierda o no rotar
-        int configuracion = nextInt(3);// 0=derecha, 1=izquierda, 2=no rota...se inicia el conteo desde 0 y tiene 3 opciones
-        if (configuracion == 0) {// si es 0, rota a la derecha
+        int configuration = nextInt(3);// 0=derecha, 1=izquierda, 2=no rota...se inicia el conteo desde 0 y tiene 3 opciones
+        if (configuration == 0) {// si es 0, rota a la derecha
             rotateRight();
-        } else if (configuracion == 1) {// si es 1, rota a la izquierda
+        } else if (configuration == 1) {// si es 1, rota a la izquierda
             rotateLeft();
         } else {
             // Si es 2, no rota y se mantiene con su forma original

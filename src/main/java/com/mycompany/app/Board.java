@@ -58,7 +58,7 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
     // VERIFICACIÓN DE COLISIONES Y LÍMITES DEL TABLERO
     // Verifica si una pieza puede colocarse en la posicion dada del tablero
     // sin salirse y sin colisionar con otras piezas
-    // Devuelve true si es valido, false si hay colision o se sale
+    // Devuelve true si es valido, false si hay collision o se sale
     @Override
     public boolean verificarColocacionValida(PieceBase piece, int fila, int columna) {
         for (int i = 0; i < piece.getForma().length; i++) { // Recorre filas de la pieza
@@ -86,9 +86,9 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
         return true;
     }
 
-    // INGRESO Y COLOCACION DE PIEZAS EN EL TABLERO (asumiendo verificacion previa)
+    // INGRESO Y COLOCACION DE PIEZAS EN EL TABLERO (asumiendo verification previa)
     // Coloca la pieza en el tablero en la posicion dada
-    // Asume que la verificacion ya fue realizada y es valida
+    // Asume que la verification ya fue realizada y es valida
     @Override
     public void colocarPiezaEnTableroVerificada(PieceBase piece, int fila, int columna) { //
             // Actualiza la posición actual de la pieza
@@ -133,7 +133,7 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
     }
 
     public void setBoard(int fila, int columna, int valor) { // me permite cambiar el valor de una celda del tablero
-        board[fila][columna] = valor;// setea el valor de la celda del tablero en la fila y columna especificadas
+        board[fila][columna] = valor;// settea el valor de la celda del tablero en la fila y columna especificadas
     }
 
     public int getColumnaActual() {
@@ -201,8 +201,8 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
     }
 
 
-    // MOVIMIENTO Y MANIPULACION DE PIEZAS
-    // Metodo unico para mover la pieza en cualquier direccion
+    // MOVIMIENTO Y MANIPULATION DE PIEZAS
+    // Metodo unico para mover la pieza en cualquier direction
     // deltaFila: +1 abajo, -1 arriba, 0 sin cambio
     // deltaColumna: +1 derecha, -1 izquierda, 0 sin cambio
     @Override
@@ -278,7 +278,7 @@ public class Board implements IBoardOperations, IMovement { // Implementa las in
     }
 
 
-    // ELIMINACION DE LINEAS
+    // ELIMINATION DE LINEAS
     // Este método busca filas completas (sin celdas 0) desde el fondo del tablero hacia arriba
     public void verificarYEliminarLineas() {
         // Iterar de abajo hacia arriba; si se elimina una linea, no decrementar
